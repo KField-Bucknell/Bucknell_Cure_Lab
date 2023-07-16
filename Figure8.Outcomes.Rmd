@@ -1,0 +1,555 @@
+---
+title: "Outcomes"
+author: "Ken Field"
+date: "Last compiled on `r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
+if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
+if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
+if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require('pdftools')) install.packages('pdftools'); library(pdftools) #reading tables from pdfs
+if (!require('performance')) install.packages('performance'); library(performance) # visualizing glm
+if (!require('pscl')) install.packages('pscl'); library(pscl) # zero-inflated glm
+# Always load last
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+```
+
+We wish to determine if the new core classes (CURE Lab and BIO Seminar) are helping students to succeed academically.
+
+## Loading Results
+
+I asked the registrar to help me answer the following questions:
+1. What was the DFW rate for first-year students in BIOL 205 and 206 from SP 2017 to FA 2019?
+2. What was the DFW rate for first-year students in BIOL 201 and 202 from FA 2021 to SP 2022?
+
+They sent us the files located in the "Grade Outcomes" folder.
+
+Note that this analysis only includes first-year students in the Biology classes, even though there are other students in these classes.
+
+I began working on reading those files in using pdf_text, but that looked like it was going to be a nightmare, so I am going to enter the results in manually.
+I later got all the results in excel form and could have imported them more easily, but it was too late.
+
+```{r Entering Results 1}
+DFW <- tibble(Class = "BIOL201", Year = "21-22", Semester = "Fall", DFW = 6, Total = 103)
+DFW <- DFW %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Fall", DFW = 1, Total = 43) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Spring", DFW = 0, Total = 64) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Spring", DFW = 0, Total = 60) %>%
+  add_row(Class = "BIOL205", Year = "17-18", Semester = "Fall", DFW = 4+19, Total = 149) %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", DFW = 9+6+22, Total = 160) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", DFW = 7+3+7, Total = 162) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", DFW = 1+1+3, Total = 119) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", DFW = 5+1+9, Total = 123) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", DFW = 1+2+4, Total = 149)
+DFW <- DFW %>%
+  mutate(Pass = Total - DFW) %>%
+  mutate(`DFW Rate (%)` = DFW / Total * 100)
+```
+
+Summarizing Results
+
+```{r Summary}
+DFW %>%
+  group_by(Class) %>%
+  summarise(`Mean DFW Rate (%)` = mean(`DFW Rate (%)`), 
+            Sd = sd(`DFW Rate (%)`))
+DFW %>%
+  group_by(Year) %>%
+  summarise(`Mean DFW Rate (%)` = mean(`DFW Rate (%)`), 
+            Sd = sd(`DFW Rate (%)`))
+# Fall Semester
+DFW %>%
+  filter(Semester == "Fall") %>%
+  group_by(Class) %>%
+  summarise(DFW = mean(DFW), Enrollment = mean(Total), 
+            `Mean DFW Rate (%)` = mean(`DFW Rate (%)`), 
+            Sd = sd(`DFW Rate (%)`))
+# Spring Semester
+DFW %>%
+  filter(Semester == "Spring") %>%
+  group_by(Class) %>%
+  summarise(DFW = mean(DFW), Enrollment = mean(Total),
+            `Mean DFW Rate (%)` = mean(`DFW Rate (%)`), 
+            Sd = sd(`DFW Rate (%)`))
+```
+
+Initial data exploration:
+Although the sample size is quite low, I am going to try a one-sample T test to 
+provide some measure of confidence in the difference between the new and old classes.
+
+```{r}
+Fall_DFW <- DFW %>%
+  filter(Semester == "Fall", Class == "BIOL205") %>%
+  select(`DFW Rate (%)`)
+t.test(Fall_DFW$`DFW Rate (%)`, mu = 5.82)
+t.test(Fall_DFW$`DFW Rate (%)`, mu = 2.32)
+```
+
+In the Fall: 
+
+For BIOL201, p = 0.1032
+
+For BIOL202, p = 0.06226
+
+
+```{r}
+Spring_DFW <- DFW %>%
+  filter(Semester == "Spring", Class == "BIOL206") %>%
+  select(`DFW Rate (%)`)
+t.test(Spring_DFW$`DFW Rate (%)`, mu = 0)
+```
+
+In the Spring
+
+p = 0.1128
+
+This applies equally to BIOL 201 and 202 because both had a DFW Rate of 0 in the Spring.
+
+However, this is really count data and should be handled by a negative binomial GLM. 
+
+## First year affiliated majors only
+
+Including only first-year students who are undeclared, Biology, Animal Behavior, Cell Biology/Biochemistry, Biophysics, and Neuroscience. 
+
+```{r Entering Results 3}
+Majors_DFW <- tibble(Class = "BIOL205", Year = "17-18", Semester = "Fall", DFW = 21, Total = 124+21)
+Majors_DFW <- Majors_DFW %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", DFW = 37, Total = 122+37) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", DFW = 17, Total = 137+17) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", DFW = 4, Total = 111+4) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", DFW = 13, Total = 106+13) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", DFW = 5, Total = 139+5) 
+Majors_DFW <- Majors_DFW %>%
+  mutate(Pass = Total - DFW) %>%
+  mutate(`DFW Rate (%)` = DFW / Total * 100)
+```
+
+
+```{r}
+Majors_DFW %>%
+  group_by(Class) %>%
+  summarise(`Mean DFW Rate (%)` = mean(`DFW Rate (%)`), 
+            Sd = sd(`DFW Rate (%)`))
+```
+
+Going to compare BIOL205 to BIOL201/202 Fall and BIOL206 to BIOL201/202 Spring.
+
+```{r}
+DFW_205 <- Majors_DFW %>%
+  filter(Class == "BIOL205") %>%
+  select(`DFW Rate (%)`)
+DFW_Fall <- DFW %>%
+  filter(Class %in% c("BIOL201", "BIOL202")) %>%
+  filter(Semester == "Fall") 
+DFW_Fall
+t.test(DFW_205$`DFW Rate (%)`, mu = (6 + 1)/(103+43) * 100)
+```
+
+
+```{r}
+DFW_206 <- Majors_DFW %>%
+  filter(Class == "BIOL206") %>%
+  select(`DFW Rate (%)`)
+DFW_Spring <- DFW %>%
+  filter(Class %in% c("BIOL201", "BIOL202")) %>%
+  filter(Semester == "Spring") 
+DFW_Spring
+t.test(DFW_206$`DFW Rate (%)`, mu = 0)
+```
+
+This is a better comparison than I did initially, but the results are quite similar.
+
+Comparing 205 to Fall 201/202: t = 3.1497, df = 2, p-value = 0.08774
+
+Comparing 206 to Spring 201/202: t = 2.3996, df = 2, p-value = 0.1385
+
+## Modeling results with negative binomial glm
+
+First I need to convert the summarized results into individual counts. 
+
+https://www.r-bloggers.com/2019/10/expanding-binomial-counts-to-binary-0-1-with-purrrpmap/
+
+```{r Example Data}
+dat = structure(list(plot = structure(1:8, .Label = c("plot1", "plot2", 
+"plot3", "plot4", "plot5", "plot6", "plot7", "plot8"), class = "factor"), 
+    group = structure(c(1L, 1L, 1L, 1L, 2L, 2L, 2L, 2L), .Label = c("g1", 
+    "g2"), class = "factor"), num_dead = c(4L, 6L, 6L, 5L, 1L, 4L, 
+    3L, 2L), total = c(5L, 7L, 9L, 7L, 8L, 10L, 10L, 7L)), class = "data.frame", row.names = c(NA, 
+-8L))
+
+dat
+
+binary_dat = pmap_dfr(dat, 
+                      function(group, plot, num_dead, total) {
+                           data.frame(plot = plot,
+                                      group = group,
+                                      dead = c( rep(1, num_dead),
+                                                rep(0, total - num_dead) ) )
+                      }
+)
+head(binary_dat)
+```
+
+Now to try with the DFW data. 
+First, I will select just the data that we need.
+
+```{r}
+Old_DFW_dat <- Majors_DFW %>%
+  select(Class:Total) %>%
+  mutate(Curriculum = "Old")
+New_DFW_dat <- DFW %>%
+  select(Class:Total) %>%
+  filter(Class %in% c("BIOL201", "BIOL202")) %>%
+  mutate(Curriculum = "New")
+DFW_dat <- rbind(Old_DFW_dat, New_DFW_dat)
+DFW_binary_dat = pmap_dfr(DFW_dat, 
+                      function(Class, Year, Semester, DFW, Total, Curriculum) {
+                           data.frame(Class = Class,
+                                      Year = Year,
+                                      Semester = Semester,
+                                      Curriculum = Curriculum,
+                                      DFW = c( rep(1, DFW),
+                                                rep(0, Total - DFW) ) )
+                      }
+)
+```
+
+That worked. Now to use that dataframe for a glm.
+
+```{r}
+model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat, 
+                 control = glm.control(maxit = 1000))
+summary(model1)
+model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum, 
+                     control = glm.control(maxit = 1000), data = DFW_binary_dat)
+summary(model_full)
+```
+
+The full model has too many interacting variables to be useful. 
+Even with the interactions removed, the model does not converge properly.
+I will stick with Model 1 for further exploration.
+
+```{r}
+newdata <- data.frame(Curriculum = c("Old", "New"))
+newdata
+predict.glm(model1, newdata=newdata, type="response")
+model1
+check_zeroinflation(model1)
+check_overdispersion(model1)
+performance(model1)
+summary(model1)
+```
+
+```{r}
+exp(1.4986)
+exp(1.4986+0.3914)
+exp(1.4986-0.3914)
+```
+
+The model indicates that students under the old curriculum were 4.5-fold (3.0 - 6.6) more likely to earn a DFW in the first two Biology courses (p = 0.000129).
+
+## Adding results from second year of new curriculum
+
+```{r}
+Newer_DFW_dat <- New_DFW_dat %>%
+  rbind(c("BIOL201", "22-23", "Fall", 3, 107, "New")) %>%
+  rbind(c("BIOL201", "22-23", "Spring", 4, 70, "New")) %>%
+  rbind(c("BIOL202", "22-23", "Fall", 2, 42, "New")) %>%
+  rbind(c("BIOL201", "22-23", "Spring", 1, 63, "New"))
+Newer_DFW_dat <- Newer_DFW_dat %>%
+  mutate(DFW = as.numeric(DFW)) %>%
+  mutate(Total = as.numeric(Total))
+DFW_dat2 <- rbind(Old_DFW_dat, Newer_DFW_dat)
+DFW_binary_dat2 <- pmap_dfr(DFW_dat2, 
+                      function(Class, Year, Semester, DFW, Total, Curriculum) {
+                           data.frame(Class = Class,
+                                      Year = Year,
+                                      Semester = Semester,
+                                      Curriculum = Curriculum,
+                                      DFW = c( rep(1, DFW),
+                                                rep(0, Total - DFW) ) )
+                      }
+)
+new_model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat2)
+summary(new_model1)
+check_zeroinflation(new_model1)
+```
+
+That looks good. And I am glad to have used the zero-inflated model.
+
+```{r}
+exp(1.3256)
+exp(1.3256+0.2690)
+exp(1.3256-0.2690)
+```
+
+The model including the second year data indicates that students under the old curriculum were 3.8-fold (2.9 - 4.9) more likely to earn a DFW in the first two Biology courses (p = 0.000000835).
+
+How does it look with just the old data, but with the zero-inflated model?
+I determined that the data does not actually have a zero-inflation problem so this was not needed.
+
+```{r}
+zero_model1 <- zeroinfl(DFW ~ Curriculum, data = DFW_binary_dat)
+summary(zero_model1)
+```
+
+```{r}
+exp(1.4981)
+exp(1.4981+0.3984)
+exp(1.4981-0.3984)
+```
+
+That is almost identical. And we see that the zero inflation coefficients have very high p values.
+
+## Effect of race/ethnicity and gender
+
+First looking at the old curriculum. 
+
+```{r}
+Old_FullDFW <- tibble(Class = "BIOL205", Year = "17-18", Semester = "Fall", Gender = "Female", SoC = "Non-White", 
+                      DFW = 5, Total = 30)
+Old_FullDFW <- Old_FullDFW %>%
+  add_row(Class = "BIOL205", Year = "17-18", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 11, Total = 76) %>%
+  add_row(Class = "BIOL205", Year = "17-18", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 4, Total = 15) %>%
+  add_row(Class = "BIOL205", Year = "17-18", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 3, Total = 28) %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", Gender = "Female", SoC = "Non-White", DFW = 10, Total = 37) %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 19, Total = 89) %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 3, Total = 9) %>%
+  add_row(Class = "BIOL205", Year = "18-19", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 5, Total = 25) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", Gender = "Female", SoC = "Non-White", DFW = 3, Total = 25) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 7, Total = 89) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 2, Total = 23) %>%
+  add_row(Class = "BIOL205", Year = "19-20", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 5, Total = 25) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 5, Total = 30) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 1, Total = 21) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 2, Total = 11) %>%
+  add_row(Class = "BIOL206", Year = "16-17", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 0, Total = 26) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 4, Total = 27) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 4, Total = 61) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 4, Total = 13) %>%
+  add_row(Class = "BIOL206", Year = "17-18", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 3, Total = 22) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 3, Total = 38) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 3, Total = 81) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 1, Total = 7) %>%
+  add_row(Class = "BIOL206", Year = "18-19", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 0, Total = 23)
+summary(Old_FullDFW)
+Old_FullDFW_binary_dat <- pmap_dfr(Old_FullDFW, 
+                      function(Class, Year, Semester, Gender, SoC, DFW, Total) {
+                           data.frame(Class = as.factor(Class),
+                                      Year = as.factor(Year),
+                                      Semester = as.factor(Semester),
+                                      Gender = as.factor(Gender),
+                                      SoC = as.factor(SoC),
+                                      DFW = c( rep(1, DFW),
+                                                rep(0, Total - DFW) ) )
+                      }
+)
+Old_FullDFW_binary_dat <- Old_FullDFW_binary_dat %>%
+  mutate(SoC = factor(SoC, levels = c("White", "Non-White")))
+summary(Old_FullDFW_binary_dat)
+```
+
+Now for the model.
+
+```{r}
+glm_model_old_full <- glm.nb(DFW ~ Gender * SoC, data = Old_FullDFW_binary_dat)
+summary(glm_model_old_full)
+```
+
+This is consistent with my original analysis. 
+Neither Race/ethnicity nor Gender had a major effect on DFW rates in the old curriculum. 
+Students of color did have a higher rate, but the p value was marginal (0.0925).
+
+Now to look at the data for 201 and 202.
+
+```{r}
+New_FullDFW <- tibble(Class = "BIOL201", Year = "22-23", Semester = "Fall", Gender = "Female", SoC = "Non-White", 
+                      DFW = 3, Total = 25)
+New_FullDFW <- New_FullDFW %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 0, Total = 57) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 8) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 0, Total = 17) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 3, Total = 18) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 0, Total = 29) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 7) %>%
+  add_row(Class = "BIOL201", Year = "22-23", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 1, Total = 16) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Fall", Gender = "Female", SoC = "Non-White", DFW = 1, Total = 11) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 1, Total = 15) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 4) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 0, Total = 12) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 1, Total = 16) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 0, Total = 33) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 3) %>%
+  add_row(Class = "BIOL202", Year = "22-23", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 0, Total = 11) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Fall", Gender = "Female", SoC = "Non-White", DFW = 2, Total = 15) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 2, Total = 65) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 2, Total = 7) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 3, Total = 26) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 0, Total = 11) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 0, Total = 35) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 4) %>%
+  add_row(Class = "BIOL201", Year = "21-22", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 0, Total = 17) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Fall", Gender = "Female", SoC = "Non-White", DFW = 0, Total = 8) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Fall", Gender = "Female", SoC = "White", DFW = 0, Total = 25) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Fall", Gender = "Male", SoC = "Non-White", DFW = 1, Total = 3) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Fall", Gender = "Male", SoC = "White", DFW = 0, Total = 7) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Spring", Gender = "Female", SoC = "Non-White", DFW = 0, Total = 7) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Spring", Gender = "Female", SoC = "White", DFW = 0, Total = 40) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Spring", Gender = "Male", SoC = "Non-White", DFW = 0, Total = 2) %>%
+  add_row(Class = "BIOL202", Year = "21-22", Semester = "Spring", Gender = "Male", SoC = "White", DFW = 0, Total = 12)
+summary(New_FullDFW)
+New_FullDFW_binary_dat <- pmap_dfr(New_FullDFW, 
+                      function(Class, Year, Semester, Gender, SoC, DFW, Total) {
+                           data.frame(Class = as.factor(Class),
+                                      Year = as.factor(Year),
+                                      Semester = as.factor(Semester),
+                                      Gender = as.factor(Gender),
+                                      SoC = as.factor(SoC),
+                                      DFW = c( rep(1, DFW),
+                                                rep(0, Total - DFW) ) )
+                      }
+)
+New_FullDFW_binary_dat <- New_FullDFW_binary_dat %>%
+  mutate(SoC = factor(SoC, levels = c("White", "Non-White")))
+summary(New_FullDFW_binary_dat)
+```
+
+```{r}
+glm_model_new_full <- glm.nb(DFW ~ Gender * SoC, data = New_FullDFW_binary_dat)
+summary(glm_model_new_full)
+logLik(glm_model_new_full)
+performance(glm_model_new_full)
+check_zeroinflation(glm_model_new_full)
+check_model(glm_model_new_full)
+```
+
+```{r}
+cat_plot(glm_model_new_full, pred = Gender, modx = SoC, interval = TRUE)
+```
+
+```{r}
+New_FullDFW_binary_dat <- New_FullDFW_binary_dat %>%
+  mutate(Curriculum = "New")
+Old_FullDFW_binary_dat <- Old_FullDFW_binary_dat %>%
+  mutate(Curriculum = "Old")
+FullDFW_binary_dat <- rbind(Old_FullDFW_binary_dat, New_FullDFW_binary_dat) %>%
+  mutate(Curriculum = factor(Curriculum, levels = c("Old", "New")))
+glm_model_all <- glm.nb(DFW ~ Curriculum * Gender * SoC, data = FullDFW_binary_dat)
+summary(glm_model_all)
+glm_model_full <- glm.nb(DFW ~ Curriculum + Gender * SoC, data = FullDFW_binary_dat)
+summary(glm_model_full)
+stepAIC(glm_model_full, direction = "backward")
+glm_model_selected <- glm.nb(DFW ~ Curriculum + SoC, data = FullDFW_binary_dat)
+summary(glm_model_selected)
+```
+
+```{r}
+check_model(glm_model_full)
+cat_plot(glm_model_full, pred = SoC, modx = Curriculum, mod2 = Gender, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         mod2.labels = c("Female Students", "Male Students"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+```
+
+And using the selected model, that shows only curriculum and SoC are critical:
+
+```{r}
+cat_plot(glm_model_selected, pred = SoC, modx = Curriculum, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         modx.labels = c("Prior", "BIO Seminar/CURE Lab"),
+         x.label = "", y.label = "DFW Likelihood")
+```
+
+Compare by class instead of old vs new curriculum:
+
+```{r}
+glm_model_full2 <- glm.nb(DFW ~ Class + Gender * SoC, data = FullDFW_binary_dat)
+summary(glm_model_full2)
+cat_plot(glm_model_full2, pred = SoC, modx = Class, mod2 = Gender,
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         mod2.labels = c("Female Students", "Male Students"),
+         x.label = "", y.label = "DFW Likelihood")
+```
+
+## Figure 8
+
+Let's look at just the first year of the CURE (for the paper).
+
+```{r Figure 8}
+summary(FullDFW_binary_dat)
+FullDFW_binary_dat %>% 
+  filter(Year != "22-23") %>%
+  filter(Class != "BIOL201") -> filtered_binary_dat
+summary(filtered_binary_dat)
+Just1year202.glm <- glm.nb(DFW ~ Curriculum + Gender * SoC, data = filtered_binary_dat) 
+summary(Just1year202.glm)
+check_overdispersion(Just1year202.glm)
+check_zeroinflation(Just1year202.glm)
+check_model(Just1year202.glm)
+cat_plot(Just1year202.glm, pred = SoC, modx = Curriculum, mod2 = Gender, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         mod2.labels = c("Female Students", "Male Students"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+```
+
+```{r}
+1/exp(-2.519482)
+1/exp(-2.519482+1.005)
+1/exp(-2.519482-1.005)
+
+exp(0.402546)
+exp(0.402546+0.235786)
+exp(0.402546-0.235786)
+```
+
+
+How does it look if we compare by class instead of just curriculum?
+
+```{r}
+Just1year202.glm2 <- glm.nb(DFW ~ Class + Gender * SoC, data = filtered_binary_dat) 
+summary(Just1year202.glm2)
+cat_plot(Just1year202.glm2, pred = SoC, modx = Class, mod2 = Gender, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         mod2.labels = c("Female Students", "Male Students"),
+         x.label = "", y.label = "DFW Likelihood")
+```
+
+And now let's isolate just BIOL202 to see if SoC and/or gender effect DFW rates.
+
+```{r}
+filtered_binary_dat %>%
+  filter(Class == "BIOL202") -> only202year1_binary_dat
+summary(only202year1_binary_dat)
+table(only202year1_binary_dat$Gender, only202year1_binary_dat$SoC)
+only202year1.glm <- glm.nb(DFW ~ Gender * SoC, data = only202year1_binary_dat) 
+summary(only202year1.glm)
+cat_plot(only202year1.glm, pred = SoC, modx = Gender, interval = TRUE)
+```
+
+Well that is an ugly graphic because the numbers of DFWs are so low, but the model does confirm that there is no significant effect of Gender or Race/ethnicity on DFW rates in the first year of BIOL 202.
