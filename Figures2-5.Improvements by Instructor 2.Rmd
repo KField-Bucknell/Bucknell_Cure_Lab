@@ -1,0 +1,1027 @@
+---
+title: "Improvements by Instructor"
+author: "Ken Field"
+date: "Last compiled on `r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
+if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
+if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
+if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+```
+
+## Loading Results
+
+Loading in the results without instructor information:
+
+```{r}
+NoDemographics <- read_delim("Deidentified Surveys/NoDemographics.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoDemographicsQuestions <- read_delim("Deidentified Surveys/NoDemographicsQuestions.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+```
+
+## Improvement in learning elements
+
+Comparing the responses to Pre10 and Post9:
+
+```{r Pre Q10}
+PreQ10 <- NoDemographics %>%
+  select(Semester = Semester_pre, Instructor, starts_with("Q10")) %>%
+  select(Semester, Instructor, ends_with("_pre"))
+Q10Text <- NoDemographicsQuestions %>%
+  filter(startsWith(value, "Q10")) %>%
+  filter(endsWith(value, "_pre"))
+Q10Text$Question[1]
+Q10TextClean <- Q10Text %>%
+  mutate(Question = str_remove(Q10Text$Question, "Please look over this inventory of elements that might be included in a course. For each element, give an estimate of your current level of ability before the course begins. Your current level of ability may be a result of courses in high school or college, or it may be a result of other experiences such as jobs or special programs. If students are expected to do the following course elements, what would be their level of expertise\\? - "))
+Q10TextClean$Question
+```
+
+
+```{r Post Q9}
+PostQ9 <- NoDemographics %>%
+  select(starts_with("Q9")) %>%
+  select(ends_with("_post"))
+
+Q9Text <- NoDemographicsQuestions %>%
+  filter(startsWith(value, "Q9")) %>%
+  filter(endsWith(value, "_post"))
+Q9Text$Question[1]
+Q9TextClean <- Q9Text %>%
+  mutate(Question = str_remove(Q9Text$Question, "Please rate how much learning you gained from each element you experienced in this course. The scale measuring your gain is from \\(no or very small gain\\) to \\(very large gain\\). Some elements may not have happened at all. If the item is not relevant or you prefer not to answer, please choose the \"\"not applicable\"\" option. If students were expected to do the following course elements, what would be their level of gained experience\\? - "))
+Q9TextClean$Question
+
+Q9TextClean$Question == Q10TextClean$Question
+```
+
+Now to compare the pre and post responses for those questions:
+
+```{r}
+MergedQ10 <- bind_cols(PreQ10, PostQ9)
+head(MergedQ10)
+Q10Factors <- MergedQ10 %>%
+  select(starts_with("Q")) %>%
+  mutate_all(funs(ordered(.,(levels = c("None", "Little", 
+                                       "Some", "Much", "Extensive"))))) 
+Q10Clean <- MergedQ10 %>%
+  select(-starts_with("Q")) %>%
+  cbind(Q10Factors)
+```
+
+First let's just look at the contingency tables to see if everything looks right.
+
+```{r}
+print("Rows represents pre-survey response, Columns represent post-survey response.")
+print("First for All sections then for then by Instructor.")
+Q10TextClean$Question[1]
+table(Q10Clean$Q10_1_pre, Q10Clean$Q9_1_post)
+print("By Instructor")
+Q10TextClean$Question[1]
+table(Q10Clean$Q10_1_pre, Q10Clean$Q9_1_post, Q10Clean$Instructor)
+```
+
+Balloon Plot
+
+On these plots, the answers on the x axis are the pre-survey results and on the y-axis
+are the post survey results. 
+Responses above the "none" level indicate students who felt that they increased in this element.
+
+
+The pre-survey questions were asked as:
+Please look over this inventory of elements that might be included in a course. For each element, give an estimate of your current level of ability before the course begins. Your current level of ability may be a result of courses in high school or college, or it may be a result of other experiences such as jobs or special programs. If students are expected to do the following course elements, what would be their level of expertise? 
+
+
+The post-survey questions were asked: 
+Please rate how much learning you gained from each element you experienced in this course. The scale measuring your gain is from (no or very small gain) to (very large gain). Some elements may not have happened at all. If the item is not relevant or you prefer not to answer, please choose the "not applicable" option. If students were expected to do the following course elements, what would be their level of gained experience? 
+
+```{r Balloon Plot Setup}
+colorcolumn <- rep.int(c(rep.int("None",5), rep.int("Little",5), rep.int("Some",5), 
+                 rep.int("Much",5), rep.int("Extensive", 5)), 5)
+
+colorcolumn <- factor(colorcolumn, 
+                         levels = c("Extensive", "Much", "Some", "Little", "None"))
+```
+
+
+
+```{r Q10_1}
+Q10Clean %>%
+  select(Q10_1_pre, Q9_1_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_1_pre", y = "Q9_1_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[1], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+levels(as.factor(Q10Clean$Instructor))
+
+imp_model_Q10_1 <- glm(as.numeric(Q10Clean$Q9_1_post) ~ 
+                      as.numeric(Q10Clean$Q10_1_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_1)
+
+# NA's are going to cause problems with the model selection, so I will prepare to remove them 
+Q10Clean_withNA <- Q10Clean
+
+
+step_imp_model_Q10_1 <- stepAIC(imp_model_Q10_1, direction = "backward")
+summary(step_imp_model_Q10_1)
+
+```
+
+```{r Q10_2}
+Q10Clean_withNA %>%
+  select(Q10_2_pre, Q9_2_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_2_pre", y = "Q9_2_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[2], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+levels(as.factor(Q10Clean$Instructor))
+imp_model_Q10_2 <- glm(as.numeric(Q10Clean$Q9_2_post) ~ 
+                      as.numeric(Q10Clean$Q10_2_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_2)
+
+step_imp_model_Q10_2 <- stepAIC(imp_model_Q10_2, direction = "backward")
+summary(step_imp_model_Q10_2)
+```
+```{r Q10_3}
+Q10Clean_withNA %>%
+  select(Q10_3_pre, Q9_3_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_3_pre", y = "Q9_3_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[3], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_3_pre, Q9_3_post, Instructor) %>%
+  na.omit() -> Q10Clean
+# This was the first question with NA responses, so they had to be removed.
+
+imp_model_Q10_3 <- glm(as.numeric(Q10Clean$Q9_3_post) ~ 
+                      as.numeric(Q10Clean$Q10_3_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_3)
+
+step_imp_model_Q10_3 <- stepAIC(imp_model_Q10_3, direction = "backward")
+summary(step_imp_model_Q10_3)
+```
+```{r Q10_4}
+Q10Clean_withNA %>%
+  select(Q10_4_pre, Q9_4_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_4_pre", y = "Q9_4_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[4], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_4_pre, Q9_4_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_4 <- glm(as.numeric(Q10Clean$Q9_4_post) ~ 
+                      as.numeric(Q10Clean$Q10_4_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_4)
+
+step_imp_model_Q10_4 <- stepAIC(imp_model_Q10_4, direction = "backward")
+summary(step_imp_model_Q10_4)
+```
+```{r Q10_5}
+Q10Clean_withNA %>%
+  select(Q10_5_pre, Q9_5_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_5_pre", y = "Q9_5_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[5], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_5_pre, Q9_5_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_5 <- glm(as.numeric(Q10Clean$Q9_5_post) ~ 
+                      as.numeric(Q10Clean$Q10_5_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_5)
+
+
+step_imp_model_Q10_5 <- stepAIC(imp_model_Q10_5, direction = "backward")
+summary(step_imp_model_Q10_5)
+```
+```{r Q10_6}
+Q10Clean_withNA %>%
+  select(Q10_6_pre, Q9_6_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_6_pre", y = "Q9_6_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[6], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_6_pre, Q9_6_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_6 <- glm(as.numeric(Q10Clean$Q9_6_post) ~ 
+                      as.numeric(Q10Clean$Q10_6_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_6)
+
+step_imp_model_Q10_6 <- stepAIC(imp_model_Q10_6, direction = "backward")
+summary(step_imp_model_Q10_6)
+```
+```{r Q10_7}
+Q10Clean_withNA %>%
+  select(Q10_7_pre, Q9_7_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_7_pre", y = "Q9_7_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[7], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_7_pre, Q9_7_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_7 <- glm(as.numeric(Q10Clean$Q9_7_post) ~ 
+                      as.numeric(Q10Clean$Q10_7_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_7)
+
+step_imp_model_Q10_7 <- stepAIC(imp_model_Q10_7, direction = "backward")
+summary(step_imp_model_Q10_7)
+```
+```{r Q10_8}
+Q10Clean_withNA %>%
+  select(Q10_8_pre, Q9_8_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_8_pre", y = "Q9_8_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[8], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_8_pre, Q9_8_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_8 <- glm(as.numeric(Q10Clean$Q9_8_post) ~ 
+                      as.numeric(Q10Clean$Q10_8_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_8)
+
+step_imp_model_Q10_8 <- stepAIC(imp_model_Q10_8, direction = "backward")
+summary(step_imp_model_Q10_8)
+```
+```{r Q10_9}
+Q10Clean_withNA %>%
+  select(Q10_9_pre, Q9_9_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_9_pre", y = "Q9_9_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[9], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_9_pre, Q9_9_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_9 <- glm(as.numeric(Q10Clean$Q9_9_post) ~ 
+                      as.numeric(Q10Clean$Q10_9_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_9)
+
+step_imp_model_Q10_9 <- stepAIC(imp_model_Q10_9, direction = "backward")
+summary(step_imp_model_Q10_9)
+```
+```{r Q10_10}
+Q10Clean_withNA %>%
+  select(Q10_10_pre, Q9_10_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_10_pre", y = "Q9_10_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[10], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_10_pre, Q9_10_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_10 <- glm(as.numeric(Q10Clean$Q9_10_post) ~ 
+                      as.numeric(Q10Clean$Q10_10_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_10)
+
+step_imp_model_Q10_10 <- stepAIC(imp_model_Q10_10, direction = "backward")
+summary(step_imp_model_Q10_10)
+```
+```{r Q10_11}
+Q10Clean_withNA %>%
+  select(Q10_11_pre, Q9_11_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_11_pre", y = "Q9_11_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[11], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_11_pre, Q9_11_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_11 <- glm(as.numeric(Q10Clean$Q9_11_post) ~ 
+                      as.numeric(Q10Clean$Q10_11_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_11)
+
+imp_model_Q10_11 <- glm(as.numeric(Q10Clean$Q9_11_post) ~ 
+                          as.numeric(Q10Clean$Q10_11_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_11)
+
+step_imp_model_Q10_11 <- stepAIC(imp_model_Q10_11, direction = "backward")
+summary(step_imp_model_Q10_11)
+
+```
+```{r Q10_12}
+Q10Clean_withNA %>%
+  select(Q10_12_pre, Q9_12_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_12_pre", y = "Q9_12_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[12], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_12_pre, Q9_12_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_12 <- glm(as.numeric(Q10Clean$Q9_12_post) ~ 
+                      as.numeric(Q10Clean$Q10_12_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_12)
+
+step_imp_model_Q10_12 <- stepAIC(imp_model_Q10_12, direction = "backward")
+summary(step_imp_model_Q10_12)
+```
+
+### Final Figure 3B1
+
+```{r Q10_13}
+Q10Clean_withNA %>%
+  select(Q10_13_pre, Q9_13_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_13_pre", y = "Q9_13_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[13], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_13_pre, Q9_13_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_13 <- glm(as.numeric(Q10Clean$Q9_13_post) ~ 
+                      as.numeric(Q10Clean$Q10_13_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_13)
+
+step_imp_model_Q10_13 <- stepAIC(imp_model_Q10_13, direction = "backward")
+summary(step_imp_model_Q10_13)
+```
+```{r Q10_14}
+Q10Clean_withNA %>%
+  select(Q10_14_pre, Q9_14_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_14_pre", y = "Q9_14_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[14], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_14_pre, Q9_14_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_14 <- glm(as.numeric(Q10Clean$Q9_14_post) ~ 
+                      as.numeric(Q10Clean$Q10_14_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_14)
+
+step_imp_model_Q10_14 <- stepAIC(imp_model_Q10_14, direction = "backward")
+summary(step_imp_model_Q10_14)
+```
+```{r Q10_15}
+Q10Clean_withNA %>%
+  select(Q10_15_pre, Q9_15_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_15_pre", y = "Q9_15_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[15], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_15_pre, Q9_15_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_15 <- glm(as.numeric(Q10Clean$Q9_15_post) ~ 
+                      as.numeric(Q10Clean$Q10_15_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_15)
+
+step_imp_model_Q10_15 <- stepAIC(imp_model_Q10_15, direction = "backward")
+summary(step_imp_model_Q10_15)
+```
+
+### Final Figure 3B2
+
+```{r Q10_16}
+Q10Clean_withNA %>%
+  select(Q10_16_pre, Q9_16_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_16_pre", y = "Q9_16_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[16], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_16_pre, Q9_16_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_16 <- glm(as.numeric(Q10Clean$Q9_16_post) ~ 
+                      as.numeric(Q10Clean$Q10_16_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_16)
+
+step_imp_model_Q10_16 <- stepAIC(imp_model_Q10_16, direction = "backward")
+summary(step_imp_model_Q10_16)
+```
+
+### Final Figure 3B3
+
+```{r Q10_17}
+Q10Clean_withNA %>%
+  select(Q10_17_pre, Q9_17_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_17_pre", y = "Q9_17_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[17], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_17_pre, Q9_17_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_17 <- glm(as.numeric(Q10Clean$Q9_17_post) ~ 
+                      as.numeric(Q10Clean$Q10_17_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_17)
+
+step_imp_model_Q10_17 <- stepAIC(imp_model_Q10_17, direction = "backward")
+summary(step_imp_model_Q10_17)
+```
+```{r Q10_18}
+Q10Clean_withNA %>%
+  select(Q10_18_pre, Q9_18_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_18_pre", y = "Q9_18_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[18], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_18_pre, Q9_18_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_18 <- glm(as.numeric(Q10Clean$Q9_18_post) ~ 
+                      as.numeric(Q10Clean$Q10_18_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_18)
+
+step_imp_model_Q10_18 <- stepAIC(imp_model_Q10_18, direction = "backward")
+summary(step_imp_model_Q10_18)
+```
+```{r Q10_19}
+Q10Clean_withNA %>%
+  select(Q10_19_pre, Q9_19_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_19_pre", y = "Q9_19_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[19], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_19_pre, Q9_19_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_19 <- glm(as.numeric(Q10Clean$Q9_19_post) ~ 
+                      as.numeric(Q10Clean$Q10_19_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_19)
+
+step_imp_model_Q10_19 <- stepAIC(imp_model_Q10_19, direction = "backward")
+summary(step_imp_model_Q10_19)
+```
+```{r Q10_20}
+Q10Clean_withNA %>%
+  select(Q10_20_pre, Q9_20_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_20_pre", y = "Q9_20_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[20], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_20_pre, Q9_20_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_20 <- glm(as.numeric(Q10Clean$Q9_20_post) ~ 
+                      as.numeric(Q10Clean$Q10_20_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_20)
+
+step_imp_model_Q10_20 <- stepAIC(imp_model_Q10_20, direction = "backward")
+summary(step_imp_model_Q10_20)
+```
+```{r Q10_21}
+Q10Clean_withNA %>%
+  select(Q10_21_pre, Q9_21_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_21_pre", y = "Q9_21_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[21], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_21_pre, Q9_21_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_21 <- glm(as.numeric(Q10Clean$Q9_21_post) ~ 
+                      as.numeric(Q10Clean$Q10_21_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_21)
+
+step_imp_model_Q10_21 <- stepAIC(imp_model_Q10_21, direction = "backward")
+summary(step_imp_model_Q10_21)
+```
+```{r Q10_22}
+Q10Clean_withNA %>%
+  select(Q10_22_pre, Q9_22_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_22_pre", y = "Q9_22_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[22], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_22_pre, Q9_22_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_22 <- glm(as.numeric(Q10Clean$Q9_22_post) ~ 
+                      as.numeric(Q10Clean$Q10_22_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_22)
+
+step_imp_model_Q10_22 <- stepAIC(imp_model_Q10_22, direction = "backward")
+summary(step_imp_model_Q10_22)
+```
+```{r Q10_23}
+Q10Clean_withNA %>%
+  select(Q10_23_pre, Q9_23_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_23_pre", y = "Q9_23_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[23], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_23_pre, Q9_23_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_23 <- glm(as.numeric(Q10Clean$Q9_23_post) ~ 
+                      as.numeric(Q10Clean$Q10_23_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_23)
+
+step_imp_model_Q10_23 <- stepAIC(imp_model_Q10_23, direction = "backward")
+summary(step_imp_model_Q10_23)
+```
+```{r Q10_24}
+Q10Clean_withNA %>%
+  select(Q10_24_pre, Q9_24_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_24_pre", y = "Q9_24_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[24], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_24_pre, Q9_24_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_24 <- glm(as.numeric(Q10Clean$Q9_24_post) ~ 
+                      as.numeric(Q10Clean$Q10_24_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_24)
+
+step_imp_model_Q10_24 <- stepAIC(imp_model_Q10_24, direction = "backward")
+summary(step_imp_model_Q10_24)
+```
+```{r Q10_25}
+Q10Clean_withNA %>%
+  select(Q10_25_pre, Q9_25_post, Instructor) %>%
+  table() %>%
+  as.data.frame() %>%
+  add_column(Post = colorcolumn) %>%
+  ggballoonplot(x = "Q10_25_pre", y = "Q9_25_post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Instructor",
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[25], 72), collapse = "\n")) + 
+  fill_palette(c("#2171b5","#6baed6","#bdd7e7","#eff3ff","#FFFEFE"))
+
+# Using glm() to determine if post response depends on pre response or on instructor:
+Q10Clean_withNA %>%
+  select(Q10_25_pre, Q9_25_post, Instructor) %>%
+  na.omit() -> Q10Clean
+
+imp_model_Q10_25 <- glm(as.numeric(Q10Clean$Q9_25_post) ~ 
+                      as.numeric(Q10Clean$Q10_25_pre) + Q10Clean$Instructor)
+summary(imp_model_Q10_25)
+
+step_imp_model_Q10_25 <- stepAIC(imp_model_Q10_25, direction = "backward")
+summary(step_imp_model_Q10_25)
+```
+
+## Summary
+
+For each question, generalized linear model selection using AIC determined if the student's post-survey response was dependent on (1) that student's pre-survey response and (2) which instructor they had. 
+
+The glm was improved by including both pre-survey response and instructor for the following questions:
+13, 16, 17
+[13] "Collect data"
+[16] "Present results in written papers or reports"
+[17] "Present posters"
+
+The following questions showed dependence on pre-survey response, but not instructor:
+2, 21
+[2] "A lab or project in which only the instructor knows the outcome" 
+[11] "Read primary scientific literature"
+
+The following questions showed dependence on instructor, but not pre-survey response:
+3, 5, 6, 10, 11, 12, 14, 15, 18, 23, 24, 25
+[3] "A lab or project where no one knows the outcome" 
+[5] "A project in which students have some input into the research process and/or what is being studied"
+[6] "A project entirely of student design"
+[10] "Become responsible for a part of the project"
+[11] "Read primary scientific literature"
+[12] "Write a research proposal"
+[14] "Analyze data"
+[15] "Present results orally"
+[18] "Critique the work of other students"
+[23] "Discuss reading materials in class"
+[24] "Maintain a lab notebook"
+[25] "Computer modeling"
+
+And the responses to these survey questions were independent of both pre-survey responses and the instructor:
+1, 4, 7, 8, 9, 19, 20, 22
+[1] "A scripted lab or project in which the students know the expected outcome"         
+[4] "At least one project that is assigned and structured by the instructor"
+[7] "Work individually"
+[8] "Work as a whole class"
+[9] "Work in small groups"
+[19] "Listen to lectures"
+[20] "Read a textbook"
+[22] "Take tests in class"
+[24] "Maintain a lab notebook"
+[25] "Computer modeling"
+
+## Figures
+For questions 13, 16, and 17 the figures from the main Rmd should be used because they show both presurvey and instructor. 
+
+For the questions that show dependence on the presurvey response only  (2 and 21), we want to combine the sections. But we don't have to do that because both of these questions were not emphasized by any of the instructors. 
+
+Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
+
+### Final Figure 3A2
+
+```{r Q10_2 No instructor}
+Q10Clean_withNA %>%
+  select(Q10_2_pre, Post = Q9_2_post) %>%
+  table() %>%
+  as.data.frame() %>%
+  ggballoonplot(x = "Q10_2_pre", y = "Post", size = "Freq", 
+                ggtheme = theme_gray(), 
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[2], 72), collapse = "\n")) + 
+  fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5"))
+```
+
+### Final Figure 3A1
+
+```{r Q10_21 No instructor}
+Q10Clean_withNA %>%
+  select(Q10_21_pre, Post=Q9_21_post) %>%
+  table() %>%
+  as.data.frame() %>%
+  ggballoonplot(x = "Q10_21_pre", y = "Post", size = "Freq", 
+                ggtheme = theme_gray(), 
+                fill = "Post", size.range = c(0, 8),
+                title = paste(strwrap(Q10TextClean$Question[21], 72), collapse = "\n")) + 
+  fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5"))
+```
+
+For questions where the instructor was included in the final model, but not the pre-survey response (3, 5, 6, 10, 11, 12, 14, 15, 18, 23, 24, and 25):
+
+Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
+
+### Final Figure 2
+
+```{r Instructor Questions}
+instructor_q <- Q10Clean_withNA %>%
+  select(Instructor, Q03=Q9_3_post, Q05=Q9_5_post, Q06=Q9_6_post, Q9_10_post, Q9_11_post,
+         Q9_12_post, Q9_14_post, Q9_15_post, Q9_18_post, Q9_23_post, Q9_24_post)
+names(instructor_q) <- gsub("Q9_", "Q", names(instructor_q))
+names(instructor_q) <- gsub("_post", "", names(instructor_q))
+instructor_q_long <- instructor_q %>% 
+  pivot_longer(cols = `Q03`:`Q24`, 
+               names_to = c("Question"), 
+               values_to = "Post")
+
+instructor_q_long %>%
+  table() %>%
+  as.data.frame() %>%
+  ggballoonplot(x = "Instructor", y = "Post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Question",
+                fill = "Post", 
+                size.range = c(0, 6)) + 
+  fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5")) +
+  scale_x_discrete(guide = guide_axis(angle=70))
+
+print(Q10TextClean$Question[c(3, 5, 6, 10, 11, 12, 14, 15, 18, 23, 24)])
+```
+
+And finally, for the post-survey responses that depended on neither the instructor or the pre-survey response, I will include the instructor because it makes the graphs easier to compare, but will group them separately.
+Q: 1, 4, 7, 8, 9, 19, 20, and 22
+
+Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
+
+### Final Figure 4
+
+```{r Neither Questions}
+neither_q <- Q10Clean_withNA %>%
+  select(Instructor, Q01=Q9_1_post, Q04=Q9_4_post, Q07=Q9_7_post, Q08=Q9_8_post, 
+         Q09=Q9_9_post)
+names(neither_q) <- gsub("Q9_", "Q", names(neither_q))
+names(neither_q) <- gsub("_post", "", names(neither_q))
+neither_q_long <- neither_q %>% 
+  pivot_longer(cols = `Q01`:`Q09`, 
+               names_to = c("Question"), 
+               values_to = "Post")
+
+neither_q_long %>%
+  table() %>%
+  as.data.frame() %>%
+  ggballoonplot(x = "Instructor", y = "Post", size = "Freq", 
+                ggtheme = theme_gray(), facet.by = "Question",
+                fill = "Post", 
+                size.range = c(0, 6)) + 
+  fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5")) +
+  scale_x_discrete(guide = guide_axis(angle=68))
+
+print(Q10TextClean$Question[c(1, 4, 7, 8, 9)])
+```
+
+## Comparison to Benchmark
+
+I have obtained the CURE Benchmark Statistics file, CUREBenchmarkStatistics2015-2108.pdf 
+and I will compare our survey results for this question to those shown on Page 6 of this PDF.
+
+```{r Benchmark Comparisons}
+Q10Clean_withNA %>%
+  select(-Semester, -Instructor) %>%
+  mutate_if(is.factor, as.numeric) %>%
+  summarize_all(., mean, na.rm=TRUE) %>%
+  t()
+
+Q10Clean_withNA %>%
+  select(-Semester, -Instructor) %>%
+  mutate_if(is.factor, as.numeric) %>%
+  summarize_all(., sd, na.rm=TRUE) %>%
+  t()
+```
+
+All values in the pre-survey are quite close to the benchmark, much less than one standard deviation. 
+
+The post survey results are mostly higher in our survey, but certainly not significantly so because of the large standard deviations for both datasets. 
+
+## Instructor Survey Results
+
+We will now examine how the responses to the CURE Instructor Survey might predict the student perceptions of gain corresponding to each course element. 
+We predict that instructors who placed a greater emphasis on a course element will demonstrate greater perceived gains due to that element. 
+
+The forms were PDFs that were sent by email, so I will manually enter the results here.
+
+```{r Entering Data}
+Instructor_survey <- Q10TextClean %>%
+  rename(Q = value)
+Instructor_survey$Q <- gsub("_pre", "", Instructor_survey$Q)
+Instructor_survey$Q <- gsub("Q10_", "", Instructor_survey$Q)
+Instructor_survey$Q <- paste0("Q10_", str_pad(Instructor_survey$Q, 2, side = "left", pad = "0"))
+Instructor_survey_complete <- Instructor_survey %>%
+  add_column(McGonagall = c(1, 1, 3, 0, 3, 3, 1, 2, 
+                            3, 3, 3, 2, 3, 3, 2, 3, 3, 3, 0, 0, 0, 0, 3, 3, 0)) %>%
+  add_column(Lupin = c(2, 1, 3, 2, 3, 2, 1, 3, 
+                       3, 3, 3, 1, 3, 3, 2, 2, 3, 2, 1, 1, 0, 0, 2, 3, 0)) %>%
+  add_column(Dumbledore = c(1, 0, 3, 2, 3, 1, 1, 2, 
+                            3, 3, 3, 1, 3, 3, 1, 3, 2, 3, 0, 0, 0, 0, 3, 3, 0)) %>%
+  add_column(Hagrid = c(1, 0, 3, 2, 2, 1, 1, 0, 
+                        2, 2, 3, 3, 3, 3, 3, 3, 3, 2, 2, 1, 0, 0, 1, 1, 1)) %>%
+  add_column(Sinistra = c(2, 0, 3, 2, 2, 3, 2, 1, 
+                          3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 0, 0, 0, 0, 2, 3, 0))
+Instructor_long <- Instructor_survey_complete %>%
+  select(-Question) %>%
+  pivot_longer(!Q, names_to = "Instructor", values_to = "Emphasis")
+```
+
+First to visualize how much variability there is in each question.
+
+```{r Instructor Emphasis}
+Instructor_recode <- Instructor_long 
+Instructor_recode$Emphasis = recode(as.factor(Instructor_recode$Emphasis), 
+                                    "0" = "None/NA", "1" = "Minor", "2" = "Moderate", "3"= "Major")
+
+ggplot(Instructor_recode) +
+  geom_bar(aes(x = Q, fill = Emphasis), width = 0.75) +
+  coord_flip() +
+  fill_palette(c("#FFFEFE", "#eff3ff", "#6baed6",  "#2171b5")) +
+  scale_x_discrete(limits=rev) +
+  xlab("Question") +
+  ylab("Instructors") +
+  theme_gray()
+```
+
+I want to see if certain questions and instructors cluster together to help decide if there are questions that are more interesting to look at than others.
+
+### Final Figure 5A
+
+```{r Emphasis Heatmap}
+Instructor_matrix <- Instructor_survey_complete %>%
+  select(-Q, -Question) %>%
+  as.matrix()
+rownames(Instructor_matrix) <- Instructor_survey_complete$Q
+pheatmap(Instructor_matrix, cutree_rows = 2, 
+         color=c("#FFFEFE", "#eff3ff", "#6baed6",  "#2171b5"), 
+         legend_breaks = c(0.4, 1.1, 2, 2.7),
+         legend_labels = c("None/NA", "Minor", "Moderate", "Major"), 
+         angle_col = 0)
+```
+
+The following six questions have at least three instructors who selected NA/None for the Emphasis:
+
+```{r}
+Instructor_survey_complete %>%
+  filter(Q %in% c("Q10_19", "Q10_20", "Q10_02", "Q10_25", "Q10_21", "Q10_22")) %>%
+  select(Question) %>%
+  print()
+```
+
+It is also interesting to note that the following four questions had Major Emphasis in all five sections:
+
+```{r}
+Instructor_survey_complete %>%
+  filter(Q %in% c("Q10_14", "Q10_13", "Q10_03", "Q10_11")) %>%
+  select(Question) %>%
+  print()
+```
+
+Now to test whether student-perceived gains are correlated with instructor emphasis on each course element.
+
+Looking at all the questions together, including those in the previous list where we did not emphasize them.
+
+```{r}
+Q10_post_long <- Q10Clean_withNA %>%
+  select(Instructor, ends_with("_post")) %>%
+  pivot_longer(!Instructor, names_to = "Question", values_to = "Gain")
+Q10_post_long$Question <- gsub("_post", "", Q10_post_long$Question)
+Q10_post_long$Question <- gsub("Q9_", "", Q10_post_long$Question)
+Q10_post_long$Question <- paste0("Q10_", str_pad(Q10_post_long$Question, 2, side = "left", pad = "0"))
+
+Q10_post_merged <- Q10_post_long %>%
+  left_join(Instructor_long, by = c("Question" = "Q", "Instructor")) %>%
+  drop_na()
+str(Q10_post_merged)
+summary(Q10_post_merged)
+
+
+emphasis_model <- glm(as.numeric(Gain) ~ Emphasis ,data = Q10_post_merged)
+summary(emphasis_model)
+```
+
+Self-reported gain in these skills is highly dependent on the emphasis placed by the instructor (p < 2e-16).
+
+Now to explore whether this also depended on the instructor.
+
+### Final Figure 5B
+
+```{r Gain Emphasis Interaction}
+interact_model <- glm(as.numeric(Gain) ~ Emphasis * Instructor, data = Q10_post_merged)
+selected_model <- stepAIC(interact_model, direction = "backward", data = Q10_post_merged)
+summary(selected_model)
+
+interact_plot(model = selected_model, pred = Emphasis, modx = Instructor, 
+              interval = TRUE, x.label = "Instructor Emphasis",  
+              y.label = "Student Percieved Gain")
+```
+
