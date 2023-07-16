@@ -18,20 +18,20 @@ students whose emails did not match the pre-survey, at `PostSurvey.tsv`.
 
 ## Question 11 Exploration (Figure 1)
 
-`Figure1.Question11Exploration.Rmd`
+`Figure1.Question11Exploration.Rmd` -> [Figure1.Question11Exploration.md](Figure1.Question11Exploration.md)
 
 ## Improvements by Instructor (Figures 2 - 5)
 
-`Figures2-5.Improvements by Instructor 2.Rmd`
+`Figures2-5.Improvements by Instructor 2.Rmd` -> [Figures2-5.Improvements-by-Instructor-2.md](Figures2-5.Improvements-by-Instructor-2.md)
 
 ## Post Benefits (Figures 6 - 7)
 
-`Figures6-7.Post Benefits.Rmd`
+`Figures6-7.Post Benefits.Rmd` -> [Figures6-7.Post-Benefits.md](Figures6-7.Post-Benefits.md)
 
 ## Outcomes (Figure 8)
 
-`Figure8.Outcomes.Rmd`
+`Figure8.Outcomes.Rmd` -> [Figure8.Outcomes.md](Figure8.Outcomes.md)
 
 ## Supplemental Information
 
-`ChemistryMath.Outcomes.Rmd`
+`ChemistryMath.Outcomes.Rmd` -> [ChemistryMath.Outcomes.md](ChemistryMath.Outcomes.md)
