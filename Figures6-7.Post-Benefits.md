@@ -1,7 +1,7 @@
 ---
 title: "Post Benefits Question"
 author: "Ken Field"
-date: "Last compiled on 16 July 2023"
+date: "Last compiled on 25 July 2023"
 output:
   html_document:
     toc: true
@@ -2158,7 +2158,7 @@ ggplot(Q10_demo_semester) +
   theme_gray()
 ```
 
-![](Figures6-7.Post-Benefits_files/figure-html/Q10 By Semester-1.png)<!-- -->
+![](Figures6-7.Post-Benefits_files/figure-html/Q10_By_Semester-1.png)<!-- -->
 
 ### Final Figure 7A
 
@@ -2177,7 +2177,7 @@ ggplot(Q10_demo_semester_race) +
   theme_gray()
 ```
 
-![](Figures6-7.Post-Benefits_files/figure-html/Q10 By Semester and race-1.png)<!-- -->
+![](Figures6-7.Post-Benefits_files/figure-html/Q10_By_Semester_and_race-1.png)<!-- -->
 
 ### Final Figure 7C
 
@@ -2195,7 +2195,7 @@ ggplot(Q10_demo_none) +
   theme_gray()
 ```
 
-![](Figures6-7.Post-Benefits_files/figure-html/Q10 By None-1.png)<!-- -->
+![](Figures6-7.Post-Benefits_files/figure-html/Q10_By_None-1.png)<!-- -->
 
 ### Final Figure 7B
 
@@ -2214,7 +2214,7 @@ ggplot(Q10_demo_semester_gender) +
   theme_gray()
 ```
 
-![](Figures6-7.Post-Benefits_files/figure-html/Q10.18 By Semester and gender-1.png)<!-- -->
+![](Figures6-7.Post-Benefits_files/figure-html/Q10.18_By_Semester_and_gender-1.png)<!-- -->
 
 
 
@@ -2232,7 +2232,7 @@ ggplot(Q10_demo_all) +
   theme_gray()
 ```
 
-![](Figures6-7.Post-Benefits_files/figure-html/Q10 By All-1.png)<!-- -->
+![](Figures6-7.Post-Benefits_files/figure-html/Q10_By_All-1.png)<!-- -->
 
 Now that I look at this figure, we should not include it because of the ability to identify students. 
 Instead I will add this question to the semester-only question (Figure 6) because even though the interaction was included in the model, it had a high p value (>0.1) and none of the other variables were significant either. 

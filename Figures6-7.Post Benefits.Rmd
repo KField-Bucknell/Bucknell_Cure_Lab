@@ -484,7 +484,7 @@ Added Q04 back to this figure.
 
 ### Final Figure 6
 
-```{r Q10 By Semester, fig.height=10}
+```{r Q10_By_Semester, fig.height=10}
 Q10_demo_semester <- Q10_demo_long %>%
   filter(Question %in% c('Q02','Q03','Q04', 'Q08','Q09','Q10','Q11','Q12','Q13','Q14',
                          'Q16','Q17','Q19','Q20'))
@@ -501,7 +501,7 @@ ggplot(Q10_demo_semester) +
 
 ### Final Figure 7A
 
-```{r Q10 By Semester and race, fig.height=2}
+```{r Q10_By_Semester_and_race, fig.height=2}
 Q10_demo_semester_race <- Q10_demo_long %>%
   filter(Question == 'Q01')
 ggplot(Q10_demo_semester_race) +
@@ -517,7 +517,7 @@ ggplot(Q10_demo_semester_race) +
 
 ### Final Figure 7C
 
-```{r Q10 By None, fig.height=2}
+```{r Q10_By_None, fig.height=2}
 Q10_demo_none <- Q10_demo_long %>%
   filter(Question %in% c('Q05','Q06','Q07','Q15', 'Q21'))
 ggplot(Q10_demo_none) +
@@ -532,7 +532,7 @@ ggplot(Q10_demo_none) +
 
 ### Final Figure 7B
 
-```{r Q10.18 By Semester and gender, fig.height=2}
+```{r Q10.18_By_Semester_and_gender, fig.height=2}
 Q10_demo_semester_gender <- Q10_demo_long %>%
   filter(Question == 'Q18')
 ggplot(Q10_demo_semester_gender) +
@@ -547,7 +547,7 @@ ggplot(Q10_demo_semester_gender) +
 ```
 
 
-```{r Q10 By All, fig.height=3}
+```{r Q10_By_All, fig.height=3}
 Q10_demo_all <- Q10_demo_long %>%
   filter(Question == 'Q04')
 ggplot(Q10_demo_all) +
