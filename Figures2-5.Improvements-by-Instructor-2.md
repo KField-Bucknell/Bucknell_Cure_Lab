@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 16 July 2023"
+date: "Last compiled on 25 July 2023"
 output:
   html_document:
     toc: true
@@ -3202,7 +3202,7 @@ Q10Clean_withNA %>%
   fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5"))
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_2 No instructor-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_2_No_instructor-1.png)<!-- -->
 
 ### Final Figure 3A1
 
@@ -3219,7 +3219,7 @@ Q10Clean_withNA %>%
   fill_palette(c("#FFFEFE","#eff3ff","#bdd7e7","#6baed6","#2171b5"))
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_21 No instructor-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_21_No_instructor-1.png)<!-- -->
 
 For questions where the instructor was included in the final model, but not the pre-survey response (3, 5, 6, 10, 11, 12, 14, 15, 18, 23, 24, and 25):
 
@@ -3250,7 +3250,7 @@ instructor_q_long %>%
   scale_x_discrete(guide = guide_axis(angle=70))
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Instructor Questions-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Instructor_Questions-1.png)<!-- -->
 
 ```r
 print(Q10TextClean$Question[c(3, 5, 6, 10, 11, 12, 14, 15, 18, 23, 24)])
@@ -3300,7 +3300,7 @@ neither_q_long %>%
   scale_x_discrete(guide = guide_axis(angle=68))
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Neither Questions-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Neither_Questions-1.png)<!-- -->
 
 ```r
 print(Q10TextClean$Question[c(1, 4, 7, 8, 9)])
@@ -3496,7 +3496,7 @@ ggplot(Instructor_recode) +
   theme_gray()
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Instructor Emphasis-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Instructor_Emphasis-1.png)<!-- -->
 
 I want to see if certain questions and instructors cluster together to help decide if there are questions that are more interesting to look at than others.
 
@@ -3515,7 +3515,7 @@ pheatmap(Instructor_matrix, cutree_rows = 2,
          angle_col = 0)
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Emphasis Heatmap-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Emphasis_Heatmap-1.png)<!-- -->
 
 The following six questions have at least three instructors who selected NA/None for the Emphasis:
 
@@ -3700,5 +3700,5 @@ interact_plot(model = selected_model, pred = Emphasis, modx = Instructor,
 ## fit. You can manually provide the data to the "data =" argument.
 ```
 
-![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Gain Emphasis Interaction-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Gain_Emphasis_Interaction-1.png)<!-- -->
 

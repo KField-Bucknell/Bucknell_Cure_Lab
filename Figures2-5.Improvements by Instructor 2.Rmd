@@ -796,7 +796,7 @@ Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
 
 ### Final Figure 3A2
 
-```{r Q10_2 No instructor}
+```{r Q10_2_No_instructor}
 Q10Clean_withNA %>%
   select(Q10_2_pre, Post = Q9_2_post) %>%
   table() %>%
@@ -810,7 +810,7 @@ Q10Clean_withNA %>%
 
 ### Final Figure 3A1
 
-```{r Q10_21 No instructor}
+```{r Q10_21_No_instructor}
 Q10Clean_withNA %>%
   select(Q10_21_pre, Post=Q9_21_post) %>%
   table() %>%
@@ -828,7 +828,7 @@ Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
 
 ### Final Figure 2
 
-```{r Instructor Questions}
+```{r Instructor_Questions}
 instructor_q <- Q10Clean_withNA %>%
   select(Instructor, Q03=Q9_3_post, Q05=Q9_5_post, Q06=Q9_6_post, Q9_10_post, Q9_11_post,
          Q9_12_post, Q9_14_post, Q9_15_post, Q9_18_post, Q9_23_post, Q9_24_post)
@@ -859,7 +859,7 @@ Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below
 
 ### Final Figure 4
 
-```{r Neither Questions}
+```{r Neither_Questions}
 neither_q <- Q10Clean_withNA %>%
   select(Instructor, Q01=Q9_1_post, Q04=Q9_4_post, Q07=Q9_7_post, Q08=Q9_8_post, 
          Q09=Q9_9_post)
@@ -937,7 +937,7 @@ Instructor_long <- Instructor_survey_complete %>%
 
 First to visualize how much variability there is in each question.
 
-```{r Instructor Emphasis}
+```{r Instructor_Emphasis}
 Instructor_recode <- Instructor_long 
 Instructor_recode$Emphasis = recode(as.factor(Instructor_recode$Emphasis), 
                                     "0" = "None/NA", "1" = "Minor", "2" = "Moderate", "3"= "Major")
@@ -956,7 +956,7 @@ I want to see if certain questions and instructors cluster together to help deci
 
 ### Final Figure 5A
 
-```{r Emphasis Heatmap}
+```{r Emphasis_Heatmap}
 Instructor_matrix <- Instructor_survey_complete %>%
   select(-Q, -Question) %>%
   as.matrix()
@@ -1015,7 +1015,7 @@ Now to explore whether this also depended on the instructor.
 
 ### Final Figure 5B
 
-```{r Gain Emphasis Interaction}
+```{r Gain_Emphasis_Interaction}
 interact_model <- glm(as.numeric(Gain) ~ Emphasis * Instructor, data = Q10_post_merged)
 selected_model <- stepAIC(interact_model, direction = "backward", data = Q10_post_merged)
 summary(selected_model)
