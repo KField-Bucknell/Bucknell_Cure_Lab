@@ -772,7 +772,7 @@ We want to combine 1, 2, 9, 10, 17, and 18.
 
 ### Final Figure 1
 
-```{r Combined Q11 Figure}
+```{r Combined_Q11_Figure}
 pre_q <- Q11Clean %>%
   select(Q01=Q11_1_pre, 
          Q02=Q11_2_pre, 

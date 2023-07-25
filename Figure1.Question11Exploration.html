@@ -351,7 +351,7 @@ display: none;
 
 <h1 class="title toc-ignore">Opinion Change Question</h1>
 <h4 class="author">Ken Field</h4>
-<h4 class="date">Last compiled on 16 July 2023</h4>
+<h4 class="date">Last compiled on 25 July 2023</h4>
 
 </div>
 
@@ -700,7 +700,7 @@ between 0.5 and 0.7 will be inconclusive.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.019 0.531</code></pre>
+##  0.01  0.54</code></pre>
 <pre class="r"><code>my_skim &lt;-skim_with(numeric = sfl(median, iqr = IQR))
 
 Q11Clean %&gt;%
@@ -894,7 +894,7 @@ survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.169 0.655</code></pre>
+## 0.140 0.664</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_2_pre = as.numeric(Q11_2_pre), 
             Q13_2_post = as.numeric(Q13_2_post), 
@@ -1047,7 +1047,7 @@ on the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.330 0.727</code></pre>
+## 0.338 0.729</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_3_pre = as.numeric(Q11_3_pre), 
             Q13_3_post = as.numeric(Q13_3_post), 
@@ -1201,7 +1201,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.413 0.806</code></pre>
+## 0.427 0.808</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_4_pre = as.numeric(Q11_4_pre), Q13_4_post = as.numeric(Q13_4_post) ) %&gt;%
   na.omit() %&gt;%
@@ -1355,7 +1355,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.334 0.791</code></pre>
+## 0.348 0.778</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_5_pre = as.numeric(Q11_5_pre), Q13_5_post = as.numeric(Q13_5_post) ) %&gt;%
   na.omit() %&gt;%
@@ -1509,7 +1509,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.539 0.810</code></pre>
+## 0.544 0.810</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_6_pre = as.numeric(Q11_6_pre), Q13_6_post = as.numeric(Q13_6_post) ) %&gt;%
   na.omit() %&gt;%
@@ -1663,7 +1663,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.378 0.706</code></pre>
+## 0.368 0.711</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_7_pre = as.numeric(Q11_7_pre), Q13_7_post = as.numeric(Q13_7_post) ) %&gt;%
   na.omit() %&gt;%
@@ -1817,7 +1817,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.211 0.728</code></pre>
+## 0.228 0.709</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_8_pre = as.numeric(Q11_8_pre), Q13_8_post = as.numeric(Q13_8_post) ) %&gt;%
   na.omit() %&gt;%
@@ -1971,7 +1971,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-##  0.21  0.68</code></pre>
+## 0.205 0.671</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_9_pre = as.numeric(Q11_9_pre), Q13_9_post = as.numeric(Q13_9_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2125,7 +2125,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.116 0.716</code></pre>
+##  0.12  0.69</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_10_pre = as.numeric(Q11_10_pre), Q13_10_post = as.numeric(Q13_10_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2279,7 +2279,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.565 0.826</code></pre>
+## 0.573 0.828</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_11_pre = as.numeric(Q11_11_pre), Q13_11_post = as.numeric(Q13_11_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2431,7 +2431,7 @@ responses to this question.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.314 0.743</code></pre>
+## 0.305 0.746</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_12_pre = as.numeric(Q11_12_pre), Q13_12_post = as.numeric(Q13_12_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2585,7 +2585,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.501 0.787</code></pre>
+## 0.495 0.784</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_13_pre = as.numeric(Q11_13_pre), Q13_13_post = as.numeric(Q13_13_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2739,7 +2739,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-##  0.40  0.76</code></pre>
+## 0.403 0.756</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_14_pre = as.numeric(Q11_14_pre), Q13_14_post = as.numeric(Q13_14_post) ) %&gt;%
   na.omit() %&gt;%
@@ -2893,7 +2893,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.474 0.805</code></pre>
+## 0.488 0.804</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_15_pre = as.numeric(Q11_15_pre), Q13_15_post = as.numeric(Q13_15_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3047,7 +3047,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.392 0.760</code></pre>
+## 0.404 0.767</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_16_pre = as.numeric(Q11_16_pre), Q13_16_post = as.numeric(Q13_16_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3200,8 +3200,8 @@ the survey.</p>
 ## alpha: 0.351
 ## 
 ## Bootstrap 95% CI based on 1000 samples
-##  2.5% 97.5% 
-## 0.018 0.624</code></pre>
+##   2.5%  97.5% 
+## -0.030  0.647</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_17_pre = as.numeric(Q11_17_pre), Q13_17_post = as.numeric(Q13_17_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3355,7 +3355,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.116 0.606</code></pre>
+## 0.136 0.609</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_18_pre = as.numeric(Q11_18_pre), Q13_18_post = as.numeric(Q13_18_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3509,7 +3509,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.266 0.747</code></pre>
+## 0.282 0.751</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_19_pre = as.numeric(Q11_19_pre), Q13_19_post = as.numeric(Q13_19_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3663,7 +3663,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.646 0.859</code></pre>
+## 0.652 0.862</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_20_pre = as.numeric(Q11_20_pre), Q13_20_post = as.numeric(Q13_20_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3815,7 +3815,7 @@ responses to this question.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.242 0.741</code></pre>
+## 0.242 0.739</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_21_pre = as.numeric(Q11_21_pre), Q13_21_post = as.numeric(Q13_21_post) ) %&gt;%
   na.omit() %&gt;%
@@ -3969,7 +3969,7 @@ the survey.</p>
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.443 0.747</code></pre>
+## 0.431 0.757</code></pre>
 <pre class="r"><code>Q11Clean %&gt;%
   transmute(Q11_22_pre = as.numeric(Q11_22_pre), Q13_22_post = as.numeric(Q13_22_post) ) %&gt;%
   na.omit() %&gt;%

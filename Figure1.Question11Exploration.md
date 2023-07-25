@@ -1,7 +1,7 @@
 ---
 title: "Opinion Change Question"
 author: "Ken Field"
-date: "Last compiled on 16 July 2023"
+date: "Last compiled on 25 July 2023"
 output:
   html_document:
     toc: true
@@ -488,7 +488,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.019 0.531
+##  0.01  0.54
 ```
 
 ```r
@@ -573,7 +573,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.169 0.655
+## 0.140 0.664
 ```
 
 ```r
@@ -643,7 +643,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.330 0.727
+## 0.338 0.729
 ```
 
 ```r
@@ -714,7 +714,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.413 0.806
+## 0.427 0.808
 ```
 
 ```r
@@ -784,7 +784,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.334 0.791
+## 0.348 0.778
 ```
 
 ```r
@@ -854,7 +854,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.539 0.810
+## 0.544 0.810
 ```
 
 ```r
@@ -924,7 +924,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.378 0.706
+## 0.368 0.711
 ```
 
 ```r
@@ -994,7 +994,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.211 0.728
+## 0.228 0.709
 ```
 
 ```r
@@ -1064,7 +1064,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-##  0.21  0.68
+## 0.205 0.671
 ```
 
 ```r
@@ -1135,7 +1135,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.116 0.716
+##  0.12  0.69
 ```
 
 ```r
@@ -1205,7 +1205,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.565 0.826
+## 0.573 0.828
 ```
 
 ```r
@@ -1273,7 +1273,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.314 0.743
+## 0.305 0.746
 ```
 
 ```r
@@ -1343,7 +1343,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.501 0.787
+## 0.495 0.784
 ```
 
 ```r
@@ -1413,7 +1413,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-##  0.40  0.76
+## 0.403 0.756
 ```
 
 ```r
@@ -1483,7 +1483,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.474 0.805
+## 0.488 0.804
 ```
 
 ```r
@@ -1554,7 +1554,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.392 0.760
+## 0.404 0.767
 ```
 
 ```r
@@ -1623,8 +1623,8 @@ Q11Clean %>%
 ## alpha: 0.351
 ## 
 ## Bootstrap 95% CI based on 1000 samples
-##  2.5% 97.5% 
-## 0.018 0.624
+##   2.5%  97.5% 
+## -0.030  0.647
 ```
 
 ```r
@@ -1694,7 +1694,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.116 0.606
+## 0.136 0.609
 ```
 
 ```r
@@ -1764,7 +1764,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.266 0.747
+## 0.282 0.751
 ```
 
 ```r
@@ -1834,7 +1834,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.646 0.859
+## 0.652 0.862
 ```
 
 ```r
@@ -1902,7 +1902,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.242 0.741
+## 0.242 0.739
 ```
 
 ```r
@@ -1972,7 +1972,7 @@ Q11Clean %>%
 ## 
 ## Bootstrap 95% CI based on 1000 samples
 ##  2.5% 97.5% 
-## 0.443 0.747
+## 0.431 0.757
 ```
 
 ```r
@@ -2061,5 +2061,5 @@ combined_q_long %>%
   scale_x_discrete(guide = guide_axis(angle=45))
 ```
 
-![](Figure1.Question11Exploration_files/figure-html/Combined Q11 Figure-1.png)<!-- -->
+![](Figure1.Question11Exploration_files/figure-html/Combined_Q11_Figure-1.png)<!-- -->
 
