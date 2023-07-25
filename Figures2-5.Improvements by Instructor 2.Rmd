@@ -784,8 +784,6 @@ And the responses to these survey questions were independent of both pre-survey 
 [19] "Listen to lectures"
 [20] "Read a textbook"
 [22] "Take tests in class"
-[24] "Maintain a lab notebook"
-[25] "Computer modeling"
 
 ## Figures
 For questions 13, 16, and 17 the figures from the main Rmd should be used because they show both presurvey and instructor. 
