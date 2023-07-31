@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2023-07-16"
+date: "Last compiled on 2023-07-31"
 output:
   html_document:
     toc: true
@@ -404,20 +404,26 @@ That worked. Now to use that dataframe for a glm.
 
 
 ```r
-model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat, 
-                 control = glm.control(maxit = 1000))
+model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat)
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```r
 summary(model1)
 ```
 
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, control = glm.control(maxit = 1000), 
-##     init.theta = 1.435979945e+16, link = log)
-## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-##  0.000   0.000   0.000   0.000   2.703  
+## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, init.theta = 1585.949365, 
+##     link = log)
 ## 
 ## Coefficients:
 ##               Estimate Std. Error z value Pr(>|z|)    
@@ -426,24 +432,30 @@ summary(model1)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1.43598e+16) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1585.949) family taken to be 1)
 ## 
-##     Null deviance: 491.74  on 1105  degrees of freedom
-## Residual deviance: 469.00  on 1104  degrees of freedom
-## AIC: 6
+##     Null deviance: 491.68  on 1105  degrees of freedom
+## Residual deviance: 468.94  on 1104  degrees of freedom
+## AIC: 683
 ## 
 ## Number of Fisher Scoring iterations: 1
 ## 
 ## 
-##               Theta:  1.43598e+16 
-##           Std. Err.:  2.708396e+14 
+##               Theta:  1586 
+##           Std. Err.:  10166 
+## Warning while fitting theta: iteration limit reached 
 ## 
-##  2 x log-likelihood:  0
+##  2 x log-likelihood:  -677.002
 ```
 
 ```r
-model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum, 
-                     control = glm.control(maxit = 1000), data = DFW_binary_dat)
+model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum, data = DFW_binary_dat)
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+
+## Warning: iteration limit reached
 ```
 
 ```
@@ -451,11 +463,229 @@ model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum,
 ```
 
 ```
-## Warning: glm.fit: fitted rates numerically 0 occurred
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
 ```
 
 ```
 ## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning: glm.fit: algorithm did not converge
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## Warning in glm.nb(DFW ~ Class * Year * Semester * Curriculum, data =
+## DFW_binary_dat): alternation limit reached
 ```
 
 ```r
@@ -466,27 +696,22 @@ summary(model_full)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Class * Year * Semester * Curriculum, 
-##     data = DFW_binary_dat, control = glm.control(maxit = 1000), 
-##     init.theta = 1.449363457e+16, link = log)
-## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-##  0.000   0.000   0.000   0.000   2.728  
+##     data = DFW_binary_dat, init.theta = 2118.886891, link = log)
 ## 
 ## Coefficients: (69 not defined because of singularities)
 ##                                                       Estimate Std. Error
-## (Intercept)                                         -2.398e+00  2.322e-01
-## ClassBIOL202                                        -1.322e+00  1.000e+00
-## ClassBIOL205                                         9.567e-01  7.333e-01
-## ClassBIOL206                                         1.125e+14  1.454e+14
-## Year17-18                                            1.137e+00  5.758e-01
-## Year18-19                                           -1.765e-03  6.761e-01
-## Year19-20                                           -7.471e-01  7.354e-01
+## (Intercept)                                         -1.986e+00  3.462e-01
+## ClassBIOL202                                        -1.362e+00  9.067e-01
+## ClassBIOL205                                         5.613e-01  7.188e-01
+## ClassBIOL206                                        -2.612e+14  1.262e+14
+## Year17-18                                            1.134e+00  5.261e-01
+## Year18-19                                           -1.463e-03  6.156e-01
+## Year19-20                                           -7.459e-01  6.781e-01
 ## Year21-22                                                   NA         NA
-## SemesterSpring                                      -1.125e+14  1.454e+14
+## SemesterSpring                                       2.612e+14  1.262e+14
 ## CurriculumOld                                               NA         NA
 ## ClassBIOL202:Year17-18                                      NA         NA
-## ClassBIOL205:Year17-18                              -1.620e+00  5.957e-01
+## ClassBIOL205:Year17-18                              -1.642e+00  5.533e-01
 ## ClassBIOL206:Year17-18                                      NA         NA
 ## ClassBIOL202:Year18-19                                      NA         NA
 ## ClassBIOL205:Year18-19                                      NA         NA
@@ -497,13 +722,13 @@ summary(model_full)
 ## ClassBIOL202:Year21-22                                      NA         NA
 ## ClassBIOL205:Year21-22                                      NA         NA
 ## ClassBIOL206:Year21-22                                      NA         NA
-## ClassBIOL202:SemesterSpring                          7.886e+01  1.206e+07
+## ClassBIOL202:SemesterSpring                         -2.050e+00  1.206e+07
 ## ClassBIOL205:SemesterSpring                                 NA         NA
 ## ClassBIOL206:SemesterSpring                                 NA         NA
 ## Year17-18:SemesterSpring                                    NA         NA
 ## Year18-19:SemesterSpring                                    NA         NA
 ## Year19-20:SemesterSpring                                    NA         NA
-## Year21-22:SemesterSpring                             1.125e+14  1.454e+14
+## Year21-22:SemesterSpring                            -2.612e+14  1.262e+14
 ## ClassBIOL202:CurriculumOld                                  NA         NA
 ## ClassBIOL205:CurriculumOld                                  NA         NA
 ## ClassBIOL206:CurriculumOld                                  NA         NA
@@ -556,18 +781,18 @@ summary(model_full)
 ## ClassBIOL205:Year21-22:SemesterSpring:CurriculumOld         NA         NA
 ## ClassBIOL206:Year21-22:SemesterSpring:CurriculumOld         NA         NA
 ##                                                     z value Pr(>|z|)    
-## (Intercept)                                         -10.328  < 2e-16 ***
-## ClassBIOL202                                         -1.321  0.18636    
-## ClassBIOL205                                          1.305  0.19200    
-## ClassBIOL206                                          0.774  0.43921    
-## Year17-18                                             1.974  0.04839 *  
-## Year18-19                                            -0.003  0.99792    
-## Year19-20                                            -1.016  0.30972    
+## (Intercept)                                          -5.737 9.64e-09 ***
+## ClassBIOL202                                         -1.502   0.1330    
+## ClassBIOL205                                          0.781   0.4348    
+## ClassBIOL206                                         -2.070   0.0385 *  
+## Year17-18                                             2.156   0.0311 *  
+## Year18-19                                            -0.002   0.9981    
+## Year19-20                                            -1.100   0.2714    
 ## Year21-22                                                NA       NA    
-## SemesterSpring                                       -0.774  0.43921    
+## SemesterSpring                                        2.070   0.0385 *  
 ## CurriculumOld                                            NA       NA    
 ## ClassBIOL202:Year17-18                                   NA       NA    
-## ClassBIOL205:Year17-18                               -2.720  0.00653 ** 
+## ClassBIOL205:Year17-18                               -2.968   0.0030 ** 
 ## ClassBIOL206:Year17-18                                   NA       NA    
 ## ClassBIOL202:Year18-19                                   NA       NA    
 ## ClassBIOL205:Year18-19                                   NA       NA    
@@ -578,13 +803,13 @@ summary(model_full)
 ## ClassBIOL202:Year21-22                                   NA       NA    
 ## ClassBIOL205:Year21-22                                   NA       NA    
 ## ClassBIOL206:Year21-22                                   NA       NA    
-## ClassBIOL202:SemesterSpring                           0.000  0.99999    
+## ClassBIOL202:SemesterSpring                           0.000   1.0000    
 ## ClassBIOL205:SemesterSpring                              NA       NA    
 ## ClassBIOL206:SemesterSpring                              NA       NA    
 ## Year17-18:SemesterSpring                                 NA       NA    
 ## Year18-19:SemesterSpring                                 NA       NA    
 ## Year19-20:SemesterSpring                                 NA       NA    
-## Year21-22:SemesterSpring                              0.774  0.43921    
+## Year21-22:SemesterSpring                             -2.070   0.0385 *  
 ## ClassBIOL202:CurriculumOld                               NA       NA    
 ## ClassBIOL205:CurriculumOld                               NA       NA    
 ## ClassBIOL206:CurriculumOld                               NA       NA    
@@ -639,19 +864,20 @@ summary(model_full)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1.449363e+16) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(2356.27) family taken to be 1)
 ## 
-##     Null deviance: 491.74  on 1105  degrees of freedom
-## Residual deviance: 424.05  on 1095  degrees of freedom
-## AIC: 24
+##     Null deviance: 491.70  on 1105  degrees of freedom
+## Residual deviance: 430.16  on 1095  degrees of freedom
+## AIC: 662.21
 ## 
-## Number of Fisher Scoring iterations: 1000
+## Number of Fisher Scoring iterations: 25
 ## 
 ## 
-##               Theta:  1.449363e+16 
-##           Std. Err.:  2.708396e+14 
+##               Theta:  2119 
+##           Std. Err.:  13525 
+## Warning while fitting theta: alternation limit reached 
 ## 
-##  2 x log-likelihood:  0
+##  2 x log-likelihood:  -638.207
 ```
 
 The full model has too many interacting variables to be useful. 
@@ -685,8 +911,8 @@ model1
 
 ```
 ## 
-## Call:  glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, control = glm.control(maxit = 1000), 
-##     init.theta = 1.435979945e+16, link = log)
+## Call:  glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, init.theta = 1585.949365, 
+##     link = log)
 ## 
 ## Coefficients:
 ##   (Intercept)  CurriculumOld  
@@ -694,7 +920,7 @@ model1
 ## 
 ## Degrees of Freedom: 1105 Total (i.e. Null);  1104 Residual
 ## Null Deviance:	    491.7 
-## Residual Deviance: 469 	AIC: 6
+## Residual Deviance: 468.9 	AIC: 683
 ```
 
 ```r
@@ -722,7 +948,7 @@ check_overdispersion(model1)
 ## # Overdispersion test
 ## 
 ##        dispersion ratio =    0.908
-##   Pearson's Chi-Squared = 1002.000
+##   Pearson's Chi-Squared = 1001.942
 ##                 p-value =    0.987
 ```
 
@@ -737,9 +963,9 @@ performance(model1)
 ```
 ## # Indices of model performance
 ## 
-## AIC   |  AICc |    BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
-## --------------------------------------------------------------------------------------
-## 6.000 | 6.022 | 21.026 |           0.057 | 0.289 | 0.652 |    -0.308 |           0.029
+## AIC     |    AICc |     BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
+## -------------------------------------------------------------------------------------------
+## 683.002 | 683.024 | 698.028 |           0.057 | 0.289 | 1.000 |    -0.308 |           0.029
 ```
 
 ```r
@@ -749,12 +975,8 @@ summary(model1)
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, control = glm.control(maxit = 1000), 
-##     init.theta = 1.435979945e+16, link = log)
-## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-##  0.000   0.000   0.000   0.000   2.703  
+## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat, init.theta = 1585.949365, 
+##     link = log)
 ## 
 ## Coefficients:
 ##               Estimate Std. Error z value Pr(>|z|)    
@@ -763,19 +985,20 @@ summary(model1)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1.43598e+16) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1585.949) family taken to be 1)
 ## 
-##     Null deviance: 491.74  on 1105  degrees of freedom
-## Residual deviance: 469.00  on 1104  degrees of freedom
-## AIC: 6
+##     Null deviance: 491.68  on 1105  degrees of freedom
+## Residual deviance: 468.94  on 1104  degrees of freedom
+## AIC: 683
 ## 
 ## Number of Fisher Scoring iterations: 1
 ## 
 ## 
-##               Theta:  1.43598e+16 
-##           Std. Err.:  2.708396e+14 
+##               Theta:  1586 
+##           Std. Err.:  10166 
+## Warning while fitting theta: iteration limit reached 
 ## 
-##  2 x log-likelihood:  0
+##  2 x log-likelihood:  -677.002
 ```
 
 
@@ -846,12 +1069,8 @@ summary(new_model1)
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat2, init.theta = 1416.040284, 
+## glm.nb(formula = DFW ~ Curriculum, data = DFW_binary_dat2, init.theta = 1416.040361, 
 ##     link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.4817  -0.4817  -0.4817  -0.2482   2.2409  
 ## 
 ## Coefficients:
 ##               Estimate Std. Error z value Pr(>|z|)    
@@ -893,7 +1112,7 @@ check_zeroinflation(new_model1)
 ##   tolerance range.
 ```
 
-That looks good. And I am glad to have used the zero-inflated model.
+That looks good. And I am glad to have checked the zero-inflated model even though we don't need it.
 
 
 ```r
@@ -923,7 +1142,7 @@ exp(1.3256-0.2690)
 The model including the second year data indicates that students under the old curriculum were 3.8-fold (2.9 - 4.9) more likely to earn a DFW in the first two Biology courses (p = 0.000000835).
 
 How does it look with just the old data, but with the zero-inflated model?
-I determined that the data does not actually have a zero-inflation problem so this was not needed.
+However, I determined that the data does not actually have a zero-inflation problem so this was not needed.
 
 
 ```r
@@ -1092,11 +1311,7 @@ summary(glm_model_old_full)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Gender * SoC, data = Old_FullDFW_binary_dat, 
-##     init.theta = 2980.644079, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.6405  -0.5664  -0.4646  -0.4634   1.6362  
+##     init.theta = 2980.644102, link = log)
 ## 
 ## Coefficients:
 ##                          Estimate Std. Error z value Pr(>|z|)    
@@ -1240,11 +1455,7 @@ summary(glm_model_new_full)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Gender * SoC, data = New_FullDFW_binary_dat, 
-##     init.theta = 501.9293133, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.4245  -0.2604  -0.1417  -0.1417   2.6873  
+##     init.theta = 501.9293108, link = log)
 ## 
 ## Coefficients:
 ##                         Estimate Std. Error z value Pr(>|z|)    
@@ -1288,7 +1499,7 @@ performance(glm_model_new_full)
 ## 
 ## AIC     |    AICc |     BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
 ## -------------------------------------------------------------------------------------------
-## 168.061 | 168.169 | 189.754 |           0.130 | 0.182 | 0.458 |    -0.140 |           0.041
+## 168.061 | 168.169 | 189.754 |           0.130 | 0.182 | 1.000 |    -0.140 |           0.041
 ```
 
 ```r
@@ -1348,11 +1559,7 @@ summary(glm_model_all)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum * Gender * SoC, data = FullDFW_binary_dat, 
-##     init.theta = 1009.899626, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.6405  -0.4646  -0.4634  -0.1417   2.6875  
+##     init.theta = 1009.899621, link = log)
 ## 
 ## Coefficients:
 ##                                        Estimate Std. Error z value Pr(>|z|)    
@@ -1403,11 +1610,7 @@ summary(glm_model_full)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum + Gender * SoC, data = FullDFW_binary_dat, 
-##     init.theta = 1776.211888, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.6539  -0.4678  -0.4370  -0.2338   2.2921  
+##     init.theta = 1776.211873, link = log)
 ## 
 ## Coefficients:
 ##                         Estimate Std. Error z value Pr(>|z|)    
@@ -1545,7 +1748,7 @@ stepAIC(glm_model_full, direction = "backward")
 ```
 ## 
 ## Call:  glm.nb(formula = DFW ~ Curriculum + SoC, data = FullDFW_binary_dat, 
-##     init.theta = 1744.962856, link = log)
+##     init.theta = 1744.962722, link = log)
 ## 
 ## Coefficients:
 ##   (Intercept)  CurriculumNew   SoCNon-White  
@@ -1576,11 +1779,7 @@ summary(glm_model_selected)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum + SoC, data = FullDFW_binary_dat, 
-##     init.theta = 1744.971684, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.6194  -0.4455  -0.4455  -0.2382   2.2762  
+##     init.theta = 1744.971653, link = log)
 ## 
 ## Coefficients:
 ##               Estimate Std. Error z value Pr(>|z|)    
@@ -1608,10 +1807,61 @@ summary(glm_model_selected)
 
 
 ```r
+1/exp(-1.2522)
+```
+
+```
+## [1] 3.49803
+```
+
+```r
+1/exp(-1.2522+0.2439)
+```
+
+```
+## [1] 2.740937
+```
+
+```r
+1/exp(-1.2522-0.2439)
+```
+
+```
+## [1] 4.464245
+```
+
+```r
+exp(0.6590)
+```
+
+```
+## [1] 1.932859
+```
+
+```r
+exp(0.6590+0.1781)
+```
+
+```
+## [1] 2.309659
+```
+
+```r
+exp(0.6590-0.1781)
+```
+
+```
+## [1] 1.61753
+```
+
+
+
+
+```r
 check_model(glm_model_full)
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 ```r
 cat_plot(glm_model_full, pred = SoC, modx = Curriculum, mod2 = Gender, 
@@ -1627,7 +1877,7 @@ cat_plot(glm_model_full, pred = SoC, modx = Curriculum, mod2 = Gender,
 ## another in the model.
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-20-2.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-21-2.png)<!-- -->
 
 And using the selected model, that shows only curriculum and SoC are critical:
 
@@ -1645,7 +1895,7 @@ cat_plot(glm_model_selected, pred = SoC, modx = Curriculum,
 ## the model.
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 
 Compare by class instead of old vs new curriculum:
 
@@ -1670,11 +1920,7 @@ summary(glm_model_full2)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Class + Gender * SoC, data = FullDFW_binary_dat, 
-##     init.theta = 1661.564672, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.7324  -0.4904  -0.3425  -0.2593   2.5487  
+##     init.theta = 1661.564727, link = log)
 ## 
 ## Coefficients:
 ##                         Estimate Std. Error z value Pr(>|z|)    
@@ -1717,7 +1963,7 @@ cat_plot(glm_model_full2, pred = SoC, modx = Class, mod2 = Gender,
 ## another in the model.
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 ## Figure 8
 
@@ -1770,7 +2016,7 @@ summary(filtered_binary_dat)
 ```
 
 ```r
-Just1year202.glm <- glm.nb(DFW ~ Curriculum + Gender * SoC, data = filtered_binary_dat) 
+Just1year202.glm <- glm.nb(DFW ~ Curriculum + SoC, data = filtered_binary_dat) 
 ```
 
 ```
@@ -1788,37 +2034,31 @@ summary(Just1year202.glm)
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum + Gender * SoC, data = filtered_binary_dat, 
-##     init.theta = 2279.803932, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.6585  -0.4617  -0.4617  -0.4611   2.4760  
+## glm.nb(formula = DFW ~ Curriculum + SoC, data = filtered_binary_dat, 
+##     init.theta = 1999.204506, link = log)
 ## 
 ## Coefficients:
-##                          Estimate Std. Error z value Pr(>|z|)    
-## (Intercept)             -2.238894   0.149594 -14.966   <2e-16 ***
-## CurriculumNew           -2.519482   1.005165  -2.507   0.0122 *  
-## GenderMale              -0.002677   0.291086  -0.009   0.9927    
-## SoCNon-White             0.402546   0.235786   1.707   0.0878 .  
-## GenderMale:SoCNon-White  0.310387   0.420585   0.738   0.4605    
+##               Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)    -2.2395     0.1286 -17.417  < 2e-16 ***
+## CurriculumNew  -2.5235     1.0051  -2.511  0.01205 *  
+## SoCNon-White    0.5039     0.1942   2.595  0.00945 ** 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(2279.804) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1999.205) family taken to be 1)
 ## 
-##     Null deviance: 466.18  on 934  degrees of freedom
-## Residual deviance: 440.38  on 930  degrees of freedom
-## AIC: 668.43
+##     Null deviance: 466.17  on 934  degrees of freedom
+## Residual deviance: 441.37  on 932  degrees of freedom
+## AIC: 665.43
 ## 
 ## Number of Fisher Scoring iterations: 1
 ## 
 ## 
-##               Theta:  2280 
-##           Std. Err.:  15464 
+##               Theta:  1999 
+##           Std. Err.:  12746 
 ## Warning while fitting theta: iteration limit reached 
 ## 
-##  2 x log-likelihood:  -656.431
+##  2 x log-likelihood:  -657.427
 ```
 
 ```r
@@ -1828,8 +2068,8 @@ check_overdispersion(Just1year202.glm)
 ```
 ## # Overdispersion test
 ## 
-##        dispersion ratio =   0.843
-##   Pearson's Chi-Squared = 784.009
+##        dispersion ratio =   0.854
+##   Pearson's Chi-Squared = 796.368
 ##                 p-value =       1
 ```
 
@@ -1861,68 +2101,67 @@ check_model(Just1year202.glm)
 ![](Figure8.Outcomes_files/figure-html/Figure 8-1.png)<!-- -->
 
 ```r
-cat_plot(Just1year202.glm, pred = SoC, modx = Curriculum, mod2 = Gender, 
+cat_plot(Just1year202.glm, pred = SoC, modx = Curriculum, 
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("White Students","Students of Color"),
-         mod2.labels = c("Female Students", "Male Students"),
          modx.labels = c("Prior", "CURE"),
          x.label = "", y.label = "DFW Likelihood")
 ```
 
 ```
-## Warning: SoC and Curriculum and Gender are not included in an interaction with one
-## another in the model.
+## Warning: SoC and Curriculum are not included in an interaction with one another in
+## the model.
 ```
 
 ![](Figure8.Outcomes_files/figure-html/Figure 8-2.png)<!-- -->
 
 
 ```r
-1/exp(-2.519482)
+1/exp(-2.5235)
 ```
 
 ```
-## [1] 12.42216
-```
-
-```r
-1/exp(-2.519482+1.005)
-```
-
-```
-## [1] 4.547065
+## [1] 12.47217
 ```
 
 ```r
-1/exp(-2.519482-1.005)
+1/exp(-2.5235+1.0051)
 ```
 
 ```
-## [1] 33.93619
-```
-
-```r
-exp(0.402546)
-```
-
-```
-## [1] 1.495628
+## [1] 4.564915
 ```
 
 ```r
-exp(0.402546+0.235786)
+1/exp(-2.5235-1.0051)
 ```
 
 ```
-## [1] 1.89332
+## [1] 34.07623
 ```
 
 ```r
-exp(0.402546-0.235786)
+exp(0.5039)
 ```
 
 ```
-## [1] 1.181471
+## [1] 1.655164
+```
+
+```r
+exp(0.5039+0.1942)
+```
+
+```
+## [1] 2.00993
+```
+
+```r
+exp(0.5039-0.1942)
+```
+
+```
+## [1] 1.363016
 ```
 
 
@@ -1949,11 +2188,7 @@ summary(Just1year202.glm2)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Class + Gender * SoC, data = filtered_binary_dat, 
-##     init.theta = 2224.711555, link = log)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -0.7361  -0.5151  -0.4615  -0.3634   2.4841  
+##     init.theta = 2224.711295, link = log)
 ## 
 ## Coefficients:
 ##                         Estimate Std. Error z value Pr(>|z|)    
@@ -1966,7 +2201,7 @@ summary(Just1year202.glm2)
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(2224.712) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(2224.711) family taken to be 1)
 ## 
 ##     Null deviance: 466.17  on 934  degrees of freedom
 ## Residual deviance: 429.06  on 929  degrees of freedom
@@ -1995,7 +2230,7 @@ cat_plot(Just1year202.glm2, pred = SoC, modx = Class, mod2 = Gender,
 ## another in the model.
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
 And now let's isolate just BIOL202 to see if SoC and/or gender effect DFW rates.
 
@@ -2054,20 +2289,16 @@ summary(only202year1.glm)
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Gender * SoC, data = only202year1_binary_dat, 
-##     init.theta = 15765.80545, link = log)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -0.63245  -0.00001  -0.00001  -0.00001   1.27233  
+##     init.theta = 15764.85151, link = log)
 ## 
 ## Coefficients:
 ##                           Estimate Std. Error z value Pr(>|z|)
 ## (Intercept)             -2.430e+01  1.424e+04  -0.002    0.999
-## GenderMale              -9.649e-13  2.995e+04   0.000    1.000
-## SoCNon-White            -2.319e-11  3.290e+04   0.000    1.000
+## GenderMale              -6.846e-13  2.995e+04   0.000    1.000
+## SoCNon-White            -7.996e-10  3.290e+04   0.000    1.000
 ## GenderMale:SoCNon-White  2.269e+01  4.215e+04   0.001    1.000
 ## 
-## (Dispersion parameter for Negative Binomial(15765.81) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(15764.85) family taken to be 1)
 ## 
 ##     Null deviance: 9.2887  on 103  degrees of freedom
 ## Residual deviance: 3.2188  on 100  degrees of freedom
@@ -2076,8 +2307,8 @@ summary(only202year1.glm)
 ## Number of Fisher Scoring iterations: 1
 ## 
 ## 
-##               Theta:  15766 
-##           Std. Err.:  2409472 
+##               Theta:  15765 
+##           Std. Err.:  2409492 
 ## Warning while fitting theta: iteration limit reached 
 ## 
 ##  2 x log-likelihood:  -5.219
@@ -2087,6 +2318,6 @@ summary(only202year1.glm)
 cat_plot(only202year1.glm, pred = SoC, modx = Gender, interval = TRUE)
 ```
 
-![](Figure8.Outcomes_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+![](Figure8.Outcomes_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 Well that is an ugly graphic because the numbers of DFWs are so low, but the model does confirm that there is no significant effect of Gender or Race/ethnicity on DFW rates in the first year of BIOL 202.

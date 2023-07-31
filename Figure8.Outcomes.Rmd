@@ -236,11 +236,9 @@ DFW_binary_dat = pmap_dfr(DFW_dat,
 That worked. Now to use that dataframe for a glm.
 
 ```{r}
-model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat, 
-                 control = glm.control(maxit = 1000))
+model1 <- glm.nb(DFW ~ Curriculum, data = DFW_binary_dat)
 summary(model1)
-model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum, 
-                     control = glm.control(maxit = 1000), data = DFW_binary_dat)
+model_full <- glm.nb(DFW ~ Class * Year * Semester * Curriculum, data = DFW_binary_dat)
 summary(model_full)
 ```
 
@@ -294,7 +292,7 @@ summary(new_model1)
 check_zeroinflation(new_model1)
 ```
 
-That looks good. And I am glad to have used the zero-inflated model.
+That looks good. And I am glad to have checked the zero-inflated model even though we don't need it.
 
 ```{r}
 exp(1.3256)
@@ -305,7 +303,7 @@ exp(1.3256-0.2690)
 The model including the second year data indicates that students under the old curriculum were 3.8-fold (2.9 - 4.9) more likely to earn a DFW in the first two Biology courses (p = 0.000000835).
 
 How does it look with just the old data, but with the zero-inflated model?
-I determined that the data does not actually have a zero-inflation problem so this was not needed.
+However, I determined that the data does not actually have a zero-inflation problem so this was not needed.
 
 ```{r}
 zero_model1 <- zeroinfl(DFW ~ Curriculum, data = DFW_binary_dat)
@@ -463,6 +461,18 @@ summary(glm_model_selected)
 ```
 
 ```{r}
+1/exp(-1.2522)
+1/exp(-1.2522+0.2439)
+1/exp(-1.2522-0.2439)
+
+exp(0.6590)
+exp(0.6590+0.1781)
+exp(0.6590-0.1781)
+```
+
+
+
+```{r}
 check_model(glm_model_full)
 cat_plot(glm_model_full, pred = SoC, modx = Curriculum, mod2 = Gender, 
          interval = TRUE, errorbar.width = 0.5, 
@@ -504,27 +514,26 @@ FullDFW_binary_dat %>%
   filter(Year != "22-23") %>%
   filter(Class != "BIOL201") -> filtered_binary_dat
 summary(filtered_binary_dat)
-Just1year202.glm <- glm.nb(DFW ~ Curriculum + Gender * SoC, data = filtered_binary_dat) 
+Just1year202.glm <- glm.nb(DFW ~ Curriculum + SoC, data = filtered_binary_dat) 
 summary(Just1year202.glm)
 check_overdispersion(Just1year202.glm)
 check_zeroinflation(Just1year202.glm)
 check_model(Just1year202.glm)
-cat_plot(Just1year202.glm, pred = SoC, modx = Curriculum, mod2 = Gender, 
+cat_plot(Just1year202.glm, pred = SoC, modx = Curriculum, 
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("White Students","Students of Color"),
-         mod2.labels = c("Female Students", "Male Students"),
          modx.labels = c("Prior", "CURE"),
          x.label = "", y.label = "DFW Likelihood")
 ```
 
 ```{r}
-1/exp(-2.519482)
-1/exp(-2.519482+1.005)
-1/exp(-2.519482-1.005)
+1/exp(-2.5235)
+1/exp(-2.5235+1.0051)
+1/exp(-2.5235-1.0051)
 
-exp(0.402546)
-exp(0.402546+0.235786)
-exp(0.402546-0.235786)
+exp(0.5039)
+exp(0.5039+0.1942)
+exp(0.5039-0.1942)
 ```
 
 
