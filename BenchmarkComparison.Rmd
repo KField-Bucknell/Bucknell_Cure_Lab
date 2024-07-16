@@ -1,0 +1,468 @@
+---
+title: "Comparison to Benchmark"
+author: "Ken Field"
+date: "Last compiled on `r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dpi = 300)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require('pdftools')) install.packages('pdftools'); library(pdftools) #import and parse pdfs
+if (!require('BSDA')) install.packages('BSDA'); library(BSDA) #Stats using summary
+if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+conflict_prefer_all("dplyr", quiet = TRUE)
+```
+
+## Loading Results
+
+Loading in the results without instructor information:
+
+```{r Load data}
+NoDemographicsYear1 <- read_delim("../Deidentified Surveys/NoDemographics.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE) %>%
+  rename(Semester = Semester_pre)
+NoDemographicsYear2 <- read_delim("../Year2/Deidentified Surveys/NoDemographics.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoDemographicsYear3 <- read_delim("../Year3/Deidentified Surveys/NoDemographics.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoDemographics <- bind_rows(NoDemographicsYear1, NoDemographicsYear2, NoDemographicsYear3)
+
+NoDemographicsQuestions <- read_delim("../Deidentified Surveys/NoDemographicsQuestions.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+```
+
+Cleaning up the factors and removing anyone who did not agree to the informed consent.
+
+```{r Cleaning}
+NoDemographics <- NoDemographics %>%
+  mutate(Semester = factor(Semester, levels = c("Fall 2021", "Spring 2022",
+                                                "Fall 2022", "Spring 2023",
+                                                "Fall 2023", "Spring 2024"))) %>%
+  mutate(across(Instructor, str_replace, 'Prof. ', ''))
+NoDemographics <- NoDemographics %>%
+  filter(Q1_pre == "Agree")
+```
+
+We have hypothesized that instructors may be less successful in improving learning elements during the first time
+that they have taught the class. To test this hypothesis, we will need to code a new variable, that I will call Rookie.
+To do this, I logged into Cognos and ran a "Class Info by Term and Instructor" report. Note that I had to identify the 
+instructor pseudonyms using the Deidentification Rmd, but I have not included that information here.
+
+- 'McGonagall' 'Fall 2021'
+- 'Dumbledore' 'Fall 2021'
+- 'Hagrid' 'Spring 2022'
+- 'Lupin' 'Fall 2021'
+- 'Sinistra' 'Spring 2022'
+
+```{r}
+NoDemographics <- NoDemographics %>%
+  mutate(Rookie = case_when((Instructor == 'McGonagall') & (Semester == 'Fall 2021') ~ "Rookie", 
+                     (Instructor == 'Dumbledore') & (Semester == 'Fall 2021') ~ "Rookie",
+                     (Instructor == 'Hagrid') & (Semester == 'Spring 2022') ~ "Rookie",
+                     (Instructor == 'Lupin') & (Semester == 'Fall 2021') ~ "Rookie",
+                     (Instructor == 'Sinistra') & (Semester == 'Spring 2022') ~ "Rookie",
+                     .default = "Veteran"))
+  
+```
+
+## Improvement in learning elements
+
+Comparing the responses to Pre10 and Post9:
+
+```{r Pre Q10, echo=FALSE}
+PreQ10 <- NoDemographics %>%
+  select(Semester, Instructor, Rookie, starts_with("Q10")) %>%
+  select(Semester, Instructor, Rookie, ends_with("_pre"))
+Q10Text <- NoDemographicsQuestions %>%
+  filter(startsWith(value, "Q10")) %>%
+  filter(endsWith(value, "_pre"))
+Q10Text$Question[1]
+Q10TextClean <- Q10Text %>%
+  mutate(Question = str_remove(Q10Text$Question, "Please look over this inventory of elements that might be included in a course. For each element, give an estimate of your current level of ability before the course begins. Your current level of ability may be a result of courses in high school or college, or it may be a result of other experiences such as jobs or special programs. If students are expected to do the following course elements, what would be their level of expertise\\? - "))
+Q10TextClean$Question
+```
+
+
+```{r Post Q9, echo=FALSE}
+PostQ9 <- NoDemographics %>%
+  select(starts_with("Q9")) %>%
+  select(ends_with("_post"))
+
+Q9Text <- NoDemographicsQuestions %>%
+  filter(startsWith(value, "Q9")) %>%
+  filter(endsWith(value, "_post"))
+Q9Text$Question[1]
+Q9TextClean <- Q9Text %>%
+  mutate(Question = str_remove(Q9Text$Question, "Please rate how much learning you gained from each element you experienced in this course. The scale measuring your gain is from \\(no or very small gain\\) to \\(very large gain\\). Some elements may not have happened at all. If the item is not relevant or you prefer not to answer, please choose the \"\"not applicable\"\" option. If students were expected to do the following course elements, what would be their level of gained experience\\? - "))
+Q9TextClean$Question
+
+Q9TextClean$Question == Q10TextClean$Question
+```
+
+Now to compare the pre and post responses for those questions:
+
+```{r, echo=FALSE}
+MergedQ10 <- bind_cols(PreQ10, PostQ9)
+head(MergedQ10)
+Q10Factors <- MergedQ10 %>%
+  select(starts_with("Q")) %>%
+  mutate_all(funs(ordered(.,(levels = c("None", "Little", 
+                                       "Some", "Much", "Extensive"))))) 
+Q10Clean <- MergedQ10 %>%
+  select(-starts_with("Q")) %>%
+  cbind(Q10Factors)
+```
+
+## Sample Size
+
+```{r Sample Size Table}
+Q10Clean %>%
+  group_by(Instructor, Semester) %>%
+  count() %>%
+  print()
+```
+
+First let's just look at the contingency tables to see if everything looks right.
+
+```{r, echo=FALSE}
+print("Rows represents pre-survey response, Columns represent post-survey response.")
+print("First for All sections then for then by Instructor.")
+Q10TextClean$Question[1]
+table(Q10Clean$Q10_1_pre, Q10Clean$Q9_1_post)
+print("By Instructor")
+Q10TextClean$Question[1]
+table(Q10Clean$Q10_1_pre, Q10Clean$Q9_1_post, Q10Clean$Instructor)
+Q10Clean_withNA <- Q10Clean
+```
+
+Balloon Plot
+
+On these plots, the answers on the x axis are the pre-survey results and on the y-axis
+are the post survey results. 
+Responses above the "none" level indicate students who felt that they increased in this element.
+
+
+The pre-survey questions were asked as:
+Please look over this inventory of elements that might be included in a course. For each element, give an estimate of your current level of ability before the course begins. Your current level of ability may be a result of courses in high school or college, or it may be a result of other experiences such as jobs or special programs. If students are expected to do the following course elements, what would be their level of expertise? 
+
+
+The post-survey questions were asked: 
+Please rate how much learning you gained from each element you experienced in this course. The scale measuring your gain is from (no or very small gain) to (very large gain). Some elements may not have happened at all. If the item is not relevant or you prefer not to answer, please choose the "not applicable" option. If students were expected to do the following course elements, what would be their level of gained experience? 
+
+```{r Balloon Plot Setup, echo=FALSE}
+summary(as.factor(Q10Clean$Instructor))
+numInstructors <- 5
+colorcolumn <- rep.int(c(rep.int("None",5), rep.int("Little",5), rep.int("Some",5), 
+                 rep.int("Much",5), rep.int("Extensive", 5)), numInstructors)
+
+colorcolumn <- factor(colorcolumn, 
+                         levels = c("Extensive", "Much", "Some", "Little", "None"))
+```
+
+## Comparison to Benchmark
+
+I have obtained the CURE Benchmark Statistics file, CUREBenchmarkStatistics2015-2108.pdf 
+and I will compare our survey results for this question to those shown on Page 6 of this PDF.
+
+```{r Benchmark Comparisons, echo=FALSE}
+PDF <- pdf_text("../CUREBenchmarkStatistics2015-2108.forImport.pdf") %>%
+  readr::read_lines() #open the PDF inside your project folder
+Benchmark.CourseElements <- PDF[c(16:41)]   # Q10
+Benchmark.Benefits <- PDF[c(58:79)]
+Benchmark.Attitudes <- PDF[c(94:117, 127:141)]
+Benchmark.OverallAssessment <- PDF[c(148:152)]
+
+Benchmark.CourseElements.table <- Benchmark.CourseElements[-1] %>%
+  str_replace_all("[[a-z]]", "") %>%
+    str_replace_all("[[A-Z]]", "") %>%
+  str_squish() %>%
+  strsplit(split = " ") %>%
+  as.data.frame() %>%
+  t() %>%
+  as.data.frame() %>%
+  remove_rownames()
+  
+names(Benchmark.CourseElements.table) <- c("PreSD", "Pre", "Post", "PostSD")
+Benchmark.CourseElements.table <- Benchmark.CourseElements.table %>%
+  select(Pre, PreSD, Post, PostSD) %>%
+  add_column(PreN = 17810)
+
+# Well that was more work than copying and pasting, that's for sure!
+
+Q10Clean_withNA %>%
+  select(-Semester, -Instructor, -Rookie) %>%
+  mutate_if(is.factor, as.numeric) %>%
+  summarize_all(., mean, na.rm=TRUE) %>%
+  t() %>%
+  as_tibble(rownames = "Question") %>%
+  filter(str_detect(Question, '_pre')) -> Q10forComparison
+
+Q10Clean_withNA %>%
+  select(-Semester, -Instructor, -Rookie) %>%
+  mutate_if(is.factor, as.numeric) %>%
+  select(ends_with("_pre")) %>%
+  summarize_all(., sd, na.rm=TRUE) %>%
+  t() -> PreSD
+
+Q10Clean_withNA %>%
+  select(Q10_1_pre:Q10_25_pre) %>%
+  tally()
+
+Q10forComparison <- Q10forComparison %>%
+  rename(PreMean = V1) %>%
+  add_column(PreSD = PreSD[,]) %>%
+  add_column(n = 224)
+
+Q10Merged <- Q10forComparison %>%
+  add_column(BenchPre = as.numeric(Benchmark.CourseElements.table$Pre)) %>%
+  add_column(BenchPreSD = as.numeric(Benchmark.CourseElements.table$PreSD)) %>%
+  add_column(BenchPreN = Benchmark.CourseElements.table$PreN) %>%
+  mutate_if(is.factor, as.numeric)
+
+test_1 <- tsum.test(mean.x = Q10Merged$PreMean[1],
+          mean.y = Q10Merged$BenchPre[1],
+          s.x = Q10Merged$PreSD[1],
+          s.y = Q10Merged$BenchPreSD[1],
+          n.x = Q10Merged$n[1],
+          n.y = Q10Merged$BenchPreN[1])
+p.adjust(test_1$p.value, n = 25)
+
+test_2 <- tsum.test(mean.x = Q10Merged$PreMean[2],
+          mean.y = Q10Merged$BenchPre[2],
+          s.x = Q10Merged$PreSD[2],
+          s.y = Q10Merged$BenchPreSD[2],
+          n.x = Q10Merged$n[2],
+          n.y = Q10Merged$BenchPreN[2])
+p.adjust(test_2$p.value, n = 25)
+
+test_3 <- tsum.test(mean.x = Q10Merged$PreMean[3],
+          mean.y = Q10Merged$BenchPre[3],
+          s.x = Q10Merged$PreSD[3],
+          s.y = Q10Merged$BenchPreSD[3],
+          n.x = Q10Merged$n[3],
+          n.y = Q10Merged$BenchPreN[3])
+p.adjust(test_3$p.value, n = 25)
+
+test_4 <- tsum.test(mean.x = Q10Merged$PreMean[4],
+          mean.y = Q10Merged$BenchPre[4],
+          s.x = Q10Merged$PreSD[4],
+          s.y = Q10Merged$BenchPreSD[4],
+          n.x = Q10Merged$n[4],
+          n.y = Q10Merged$BenchPreN[4])
+p.adjust(test_4$p.value, n = 25)
+
+test_5 <- tsum.test(mean.x = Q10Merged$PreMean[5],
+          mean.y = Q10Merged$BenchPre[5],
+          s.x = Q10Merged$PreSD[5],
+          s.y = Q10Merged$BenchPreSD[5],
+          n.x = Q10Merged$n[5],
+          n.y = Q10Merged$BenchPreN[5])
+p.adjust(test_5$p.value, n = 25)
+
+test_6 <- tsum.test(mean.x = Q10Merged$PreMean[6],
+          mean.y = Q10Merged$BenchPre[6],
+          s.x = Q10Merged$PreSD[6],
+          s.y = Q10Merged$BenchPreSD[6],
+          n.x = Q10Merged$n[6],
+          n.y = Q10Merged$BenchPreN[6])
+p.adjust(test_6$p.value, n = 25)
+
+test_7 <- tsum.test(mean.x = Q10Merged$PreMean[7],
+          mean.y = Q10Merged$BenchPre[7],
+          s.x = Q10Merged$PreSD[7],
+          s.y = Q10Merged$BenchPreSD[7],
+          n.x = Q10Merged$n[7],
+          n.y = Q10Merged$BenchPreN[7])
+p.adjust(test_7$p.value, n = 25)
+
+test_8 <- tsum.test(mean.x = Q10Merged$PreMean[8],
+          mean.y = Q10Merged$BenchPre[8],
+          s.x = Q10Merged$PreSD[8],
+          s.y = Q10Merged$BenchPreSD[8],
+          n.x = Q10Merged$n[8],
+          n.y = Q10Merged$BenchPreN[8])
+p.adjust(test_8$p.value, n = 25)
+
+test_9 <- tsum.test(mean.x = Q10Merged$PreMean[9],
+          mean.y = Q10Merged$BenchPre[9],
+          s.x = Q10Merged$PreSD[9],
+          s.y = Q10Merged$BenchPreSD[9],
+          n.x = Q10Merged$n[9],
+          n.y = Q10Merged$BenchPreN[9])
+p.adjust(test_9$p.value, n = 25)
+
+test_10 <- tsum.test(mean.x = Q10Merged$PreMean[10],
+          mean.y = Q10Merged$BenchPre[10],
+          s.x = Q10Merged$PreSD[10],
+          s.y = Q10Merged$BenchPreSD[10],
+          n.x = Q10Merged$n[10],
+          n.y = Q10Merged$BenchPreN[10])
+p.adjust(test_10$p.value, n = 25)
+
+test_11 <- tsum.test(mean.x = Q10Merged$PreMean[11],
+          mean.y = Q10Merged$BenchPre[11],
+          s.x = Q10Merged$PreSD[11],
+          s.y = Q10Merged$BenchPreSD[11],
+          n.x = Q10Merged$n[11],
+          n.y = Q10Merged$BenchPreN[11])
+p.adjust(test_11$p.value, n = 25)
+
+test_12 <- tsum.test(mean.x = Q10Merged$PreMean[12],
+          mean.y = Q10Merged$BenchPre[12],
+          s.x = Q10Merged$PreSD[12],
+          s.y = Q10Merged$BenchPreSD[12],
+          n.x = Q10Merged$n[12],
+          n.y = Q10Merged$BenchPreN[12])
+p.adjust(test_12$p.value, n = 25)
+
+test_13 <- tsum.test(mean.x = Q10Merged$PreMean[13],
+          mean.y = Q10Merged$BenchPre[13],
+          s.x = Q10Merged$PreSD[13],
+          s.y = Q10Merged$BenchPreSD[13],
+          n.x = Q10Merged$n[13],
+          n.y = Q10Merged$BenchPreN[13])
+p.adjust(test_13$p.value, n = 25)
+
+test_14 <- tsum.test(mean.x = Q10Merged$PreMean[14],
+          mean.y = Q10Merged$BenchPre[14],
+          s.x = Q10Merged$PreSD[14],
+          s.y = Q10Merged$BenchPreSD[14],
+          n.x = Q10Merged$n[14],
+          n.y = Q10Merged$BenchPreN[14])
+p.adjust(test_14$p.value, n = 25)
+
+test_15 <- tsum.test(mean.x = Q10Merged$PreMean[15],
+          mean.y = Q10Merged$BenchPre[15],
+          s.x = Q10Merged$PreSD[15],
+          s.y = Q10Merged$BenchPreSD[15],
+          n.x = Q10Merged$n[15],
+          n.y = Q10Merged$BenchPreN[15])
+p.adjust(test_15$p.value, n = 25)
+
+test_16 <- tsum.test(mean.x = Q10Merged$PreMean[16],
+          mean.y = Q10Merged$BenchPre[16],
+          s.x = Q10Merged$PreSD[16],
+          s.y = Q10Merged$BenchPreSD[16],
+          n.x = Q10Merged$n[16],
+          n.y = Q10Merged$BenchPreN[16])
+p.adjust(test_16$p.value, n = 25)
+
+test_17 <- tsum.test(mean.x = Q10Merged$PreMean[17],
+          mean.y = Q10Merged$BenchPre[17],
+          s.x = Q10Merged$PreSD[17],
+          s.y = Q10Merged$BenchPreSD[17],
+          n.x = Q10Merged$n[17],
+          n.y = Q10Merged$BenchPreN[17])
+p.adjust(test_17$p.value, n = 25)
+
+test_18 <- tsum.test(mean.x = Q10Merged$PreMean[18],
+          mean.y = Q10Merged$BenchPre[18],
+          s.x = Q10Merged$PreSD[18],
+          s.y = Q10Merged$BenchPreSD[18],
+          n.x = Q10Merged$n[18],
+          n.y = Q10Merged$BenchPreN[18])
+p.adjust(test_18$p.value, n = 25)
+
+test_19 <- tsum.test(mean.x = Q10Merged$PreMean[19],
+          mean.y = Q10Merged$BenchPre[19],
+          s.x = Q10Merged$PreSD[19],
+          s.y = Q10Merged$BenchPreSD[19],
+          n.x = Q10Merged$n[19],
+          n.y = Q10Merged$BenchPreN[19])
+p.adjust(test_19$p.value, n = 25)
+
+test_20 <- tsum.test(mean.x = Q10Merged$PreMean[20],
+          mean.y = Q10Merged$BenchPre[20],
+          s.x = Q10Merged$PreSD[20],
+          s.y = Q10Merged$BenchPreSD[20],
+          n.x = Q10Merged$n[20],
+          n.y = Q10Merged$BenchPreN[20])
+p.adjust(test_20$p.value, n = 25)
+
+test_21 <- tsum.test(mean.x = Q10Merged$PreMean[21],
+          mean.y = Q10Merged$BenchPre[21],
+          s.x = Q10Merged$PreSD[21],
+          s.y = Q10Merged$BenchPreSD[21],
+          n.x = Q10Merged$n[21],
+          n.y = Q10Merged$BenchPreN[21])
+p.adjust(test_21$p.value, n = 25)
+
+test_22 <- tsum.test(mean.x = Q10Merged$PreMean[22],
+          mean.y = Q10Merged$BenchPre[22],
+          s.x = Q10Merged$PreSD[22],
+          s.y = Q10Merged$BenchPreSD[22],
+          n.x = Q10Merged$n[22],
+          n.y = Q10Merged$BenchPreN[22])
+p.adjust(test_22$p.value, n = 25)
+
+test_23 <- tsum.test(mean.x = Q10Merged$PreMean[23],
+          mean.y = Q10Merged$BenchPre[23],
+          s.x = Q10Merged$PreSD[23],
+          s.y = Q10Merged$BenchPreSD[23],
+          n.x = Q10Merged$n[23],
+          n.y = Q10Merged$BenchPreN[23])
+p.adjust(test_23$p.value, n = 25)
+
+test_24 <- tsum.test(mean.x = Q10Merged$PreMean[24],
+          mean.y = Q10Merged$BenchPre[24],
+          s.x = Q10Merged$PreSD[24],
+          s.y = Q10Merged$BenchPreSD[24],
+          n.x = Q10Merged$n[24],
+          n.y = Q10Merged$BenchPreN[24])
+p.adjust(test_24$p.value, n = 25)
+
+test_25 <- tsum.test(mean.x = Q10Merged$PreMean[25],
+          mean.y = Q10Merged$BenchPre[25],
+          s.x = Q10Merged$PreSD[25],
+          s.y = Q10Merged$BenchPreSD[25],
+          n.x = Q10Merged$n[25],
+          n.y = Q10Merged$BenchPreN[25])
+p.adjust(test_25$p.value, n = 25)
+```
+
+The following presurvey questions showed a significant difference using the holm-corrected p value:
+
+- Q10_8_pre 0.008085839 
+- Q10_9_pre 0.003810759 
+- Q10_17_pre 0.009723811 
+- Q10_22_pre 0.04575683 
+- Q10_24_pre 0.00397363 
+
+- [8] "Work as a whole class"                                                                             
+- [9] "Work in small groups"                                                                              
+- [17] "Present posters"                                                                                   
+- [22] "Take tests in class" 
+- [24] "Maintain a lab notebook"    
+
+```{r}
+test_8$estimate
+test_9$estimate
+test_17$estimate
+test_22$estimate
+test_24$estimate
+```
+
+For the first three questions, Bucknell students were significantly higher in the pretest. 
+
+For the last two, they were significantly lower. 

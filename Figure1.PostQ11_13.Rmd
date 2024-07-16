@@ -1,0 +1,474 @@
+---
+title: "Engagement and Overall Evaluation Questions"
+author: "Ken Field"
+date: "Last compiled on `r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dpi = 300)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("skimr")) install.packages("skimr"); library(skimr) #skim() function
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ggcorrplot")) install.packages("ggcorrplot"); library(ggcorrplot) #Correlation plots
+if (!require("rstatix")) install.packages("rstatix"); library(rstatix)
+if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+conflict_prefer_all("dplyr", quiet = TRUE)
+```
+
+## Preliminary Analysis
+
+Prior to conducting this analysis, exploration of the data found that some of these questions showed a correlation to
+Instructor that was stronger than the correlations found to demographics, semester, or rookie status of the instructor.
+However, we decided that it was more useful to use these questions to assess the impacts on diverse student groups than 
+to look at the effect of instructor for two reasons. First, the differences between instructor approaches are already 
+extensively addressed in our analysis of Question 10 (Figures 2-5). Second, it is a major goal of this course to 
+increase student engagement of our non-modal students and these questions directly address this question.
+
+## Loading Results
+
+Loading the data with demographics info.
+
+```{r, echo=FALSE}
+NoInstructorYear1 <- read_delim("../Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE) %>%
+  rename(Semester = Semester_pre)
+NoInstructorYear2 <- read_delim("../Year2/Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoInstructorYear3 <- read_delim("../Year3/Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoInstructor <- bind_rows(NoInstructorYear1, NoInstructorYear2, NoInstructorYear3)
+
+NoInstructorQuestions <- read_delim("../Deidentified Surveys/NoInstructorQuestions.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+```
+
+Removing any student who did not agree with the informed consent question:
+
+```{r, echo=FALSE}
+NoInstructor <- NoInstructor %>%
+  filter(Q1_pre == "Agree")
+```
+
+Factoring the Semester variable to make sure things are in order
+
+```{r, echo=FALSE}
+NoInstructor <- NoInstructor %>%
+  mutate(Semester = factor(Semester, levels = c("Fall 2021", "Spring 2022",
+                                                "Fall 2022", "Spring 2023",
+                                                "Fall 2023", "Spring 2024"))) %>%
+  mutate(FallSpring = factor(Semester, levels = c("Fall 2021", "Spring 2022",
+                                                  "Fall 2022", "Spring 2023",
+                                                  "Fall 2023", "Spring 2024"), 
+                             labels = c("Fall", "Spring",
+                                        "Fall", "Spring",
+                                        "Fall", "Spring"))) %>%
+  mutate(ClassYear = as.factor(recode(Q4_pre, 
+                                      'I am a first-year college undergraduate.'='First', 
+                                      'I am a second-year college undergraduate'='not First',
+                                      'I am a third-year college undergraduate'='not First'))) %>%
+  mutate(Ethnicity = as.factor(Q3_post)) %>%
+  mutate(Gender = as.factor(Q2_post))
+summary(NoInstructor$Semester)
+summary(NoInstructor$FallSpring)
+summary(NoInstructor$ClassYear)
+```
+
+## Intended Majors
+
+```{r, echo=FALSE}
+Majors <- NoInstructor %>%
+  select(Q6_pre, Q6_post)
+#summary(as.factor(Majors$Q6_pre))
+#summary(as.factor(Majors$Q6_post))
+CleanMajors <- Majors %>%
+  mutate(CleanPre = case_when(
+    is.na(Q6_pre) ~ NA,
+    str_detect(Q6_pre, "(?i)bio|biology|niology") ~ "Biology",
+    str_detect(Q6_pre, "(?i)ANBE|animal|behavior") ~ "Animal Behavior",
+    str_detect(Q6_pre, "(?i)neuro") ~ "Neuroscience",
+    str_detect(Q6_pre, "(?i)declare|n/a|na|none|nothing|yet") ~ "Undeclared",
+    .default = "Other"
+  )) %>%
+  mutate(CleanPost = case_when(
+    is.na(Q6_post) ~ NA,
+    str_detect(Q6_post, "(?i)biochem") ~ "Biochemistry",
+    str_detect(Q6_post, "(?i)switching|officially") ~ "Other",
+    str_detect(Q6_post, "(?i)bio|biology|niology") ~ "Biology",
+    str_detect(Q6_post, "(?i)ANBE|animal|behavior|behaviour") ~ "Animal Behavior",
+    str_detect(Q6_post, "(?i)neuro") ~ "Neuroscience",
+    str_detect(Q6_post, "(?i)declare|n/a|na|none|nothing|yet") ~ "Undeclared",
+    .default = "Other"
+  ))
+
+table(CleanMajors$CleanPre, CleanMajors$CleanPost)
+```
+
+Note the columns are the post-survey response and the rows are the pre-survey response.
+
+## Attitudes about Science
+
+According to the analysis of this survey by Grinnell, 5 questions were found to correlate with engagement.
+
+Specifically, they found:
+"In exploratory factor analysis these 5 items load on a factor that we have named "engagement". Engagement scores, whether pre-course or
+post-course, have correlated in our first findings with higher reported learning gains and a greater likelihood to declare a science
+major."
+
+These questions are Q13_1_post, Q13_3_post, Q13_10_post, Q13_13_post, and Q13_18_post.
+
+Q13_1_post  Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
+Q13_3_post  The process of writing in science is helpful for understanding scientific ideas             
+Q13_10_post I get personal satisfaction when I solve a scientific problem by figuring it out myself     
+Q13_13_post I can do well in science courses                                                            
+Q13_18_post Explaining science ideas to others has helped me understand the ideas better  
+
+https://www.grinnell.edu/sites/default/files/docs/2019-07/CUREBenchmarkStatistics2015-2108.pdf
+
+
+```{r Post Q13, echo=FALSE}
+PostQ13 <- NoInstructor %>%
+  select(starts_with("Q13")) %>%
+  select(ends_with("_post"))
+
+Q13Text <- NoInstructorQuestions %>%
+  filter(startsWith(value, "Q13")) %>%
+  filter(endsWith(value, "_post"))
+Q13Text$Question[1]
+Q13TextClean <- Q13Text %>%
+  mutate(Question = str_remove(Q13Text$Question, "In the pretest you responded to questions about science. Below the questions are posed again. Your answers will help us decide between two hypotheses, that the opinions are reliable over time \\(test-retest reliability\\) or that the opinions change as a result of your experience. For each item below please rate your agreement with the item - "))
+Q13TextClean$Question
+
+PostQ13_Engagement <- PostQ13 %>%
+  select(Q13_1_post, Q13_3_post, Q13_10_post, Q13_13_post, Q13_18_post)
+Q13TextClean_Engagement <- Q13TextClean %>%
+  filter(value %in% c("Q13_1_post", "Q13_3_post", "Q13_10_post", "Q13_13_post", "Q13_18_post"))
+Q13TextClean_Engagement
+```
+
+We are also interested in the overall evaluation questions (at least the first 3 of them).
+
+- Q11_1_post: "This course was a good way of learning about the subject matter"                
+- Q11_2_post: "This course was a good way of learning about the process of scientific research"
+- Q11_3_post: "This course had a positive effect on my interest in science"                    
+- Q11_4_post: "I was able to ask questions in this class and get helpful responses" 
+
+```{r Post Q11, echo=FALSE}
+PostQ11 <- NoInstructor %>%
+  select(starts_with("Q11")) %>%
+  select(ends_with("_post")) %>%
+  select(-Q11_4_post)
+
+Q11Text <- NoInstructorQuestions %>%
+  filter(startsWith(value, "Q11")) %>%
+  filter(endsWith(value, "_post")) %>%
+  filter(value != "Q11_4_post")
+Q11Text$Question[1]
+Q11TextClean <- Q11Text %>%
+  mutate(Question = str_remove(Q11Text$Question, "For each item below please rate your own agreement with the item. - "))
+Q11TextClean$Question
+```
+
+Now to compare the pre and post responses for those questions:
+
+```{r, echo=FALSE}
+Q11_13 <- bind_cols(PostQ11, PostQ13_Engagement)
+
+Metadata <- NoInstructor %>%
+  select(Semester, FallSpring, ClassYear, Ethnicity, Gender)
+
+MergedQ11_13 <- bind_cols(Metadata, Q11_13) 
+
+MergedQ11_13_demo <- MergedQ11_13 %>%
+  filter(Ethnicity != "Prefer not to answer") %>% 
+  filter(Gender %in% c("Male", "Female")) %>%
+  mutate(`Race/Ethnicity` = recode(Ethnicity, 
+                                   "White" = "white students", .default = "students of color")) %>%
+  mutate(`Race/Ethnicity` = factor(`Race/Ethnicity`, 
+                                   levels = c("white students", "students of color"))) %>%
+  mutate(ClassYear = as.factor(ClassYear)) %>%
+  mutate(Gender = as.factor(Gender)) %>%
+  select(-Ethnicity) 
+
+head(MergedQ11_13_demo)
+
+Q11Factors <- MergedQ11_13_demo %>%
+  select(starts_with("Q")) %>%
+  mutate_all(funs(ordered(.,(levels = c("Strongly disagree", "Disagree", 
+                                       "Neutral", "Agree", "Strongly agree"))))) 
+Q11Clean <- MergedQ11_13_demo %>%
+  select(-starts_with("Q")) %>%
+  cbind(Q11Factors)
+
+Q11Recoded <- Q11Clean %>%
+  mutate(across(Q11_1_post:Q13_18_post, ~as.numeric(recode(.,
+                                           "Strongly agree" = 2,
+                                           "Agree" = 1,
+                                           "Neutral" = 0,
+                                           "Disagree" = -1, 
+                                           "Strongly disagree" = -2)))) %>%
+  rename_with(~str_replace_all(., "_post", "")) 
+  
+head(Q11Recoded)
+```
+
+Pivoting the table into long format for analysis.
+
+```{r}
+Q11Long <- Q11Recoded %>%
+  pivot_longer(cols = Q11_1:Q13_18, 
+               names_to = "Question", 
+               values_to = "Answer")
+```
+
+First let's just look at the contingency tables to see if everything looks right.
+Note that our data exploration showed very high correlation between 11_1 and 11_3.
+
+```{r, echo=FALSE}
+print("Rows represents pre-survey response, Columns represent post-survey response.")
+print("First for All sections then for then for Fall 2021, Spring 2022.")
+Q11TextClean$Question[1]
+table(Q11Clean$Q11_1_post, Q11Clean$Q11_3_post)
+print("By Semester")
+Q11TextClean$Question[1]
+table(Q11Clean$Q11_1_post, Q11Clean$Q11_3_post, Q11Clean$Semester)
+```
+
+Setting up some visualizations
+
+```{r DataViz, echo=FALSE}
+addmargins(xtabs(~Q11_1_post+Q11_3_post, data=Q11Clean))
+addmargins(table(Q11Clean$Q11_1_post, Q11Clean$Q11_3_post))
+
+Q11Clean %>%
+  select(Q11_1_post, Q11_3_post, Semester) %>%
+  table() 
+
+Q11Clean %>%
+  select(Q11_1_post, Q11_3_post) %>%
+  table()
+
+# Colors are set up to be white for no change, blue for increase, red for decrease. 
+# Dark colors are for changes of 2 or more categories.
+# Palette came from https://www.schemecolor.com/red-white-blue-gradient.php (Happy Independence Day!)
+
+# colorcolumn = c("#FFFEFE", "#DB7A7B", "#BB0103", "#BB0103", "#BB0103", 
+#                 "#8F88D2", "#FFFEFE", "#DB7A7B", "#BB0103", "#BB0103",
+#                 "#1207A3", "#8F88D2", "#FFFEFE", "#DB7A7B", "#BB0103",
+#                 "#1207A3", "#1207A3", "#8F88D2", "#FFFEFE", "#DB7A7B",
+#                 "#1207A3", "#1207A3", "#1207A3", "#8F88D2", "#FFFEFE")
+
+colorcolumn = c("No Change", "Disagree +1", "Disagree >1", "Disagree >1", "Disagree >1", 
+                "Agree +1", "No Change", "Disagree +1", "Disagree >1", "Disagree >1",
+                "Agree >1", "Agree +1", "No Change", "Disagree +1", "Disagree >1",
+                "Agree >1", "Agree >1", "Agree +1", "No Change", "Disagree +1",
+                "Agree >1", "Agree >1", "Agree >1", "Agree +1", "No Change")
+
+colorcolumn <- factor(colorcolumn, 
+                         levels = c("Agree >1", "Agree +1", "No Change", "Disagree +1", "Disagree >1"))
+
+my_skim <-skim_with(numeric = sfl(median, iqr = IQR))
+```
+
+## PCA 
+
+First, I am going to use a PCA to determine if all 8 of these questions are similar or if there are any significant sub-groupings.
+
+```{r PCA Exploration, echo=FALSE}
+Q11forPCA <- Q11Recoded %>%
+  select(where(is.numeric)) %>% # retain only numeric columns
+  na.omit() # NA is bad
+
+Q11forPCAComplete <- Q11Clean %>%
+  na.omit()
+
+pca_fit <- Q11forPCA %>% 
+  prcomp() # do PCA on scaled data
+
+pca_fit %>%
+  augment(Q11forPCAComplete) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = ClassYear)) + 
+  geom_point(size = 1.5) +
+  scale_color_manual(
+    values = c(`First` = "#D55E00", `not First` = "#0072B2")
+  ) +
+  theme_half_open(12) + background_grid()
+
+pca_fit %>%
+  augment(Q11forPCAComplete) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = Gender)) + 
+  geom_point(size = 1.5) +
+  scale_color_manual(
+    values = c(`Male` = "#D55E00", `Female` = "#0072B2")
+  ) +
+  theme_half_open(12) + background_grid()
+
+pca_fit %>%
+  augment(Q11forPCAComplete) %>% # add original dataset back in
+  ggplot(aes(.fittedPC1, .fittedPC2, color = `Race/Ethnicity`)) + 
+  geom_point(size = 1.5) +
+  scale_color_manual(
+    values = c(`white students` = "#D55E00", `students of color` = "#0072B2")
+  ) +
+  theme_half_open(12) + background_grid()
+
+pca_fit %>%
+  tidy(matrix = "rotation")
+
+# define arrow style for plotting
+arrow_style <- arrow(
+  angle = 20, ends = "first", type = "closed", length = grid::unit(8, "pt")
+)
+
+# plot rotation matrix
+pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-1.25, .5) + ylim(-.5, 1) +
+  coord_fixed() + # fix aspect ratio to 1:1
+  theme_minimal_grid(12)
+
+pca_fit %>%
+  tidy(matrix = "eigenvalues")
+
+pca_fit %>%
+  tidy(matrix = "eigenvalues") %>%
+  ggplot(aes(PC, percent)) +
+  geom_col(fill = "#56B4E9", alpha = 0.8) +
+  scale_x_continuous(breaks = 1:9) +
+  scale_y_continuous(
+    labels = scales::percent_format(),
+    expand = expansion(mult = c(0, 0.01))
+  ) +
+  theme_minimal_hgrid(12)
+
+```
+
+This PCA demonstrated that all of the questions except Q11_2 are grouped together in PC1 and PC2, which, together, represent 66% of the variation in responses.
+
+## Fig 1 Question Correlation
+
+```{r Fig 1AB Question Correlation, echo=FALSE}
+SurveyCorrelation <- Q11Recoded %>%
+  select(Q11_1:Q13_18)
+
+p_mat <- ggcorrplot::cor_pmat(SurveyCorrelation)
+
+pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_text(
+    aes(label = column),
+    hjust = 1, nudge_x = -0.02, 
+    color = "#904C2F"
+  ) +
+  xlim(-0.5, 0.5) + ylim(-0.5, 0.5) +
+  coord_fixed() + # fix aspect ratio to 1:1
+  theme_minimal_grid(12)
+
+# Version without text labels for figure
+pca_fit %>%
+  tidy(matrix = "rotation") %>%
+  pivot_wider(names_from = "PC", names_prefix = "PC", values_from = "value") %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  xlim(-0.5, 0.5) + ylim(-0.5, 0.5) +
+  coord_fixed() + # fix aspect ratio to 1:1
+  theme_minimal_grid(12)
+
+model.matrix(~0+., data=SurveyCorrelation) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", insig = "blank",
+             p.mat = p_mat, lab=TRUE, lab_size=4)
+```
+
+Interesting. There is a strong correlation between all three Q11 questions, even though the PCA shows that question 11_2 is different. 
+I will plan on showing the PCA for Figure 1, then the two appropriate correlation plots.
+
+Q11_2 is "This course was a good way of learning about the process of scientific research" 
+while the other two questions on the overall evaluation are "This course was a good way of learning about the subject matter" 
+and "This course had a positive effect on my interest in science".
+
+I will next explore how the various metadata factors correlate with Q11_2 responses (and then address the other questions).
+
+## Demographics-Survey Correlation
+
+```{r Demographics Correlation, echo=FALSE}
+Q11_numeric <- Q11Recoded %>%
+  select(-Semester) %>% # Semester removed because it was misleading as a numeric variable
+  mutate_if(is.factor, as.numeric)
+
+p_mat <- ggcorrplot::cor_pmat(Q11_numeric)
+
+model.matrix(~0+., data=Q11_numeric) %>% 
+  cor(use="pairwise.complete.obs") %>% 
+  ggcorrplot(show.diag=FALSE, type="lower", insig = "blank",
+             p.mat = p_mat, lab=TRUE, lab_size=2)
+```
+
+As expected from the PCA, these questions all showed correlation with each other. 
+
+Questions 11_1 and 11_3 showed some negative correlation with semester, having lower responses in the Spring.
+
+But we can analyze this more completely using a glm approach. 
+Given the high degree of correlation between 11_1 and 11_3, we will only look at Q11_1 and Q11_2 and the Q13 questions.
+
+```{r, echo=FALSE}
+Q11_long <- Q11Clean %>% 
+  pivot_longer(cols = Q11_1_post:Q13_18_post, 
+               names_to = "Question", 
+               values_to = "Response") %>%
+  mutate(Question = str_replace(Question, "_post", ""))
+```
+
+
+## Figure 1C
+
+```{r Fig 1C Q10 By Semester, fig.width=5, fig.height=6, echo=FALSE}
+ggplot(Q11_long) +
+  geom_bar(aes(x = FallSpring, fill = fct_rev(Response)), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q11_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b", "#3c54cd", "#6598f8", "#b0cafb", "#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="bottom")
+```
+
+## Summary Statistics
+
+```{r, echo=FALSE}
+Q11_long %>%
+  mutate(Response = as.numeric(Response)) %>%
+  dplyr::group_by(Question) %>%
+  skim(Response)
+```
+

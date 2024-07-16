@@ -1,0 +1,1176 @@
+---
+title: "Post Benefits Question"
+author: "Ken Field"
+date: "Last compiled on `r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dpi = 300)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("conflicted")) install.packages("conflicted"); library(conflicted) #dplyr to rule them all
+if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+conflict_prefer_all("dplyr", quiet = TRUE)
+```
+
+## Loading Results
+
+Loading in the results without instructor information. 
+Note that because we want to analyze demographics for this question, we cannot look at instructor because that would lead to individuals being identifiable. 
+We also need to be careful about looking at both gender and race at the same time.
+
+```{r Load data}
+NoInstructorYear1 <- read_delim("../Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE) %>%
+  rename(Semester = Semester_pre)
+NoInstructorYear2 <- read_delim("../Year2/Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoInstructorYear3 <- read_delim("../Year3/Deidentified Surveys/NoInstructor.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+NoInstructor <- bind_rows(NoInstructorYear1, NoInstructorYear2, NoInstructorYear3)
+
+NoInstructorQuestions <- read_delim("../Deidentified Surveys/NoInstructorQuestions.tsv", 
+    delim = "\t", escape_double = FALSE, 
+    trim_ws = TRUE)
+```
+
+Removing any student who did not agree with the informed consent question:
+
+```{r, echo=FALSE}
+NoInstructor <- NoInstructor %>%
+  filter(Q1_pre == "Agree")
+```
+
+## Benefits of research experience
+
+This question (post-survey question 10) was only in the post-survey.
+I am going to try to keep the demographics for this analysis later.
+
+Note that pre-survey question 10 matched with post-survey question 9, while pre-survey question 11 matched with post-survey question 13. Post-survey question 10 was not matched with a pre-survey question.
+
+```{r Post Q10, echo=FALSE}
+PostQ10 <- NoInstructor %>%
+  select(Semester, Q4_pre, ends_with("_post")) %>%
+  select(Semester, Gender = Q2_post, 
+         Ethnicity = Q3_post, ClassYear = Q4_pre,
+         starts_with("Q10"))
+PostQ10 <- PostQ10 %>%
+  mutate(ClassYear=recode(ClassYear, 
+                          'I am a first-year college undergraduate.'='First', 
+                          'I am a second-year college undergraduate'='Second',
+                          'I am a third-year college undergraduate'='Third'))
+
+Q10Text <- NoInstructorQuestions %>%
+  filter(startsWith(value, "Q10")) %>%
+  filter(endsWith(value, "_post"))
+Q10Text$Question[01]
+Q10TextClean <- Q10Text %>%
+  mutate(Question = str_remove(Q10Text$Question, "In this section of the survey you will be asked to consider a variety of possible benefits you may have gained from your research experience. If for any reason you prefer not to answer, or consider the question irrelevant to you, please choose the \"\"Not applicable / Prefer not to answer\"\" option - "))
+Q10TextClean$Question
+```
+
+Now to see the responses:
+
+```{r, echo=FALSE}
+head(PostQ10)
+Q10Factors <- PostQ10 %>%
+  select(starts_with("Q")) %>%
+  mutate_all(funs(ordered(.,(levels = c("Very large gain", "Large gain", 
+                                       "Moderate gain", "Small gain", 
+                                       "No gain or very small gain"))))) 
+Q10Clean <- PostQ10 %>%
+  select(-starts_with("Q")) %>%
+  cbind(Q10Factors) %>%
+  mutate(Gender = as.factor(Gender)) %>%
+  mutate(Ethnicity = as.factor(Ethnicity)) %>%
+  mutate(ClassYear = as.factor(ClassYear))
+summary(Q10Clean)
+```
+
+```{r, echo=FALSE}
+dataQ10 <- as.data.frame(table(Q10Clean$Q10_1_post)) %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_2_post)), by = "Var1") %>% 
+  full_join(as.data.frame(table(Q10Clean$Q10_3_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_4_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_5_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_6_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_7_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_8_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_9_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_10_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_11_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_12_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_13_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_14_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_15_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_16_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_17_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_18_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_19_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_20_post)), by = "Var1") %>%
+  full_join(as.data.frame(table(Q10Clean$Q10_21_post)), by = "Var1") 
+
+names(dataQ10) <- c("Var1", names(Q10Clean)[4:24])
+names(dataQ10) <- gsub("_post", "", names(dataQ10))
+rownames(dataQ10) <- dataQ10$Var1
+dataQ10 <- dataQ10 %>%
+  select(-Var1)
+
+ggballoonplot(t(dataQ10))
+
+print("In this section of the survey you will be asked to consider a variety of possible benefits you may have gained from your research experience. If for any reason you prefer not to answer, or consider the question irrelevant to you, please choose the Not applicable / Prefer not to answer option - ")
+
+print(Q10TextClean)
+```
+
+## Cleaning Demographics 
+
+Note that we decided to simplify the race/ethnicity variable in the hopes of keeping a large enough
+sample size for analysis. This is probably still necessary even though we have 3 years of results.
+
+```{r Demographics}
+Q10 <- Q10Clean 
+names(Q10) <- gsub("Q10_", "Q", names(Q10))
+names(Q10) <- gsub("_post", "", names(Q10))
+
+# Remove Prefer not to answer and recode to white and other race/ethnicity.
+Q10_demo <- Q10 %>%
+  filter(Ethnicity != "Prefer not to answer") %>% 
+  mutate(`Race/Ethnicity` = recode(Ethnicity, 
+                                   "White" = "White Students", .default = "Students of Color")) %>%
+  mutate(`Race/Ethnicity` = factor(`Race/Ethnicity`, levels = c("White Students", "Students of Color"))) %>%
+  mutate(ClassYear = as.factor(recode(ClassYear, 
+                                      "First" = "First", "Second" = "not First", "Third" = "not First"))) %>%
+  select(-Ethnicity) %>%
+  rename(Q01=Q1, Q02=Q2, Q03=Q3, Q04=Q4, Q05=Q5, Q06=Q6, Q07=Q7, Q08=Q8, Q09=Q9)
+
+table(Q10$Ethnicity, Q10$Gender)
+table(Q10$Ethnicity)
+table(Q10$Gender)
+```
+
+## Bar plots
+
+```{r Q10 Bar, echo=FALSE}
+ggplot(Q10_demo) +
+  geom_bar(aes(x = Gender, fill = Q01), position = 'fill', width = 0.5, na.rm = TRUE) +
+  facet_grid(Q10_demo$Race) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Gender') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray()
+```
+
+Because of the small numbers, we will not look at each question by both Gender and Race. 
+This needs to be revisited now that we have more data.
+
+```{r, echo=FALSE}
+table(Q10_demo$`Race/Ethnicity`, Q10_demo$Gender)
+```
+
+We will need to remove the Non-binary and Prefer not to answer students, but we can keep 
+the Male and Female students separate.
+
+```{r, echo=FALSE}
+Q10_demo <- Q10_demo %>%
+  filter(Gender %in% c("Female", "Male"))
+
+table(Q10_demo$`Race/Ethnicity`, Q10_demo$Gender)
+```
+
+The numbers of non-white students who are not first years is quite small (only 3).
+We should not look at both class year and race together.
+
+```{r, echo=FALSE}
+table(Q10_demo$`Race/Ethnicity`, Q10_demo$ClassYear)
+```
+
+Prepare the data to look at all of the questions at once.
+
+```{r, echo=FALSE}
+Q10_demo_long <- Q10_demo %>% 
+  pivot_longer(cols = `Q01`:`Q21`, 
+               names_to = "Question", 
+               values_to = "Response")
+```
+
+```{r Q10 By Gender, fig.width=4, fig.height=8, echo=FALSE}
+ggplot(Q10_demo_long) +
+  geom_bar(aes(x = Gender, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Gender') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="none")
+```
+
+```{r Q10 By Race, fig.width=4, fig.height=8, echo=FALSE}
+ggplot(Q10_demo_long) +
+  geom_bar(aes(x = `Race/Ethnicity`, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Race/Ethnicity') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="none")
+```
+
+```{r Q10 By Class Year, fig.width=4, fig.height=8, echo=FALSE}
+ggplot(Q10_demo_long) +
+  geom_bar(aes(x = `ClassYear`, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Class Year') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="none")
+```
+
+```{r Q10 By 6 Semesters, fig.width=4, fig.height=8, echo=FALSE}
+ggplot(Q10_demo_long) +
+  geom_bar(aes(x = `Semester`, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="none")
+```
+
+Simplifying the semesters to compare Fall to Spring.
+
+```{r, echo=FALSE}
+Q10_demo_long <- Q10_demo_long %>%
+  mutate(across(Semester, str_replace, ' 2021| 2022| 2023| 2024', '')) %>%
+  mutate(Semester = as.factor(Semester))
+```
+
+
+```{r Q10 By Semester, fig.width=4, fig.height=8, echo=FALSE}
+ggplot(Q10_demo_long) +
+  geom_bar(aes(x = `Semester`, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_long$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position="none")
+```
+
+## Statistical models 
+
+For each question, testing whether gender or race were significant.
+I am also including semester because we expect students who have had a prior semester of the new Biology core to also have had some influence on their responses.
+
+For this analysis we will consider all Fall and Spring semesters together.
+We will also look at the first-year students versus the others. 
+
+Should the sophomores and junior  be put into "Spring" for the previous experience analysis? 
+(probably, but just leaving them out of the semester analysis is much easier)
+
+Note that the dependent variable in the model is calculated as "5-as.numeric(Response)" because the responses range from 1=Very large gain to 5=No gain or very small gain. 
+This converts the response variable into a numeric value from 0 to 4 with a positive estimate meaning an improvement in the response on the qualitative scale.
+
+## Analysis by ClassYear and Gender {.tabset .tabset-pills}
+
+### Q10_01
+
+```{r Q01 model 1, echo=FALSE}
+print(Q10TextClean$Question[01])
+Q01_select <- Q10_demo_long %>%
+  filter(Question == "Q01") %>%
+  na.omit() 
+Q01_model_1 <- glm(data = Q01_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q01_model_1)
+```
+
+### Q10_02
+
+```{r Q02 model 1, echo=FALSE}
+print(Q10TextClean$Question[02])
+Q02_select <- Q10_demo_long %>%
+  filter(Question == "Q02") %>%
+  na.omit() 
+Q02_model_1 <- glm(data = Q02_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q02_model_1)
+```
+
+### Q10_03
+
+```{r Q03 model 1, echo=FALSE}
+print(Q10TextClean$Question[03])
+Q03_select <- Q10_demo_long %>%
+  filter(Question == "Q03") %>%
+  na.omit() 
+Q03_model_1 <- glm(data = Q03_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q03_model_1)
+
+Q03_select %>% group_by(Response) %>% tally()
+```
+
+### Q10_04
+
+```{r Q04 model 1, echo=FALSE}
+print(Q10TextClean$Question[04])
+Q04_select <- Q10_demo_long %>%
+  filter(Question == "Q04") %>%
+  na.omit() 
+Q04_model_1 <- glm(data = Q04_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q04_model_1)
+```
+
+### Q10_05
+
+```{r Q05 model 1, echo=FALSE}
+print(Q10TextClean$Question[05])
+Q05_select <- Q10_demo_long %>%
+  filter(Question == "Q05") %>%
+  na.omit() 
+Q05_model_1 <- glm(data = Q05_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q05_model_1)
+```
+
+### Q10_06
+
+```{r Q06 model 1, echo=FALSE}
+print(Q10TextClean$Question[06])
+Q06_select <- Q10_demo_long %>%
+  filter(Question == "Q06") %>%
+  na.omit() 
+Q06_model_1 <- glm(data = Q06_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q06_model_1)
+```
+
+### Q10_07
+
+```{r Q07 model 1, echo=FALSE}
+print(Q10TextClean$Question[07])
+Q07_select <- Q10_demo_long %>%
+  filter(Question == "Q07") %>%
+  na.omit() 
+Q07_model_1 <- glm(data = Q07_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q07_model_1)
+```
+
+### Q10_08
+
+```{r Q08 model 1, echo=FALSE}
+print(Q10TextClean$Question[08])
+Q08_select <- Q10_demo_long %>%
+  filter(Question == "Q08") %>%
+  na.omit() 
+Q08_model_1 <- glm(data = Q08_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q08_model_1)
+```
+
+### Q10_09
+
+```{r Q09 model 1, echo=FALSE}
+print(Q10TextClean$Question[09])
+Q09_select <- Q10_demo_long %>%
+  filter(Question == "Q09") %>%
+  na.omit() 
+Q09_model_1 <- glm(data = Q09_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q09_model_1)
+```
+
+### Q10_10
+
+```{r Q10 model 1, echo=FALSE}
+print(Q10TextClean$Question[10])
+Q10_select <- Q10_demo_long %>%
+  filter(Question == "Q10") %>%
+  na.omit() 
+Q10_model_1 <- glm(data = Q10_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q10_model_1)
+```
+
+### Q10_11
+
+```{r Q11 model 1, echo=FALSE}
+print(Q10TextClean$Question[11])
+Q11_select <- Q10_demo_long %>%
+  filter(Question == "Q11") %>%
+  na.omit() 
+Q11_model_1 <- glm(data = Q11_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q11_model_1)
+```
+
+### Q10_12
+
+```{r Q12 model 1, echo=FALSE}
+print(Q10TextClean$Question[12])
+Q12_select <- Q10_demo_long %>%
+  filter(Question == "Q12") %>%
+  na.omit() 
+Q12_model_1 <- glm(data = Q12_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q12_model_1)
+```
+
+### Q10_13
+
+```{r Q13 model 1, echo=FALSE}
+print(Q10TextClean$Question[13])
+Q13_select <- Q10_demo_long %>%
+  filter(Question == "Q13") %>%
+  na.omit() 
+Q13_model_1 <- glm(data = Q13_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q13_model_1)
+```
+
+### Q10_14
+
+```{r Q14 model 1, echo=FALSE}
+print(Q10TextClean$Question[14])
+Q14_select <- Q10_demo_long %>%
+  filter(Question == "Q14") %>%
+  na.omit() 
+Q14_model_1 <- glm(data = Q14_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q14_model_1)
+```
+
+### Q10_15
+
+```{r Q15 model 1, echo=FALSE}
+print(Q10TextClean$Question[15])
+Q15_select <- Q10_demo_long %>%
+  filter(Question == "Q15") %>%
+  na.omit() 
+Q15_model_1 <- glm(data = Q15_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q15_model_1)
+```
+
+### Q10_16
+
+```{r Q16 model 1, echo=FALSE}
+print(Q10TextClean$Question[16])
+Q16_select <- Q10_demo_long %>%
+  filter(Question == "Q16") %>%
+  na.omit() 
+Q16_model_1 <- glm(data = Q16_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q16_model_1)
+```
+
+### Q10_17
+
+```{r Q17 model 1, echo=FALSE}
+print(Q10TextClean$Question[17])
+Q17_select <- Q10_demo_long %>%
+  filter(Question == "Q17") %>%
+  na.omit() 
+Q17_model_1 <- glm(data = Q17_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q17_model_1)
+```
+
+### Q10_18
+
+```{r Q18 model 1, echo=FALSE}
+print(Q10TextClean$Question[18])
+Q18_select <- Q10_demo_long %>%
+  filter(Question == "Q18") %>%
+  na.omit() 
+Q18_model_1 <- glm(data = Q18_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q18_model_1)
+```
+
+### Q10_19
+
+```{r Q19 model 1, echo=FALSE}
+print(Q10TextClean$Question[19])
+Q19_select <- Q10_demo_long %>%
+  filter(Question == "Q19") %>%
+  na.omit() 
+Q19_model_1 <- glm(data = Q19_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q19_model_1)
+```
+
+### Q10_20
+
+```{r Q20 model 1, echo=FALSE}
+print(Q10TextClean$Question[20])
+Q20_select <- Q10_demo_long %>%
+  filter(Question == "Q20") %>%
+  na.omit() 
+Q20_model_1 <- glm(data = Q20_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q20_model_1)
+```
+
+### Q10_21
+
+```{r Q21 model 1, echo=FALSE}
+print(Q10TextClean$Question[21])
+Q21_select <- Q10_demo_long %>%
+  filter(Question == "Q21") %>%
+  na.omit() 
+Q21_model_1 <- glm(data = Q21_select, 
+                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
+  stepAIC(direction = "backward")
+summary(Q21_model_1)
+```
+
+## Summary of Analysis by ClassYear and Gender
+
+Most of the questions depended on Gender alone, but that question is better dealt in Model 2.
+
+The following questions showed dependence on Class Year alone:
+
+- Q10_04: "Readiness for more demanding research" Estimate -0.506 for not First Year.
+- Q10_12: "Learning ethical conduct in your field" Estimate -0.446 for not First Year.
+
+The following questions showed dependence on Class Year and also an interaction with Gender:
+
+- Q10_03: "Tolerance for obstacles faced in the research process" Estimate -0.979 for not First Year.
+- Q10_08: "Understanding of how scientists work on real problems" Estimate -0.473 for not First Year.
+- Q10_11: "Understanding science" Estimate -0.660 for not First Year.
+- Q10_18: "Understanding of how scientists think" Estimate -0.615 for not First Year.
+- Q10_21: "Confidence in my potential to be a teacher of science" Estimate -0.835 for not First Year.
+
+For each of these questions that maintained the interaction during model selection, 
+the effect size of the interaction was always at least as large (and usually larger) than that of Class Year alone. 
+This means that male students who were not first-year students showed similar perceived benefits as first-year students, 
+while female students showed significantly less perceived benefits. 
+
+Here are the cat_plots showing these interactions:
+
+```{r Interaction Q10_03, echo=FALSE}
+cat_plot(model = Q03_model_1, pred = ClassYear, modx = Gender,
+              interval = TRUE, x.label = "Class Year",  
+              y.label = "Student Percieved Gain")
+```
+
+
+```{r Interaction Q10_08, echo=FALSE}
+cat_plot(model = Q08_model_1, pred = ClassYear, modx = Gender,
+              interval = TRUE, x.label = "Class Year",  
+              y.label = "Student Percieved Gain")
+```
+
+```{r Interaction Q10_11, echo=FALSE}
+cat_plot(model = Q11_model_1, pred = ClassYear, modx = Gender,
+              interval = TRUE, x.label = "Class Year",  
+              y.label = "Student Percieved Gain")
+```
+
+```{r Interaction Q10_18, echo=FALSE}
+cat_plot(model = Q18_model_1, pred = ClassYear, modx = Gender,
+              interval = TRUE, x.label = "Class Year",  
+              y.label = "Student Percieved Gain")
+```
+
+```{r Interaction Q10_32, echo=FALSE}
+cat_plot(model = Q21_model_1, pred = ClassYear, modx = Gender, 
+              interval = TRUE, x.label = "Class Year",  
+              y.label = "Student Percieved Gain")
+```
+
+
+## Analysis by Semester and Demo {.tabset .tabset-pills}
+
+### Q10_01
+
+```{r Q01 model 2, echo=FALSE}
+print(Q10TextClean$Question[01])
+Q01_select <- Q10_demo_long %>%
+  filter(Question == "Q01") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q01_model <- glm(data = Q01_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q01_model)
+```
+
+### Q10_02
+
+```{r Q02 model 2, echo=FALSE}
+print(Q10TextClean$Question[02])
+Q02_select <- Q10_demo_long %>%
+  filter(Question == "Q02") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q02_model <- glm(data = Q02_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q02_model)
+```
+
+### Q10_03
+
+```{r Q03 model 2, echo=FALSE}
+print(Q10TextClean$Question[03])
+Q03_select <- Q10_demo_long %>%
+  filter(Question == "Q03") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q03_model <- glm(data = Q03_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q03_model)
+
+Q03_select %>% group_by(Response) %>% tally()
+```
+
+### Q10_04
+
+```{r Q04 model 2, echo=FALSE}
+print(Q10TextClean$Question[04])
+Q04_select <- Q10_demo_long %>%
+  filter(Question == "Q04") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q04_model <- glm(data = Q04_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q04_model)
+```
+
+### Q10_05
+
+```{r Q05 model 2, echo=FALSE}
+print(Q10TextClean$Question[05])
+Q05_select <- Q10_demo_long %>%
+  filter(Question == "Q05") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q05_model <- glm(data = Q05_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q05_model)
+```
+
+### Q10_06
+
+```{r Q06 model 2, echo=FALSE}
+print(Q10TextClean$Question[06])
+Q06_select <- Q10_demo_long %>%
+  filter(Question == "Q06") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q06_model <- glm(data = Q06_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q06_model)
+```
+
+### Q10_07
+
+```{r Q07 model 2, echo=FALSE}
+print(Q10TextClean$Question[07])
+Q07_select <- Q10_demo_long %>%
+  filter(Question == "Q07") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q07_model <- glm(data = Q07_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q07_model)
+```
+
+### Q10_08
+
+```{r Q08 model 2, echo=FALSE}
+print(Q10TextClean$Question[08])
+Q08_select <- Q10_demo_long %>%
+  filter(Question == "Q08") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q08_model <- glm(data = Q08_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q08_model)
+```
+
+### Q10_09
+
+```{r Q09 model 2, echo=FALSE}
+print(Q10TextClean$Question[09])
+Q09_select <- Q10_demo_long %>%
+  filter(Question == "Q09") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q09_model <- glm(data = Q09_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q09_model)
+```
+
+### Q10_10
+
+```{r Q10 model 2, echo=FALSE}
+print(Q10TextClean$Question[10])
+Q10_select <- Q10_demo_long %>%
+  filter(Question == "Q10") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q10_model <- glm(data = Q10_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q10_model)
+```
+
+### Q10_11
+
+```{r Q11 model 2, echo=FALSE}
+print(Q10TextClean$Question[11])
+Q11_select <- Q10_demo_long %>%
+  filter(Question == "Q11") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q11_model <- glm(data = Q11_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q11_model)
+```
+
+### Q10_12
+
+```{r Q12 model 2, echo=FALSE}
+print(Q10TextClean$Question[12])
+Q12_select <- Q10_demo_long %>%
+  filter(Question == "Q12") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q12_model <- glm(data = Q12_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q12_model)
+```
+
+### Q10_13
+
+```{r Q13 model 2, echo=FALSE}
+print(Q10TextClean$Question[13])
+Q13_select <- Q10_demo_long %>%
+  filter(Question == "Q13") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q13_model <- glm(data = Q13_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q13_model)
+```
+
+### Q10_14
+
+```{r Q14 model 2, echo=FALSE}
+print(Q10TextClean$Question[14])
+Q14_select <- Q10_demo_long %>%
+  filter(Question == "Q14") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q14_model <- glm(data = Q14_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q14_model)
+```
+
+### Q10_15
+
+```{r Q15 model 2, echo=FALSE}
+print(Q10TextClean$Question[15])
+Q15_select <- Q10_demo_long %>%
+  filter(Question == "Q15") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q15_model <- glm(data = Q15_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q15_model)
+```
+
+### Q10_16
+
+```{r Q16 model 2, echo=FALSE}
+print(Q10TextClean$Question[16])
+Q16_select <- Q10_demo_long %>%
+  filter(Question == "Q16") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q16_model <- glm(data = Q16_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q16_model)
+```
+
+### Q10_17
+
+```{r Q17 model 2, echo=FALSE}
+print(Q10TextClean$Question[17])
+Q17_select <- Q10_demo_long %>%
+  filter(Question == "Q17") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q17_model <- glm(data = Q17_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q17_model)
+```
+
+### Q10_18
+
+```{r Q18 model 2, echo=FALSE}
+print(Q10TextClean$Question[18])
+Q18_select <- Q10_demo_long %>%
+  filter(Question == "Q18") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q18_model <- glm(data = Q18_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q18_model)
+```
+
+### Q10_19
+
+```{r Q19 model 2, echo=FALSE}
+print(Q10TextClean$Question[19])
+Q19_select <- Q10_demo_long %>%
+  filter(Question == "Q19") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q19_model <- glm(data = Q19_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q19_model)
+```
+
+### Q10_20
+
+```{r Q20 model 2, echo=FALSE}
+print(Q10TextClean$Question[20])
+Q20_select <- Q10_demo_long %>%
+  filter(Question == "Q20") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q20_model <- glm(data = Q20_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q20_model)
+```
+
+### Q10_21
+
+```{r Q21 model 2, echo=FALSE}
+print(Q10TextClean$Question[21])
+Q21_select <- Q10_demo_long %>%
+  filter(Question == "Q21") %>%
+  filter(ClassYear == "First") %>% na.omit() 
+Q21_model <- glm(data = Q21_select, 
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
+  stepAIC(direction = "backward")
+summary(Q21_model)
+```
+
+
+## Summary
+
+Note that only first-year students are included in this analysis.
+
+Most of the responses showed a dependence on the semester, although the significance was sometimes marginal. 
+This needs to be interpreted carefully as the responses in the Spring semester, if different, were always less positive than in the Fall. 
+That is, the students in the Spring perceived less of a gain in these measures due to the CURE Lab than those in the Fall semester. 
+This is consistent with the hypothesis that BIO Seminar provided some gain in these measures and, therefore, the gains due to the CURE Lab were smaller. 
+
+Questions that showed dependence on the Semester, but not Race or Gender:
+
+2   4   13    14    15    16    
+
+Question that showed dependence on Gender and Race, but not Semester:
+
+1
+
+Question that showed dependence on Semester and Race, but not Gender: 
+
+21
+
+Question that showed dependence on Semester and Gender, but not Race: 
+
+7
+
+Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester:
+
+6   9   12
+
+Questions that did not depend on Semester, Race, or Gender:
+
+3   5   8   10    11    17    18    19    20
+
+Here is the list of questions for reference:
+
+Preface: In this section of the survey you will be asked to consider a variety of possible benefits you may have gained from your research experience. If for any reason you prefer not to answer, or consider the question irrelevant to you, please choose the "Not applicable / Prefer not to answer" option 
+
+ [1] "Clarification of a career path"                                      
+ [2] "Skill in the interpretation of results"                              
+ [3] "Tolerance for obstacles faced in the research process"               
+ [4] "Readiness for more demanding research"                               
+ [5] "Understanding how knowledge is constructed"                          
+ [6] "Understanding of the research process in your field"                 
+ [7] "Ability to integrate theory and practice"                            
+ [8] "Understanding of how scientists work on real problems"               
+ [9] "Understanding that scientific assertions require supporting evidence"
+[10] "Ability to analyze data and other information"                       
+[11] "Understanding science"                                               
+[12] "Learning ethical conduct in your field"                              
+[13] "Learning laboratory techniques"                                      
+[14] "Ability to read and understand primary literature"                   
+[15] "Skill in how to give an effective oral presentation"                 
+[16] "Skill in science writing"                                            
+[17] "Self-confidence"                                                     
+[18] "Understanding of how scientists think"                               
+[19] "Learning to work independently"                                      
+[20] "Becoming part of a learning community"                               
+[21] "Confidence in my potential to be a teacher of science"
+
+## Final Figures
+
+
+### New Final Figure 6
+
+2   4   13    14    15    16
+
+```{r Q10 By Semester big, fig.height=4, echo=FALSE}
+Q10_demo_semester <- Q10_demo_long %>%
+  filter(Question %in% c('Q02', 'Q04','Q13','Q14', 'Q15', 'Q16'))
+ggplot(Q10_demo_semester) +
+  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
+  facet_grid(as.factor(Q10_demo_semester$Question)) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray()
+```
+
+### New Final Figure 7A
+
+21
+
+```{r Q10 By Semester and race, fig.height=1.5, echo=FALSE}
+Q10_demo_semester_race <- Q10_demo_long %>%
+  filter(Question == 'Q21')
+ggplot(Q10_demo_semester_race) +
+  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
+  facet_wrap(~ as.factor(Q10_demo_semester_race$Question) + Q10_demo_semester_race$`Race/Ethnicity`) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position = "none")
+```
+
+### New Final Figure 7C
+
+3   5   8   10    11    17    18    19    20
+
+```{r Q10 By None, fig.height=2.75, echo=FALSE}
+Q10_demo_none <- Q10_demo_long %>%
+  filter(Question %in% c('Q03','Q05','Q08','Q10','Q11','Q17','Q18','Q19','Q20'))
+ggplot(Q10_demo_none) +
+  geom_bar(aes(x = Question, fill = Response), position = 'fill', width = 0.75) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Question') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position = "none")
+```
+
+### New Final Figure 7B
+
+7
+
+```{r Q10 By Semester and gender, fig.height=1.5, echo=FALSE}
+Q10_demo_semester_gender <- Q10_demo_long %>%
+  filter(Question == 'Q07')
+ggplot(Q10_demo_semester_gender) +
+  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
+  facet_wrap(~ as.factor(Q10_demo_semester_gender$Question) + Q10_demo_semester_gender$Gender) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position = "none")
+```
+
+
+### New Final Figure 7D
+
+1
+
+```{r Q10 By Race and gender, fig.height=1.5, echo=FALSE}
+Q10_demo_race_gender <- Q10_demo_long %>%
+  filter(Question == 'Q01')
+ggplot(Q10_demo_race_gender) +
+  geom_bar(aes(x = `Race/Ethnicity`, fill = Response), position = 'fill', width = 0.75) +
+  facet_wrap(~ as.factor(Q10_demo_race_gender$Question) + Q10_demo_race_gender$Gender) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Race/Ethicity') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray() +
+  theme(legend.position = "none")
+```
+
+
+### New Figure 7E
+
+For this I need some cat plots.
+
+Question that showed dependence on Gender and Race, but not Semester: 1
+Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester: 6   9   12
+
+```{r Q10 By All, fig.height=2.5, echo=FALSE}
+Q10_demo_all <- Q10_demo_long %>%
+  filter(Question %in% c('Q01','Q06','Q09','Q12'))
+ggplot(Q10_demo_all) +
+  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
+  facet_wrap(~ Q10_demo_all$`Race/Ethnicity` + Q10_demo_all$Gender) +
+  coord_flip() +
+  ylab('Proportion') +
+  xlab('Semester') +
+  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme_gray()
+```
+
+```{r Interaction 01, echo=FALSE}
+cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+catplot01 <- cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+```
+
+
+```{r Interaction 06, echo=FALSE}
+cat_plot(model = Q06_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+catplot06 <- cat_plot(model = Q06_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+```
+
+
+```{r Interaction 09, echo=FALSE}
+cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+catplot09 <- cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+```
+
+
+```{r Interaction 12, echo=FALSE}
+cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+catplot12 <- cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
+              interval = TRUE, x.label = "Race/Ethnicity",  
+              y.label = "Student Perceived\n Gain")
+```
+
+```{r Combined Interaction Plots, fig.height=4, echo=FALSE}
+catplot01_fixed <- catplot01 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none", 
+                  plot.title = element_text(size = 10, face = "plain")) +
+#  scale_x_discrete(labels= c("White Students", "Students of Color")) +
+  ylim(c(1.0, 3.5)) +
+  ggtitle("Clarification of a career path")
+catplot06_fixed <- catplot06 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"),
+                  legend.position = "none",
+                  plot.title = element_text(size = 10, face = "plain")) +
+#  scale_x_discrete(labels= c("White Students", "Students of Color")) +
+  ylim(c(1.0, 3.5)) +
+  ggtitle("Understanding of the research process")
+catplot09_fixed <- catplot09 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"),
+                  legend.position = "none",
+                  plot.title = element_text(size = 10, face = "plain")) +
+#  scale_x_discrete(labels= c("White Students", "Students of Color")) +
+  ylim(c(1.0, 3.5)) +
+  ggtitle("Scientific assertions require evidence")
+catplot12_fixed <- catplot12 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none",
+                  plot.title = element_text(size = 10, face = "plain")) +
+#  scale_x_discrete(labels= c("White Students", "Students of Color")) +
+  ylim(c(1.0, 3.5)) +
+  labs(title = "Learning ethical conduct in your field")
+
+ggarrange(catplot01, catplot06, catplot09, catplot12, ncol = 2, nrow = 2)
+ggarrange(catplot01_fixed, catplot06_fixed, catplot09_fixed, catplot12_fixed, ncol = 2, nrow = 2)
+
+```
+

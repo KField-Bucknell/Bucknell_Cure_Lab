@@ -1,0 +1,432 @@
+---
+title: "Outcomes"
+author: "Ken Field"
+date: "Last compiled on `r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dpi = 300)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
+if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
+if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
+if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require('pdftools')) install.packages('pdftools'); library(pdftools) #reading tables from pdfs
+if (!require('performance')) install.packages('performance'); library(performance) # visualizing glm
+if (!require('pscl')) install.packages('pscl'); library(pscl) # zero-inflated glm
+if (!require('DHARMa')) install.packages('DHARMa'); library(DHARMa) # for testing glms
+if (!require("magrittr")) install.packages("magrittr"); library(magrittr)
+if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+conflict_prefer_all("dplyr", quiet = TRUE)
+```
+
+We wish to determine if the new core classes (CURE Lab and BIO Seminar) are helping students to succeed academically.
+
+## Loading Results
+
+I asked the registrar to help me answer the following questions:
+1. What was the DFW rate for first-year students in BIOL 205 and 206 from SP 2017 to FA 2019?
+2. What was the DFW rate for first-year students in BIOL 201 and 202 from FA 2021 to SP 2022?
+
+They sent us the files located in the "Grade Outcomes" folder.
+
+Note that the analysis 205 and 206 only includes first-year students in these Biology classes, even though there are other students in these classes.
+This is to make it more comparable to 201 and 202 which are not taken by nearly as broad a spectrum of students.
+
+Importing data for 205 and 206.
+
+```{r Entering Results 1, echo=FALSE}
+BIOL205_206 <- read_excel("../Grade Outcomes/BIOL205_206 Grade Distribution_First Years by Gender & Ethnicity.xlsx", 
+                          sheet = "Detail by Student") %>%
+  select("Academic Period Description", "Course Identification", "Student Classification", 
+         "Gender Description", "Ethnicity Description", "Final Grade") %>%
+  filter(`Student Classification` == "FR") %>%
+  select(-`Student Classification`) %>%
+  rename(Semester = `Academic Period Description`, Course = `Course Identification`,
+         Gender = `Gender Description`, 
+         Grade = `Final Grade`) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  mutate(across(Grade, str_replace, 'A|B|C', 'Pass')) %>%
+  mutate(across(Grade, str_replace, 'Pass-', 'Pass')) %>%
+  mutate(across(Grade, str_replace, 'Pass\\+', 'Pass')) %>%
+  filter(`Ethnicity Description` != "Unknown") %>%
+  mutate(isWhite = `Ethnicity Description`=="White") %>%
+  mutate(`Race/Ethnicity` = if_else(isWhite, "White", "nonWhite")) %>%
+  select(-`Ethnicity Description`, -isWhite) %>%
+  mutate(Curriculum = "Old")
+
+
+names(BIOL205_206)
+summary(as.factor(BIOL205_206$Course))
+summary(as.factor(BIOL205_206$Grade))
+summary(as.factor(BIOL205_206$Semester))
+summary(as.factor(BIOL205_206$Gender))
+summary(as.factor(BIOL205_206$`Race/Ethnicity`))
+```
+
+Importing data from 201 and 202.
+The spreadsheets have a very awkward format and need to be checked carefully. 
+Before I imported the data, I consolidated it within excel to make the three years have a consistent format.
+
+```{r, echo=FALSE}
+D_F_W_Report_BIOL201_202_AY21_22 <- read_excel("../Grade Outcomes/D, F, W Report_BIOL201 & 202 AY21-22.xlsx", 
+                                               sheet = "forImport")
+D_F_W_Report_BIOL201_202_AY22_23 <- read_excel("../Grade Outcomes/D, F, W Report_BIOL201 & 202 AY22-23.xlsx", 
+                                               sheet = "forImport")
+Grade_Distribution_BIOL_201_202_AY23_24 <- read_excel("../Grade Outcomes/Grade Distribution_BIOL 201 & 202 AY23-24.xlsx", 
+                                                      sheet = "forImport")
+```
+
+Converting Totals into Passes by subtracting each D, F, or W.
+
+```{r, echo=FALSE}
+names(D_F_W_Report_BIOL201_202_AY21_22)
+DFW_21_22 <- D_F_W_Report_BIOL201_202_AY21_22 %>%
+  mutate(Pass_Female_White = Female_Total_White - (F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (D_Male_White + W_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (D_Male_nonWhite + W_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite)
+
+names(D_F_W_Report_BIOL201_202_AY22_23)
+DFW_22_23 <- D_F_W_Report_BIOL201_202_AY22_23 %>%
+  mutate(Pass_Female_White = Female_Total_White - (D_Female_White + F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (W_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (D_Female_nonWhite + F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (W_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite)
+
+names(Grade_Distribution_BIOL_201_202_AY23_24)
+DFW_23_24 <- Grade_Distribution_BIOL_201_202_AY23_24 %>%
+  mutate(Pass_Female_White = Female_Total_White - (D_Female_White + F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (D_Male_White + F_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (D_Female_nonWhite + F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (D_Male_nonWhite + F_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite)
+```
+
+Now pivoting the table and splitting the categories
+
+```{r}
+names(DFW_21_22)
+DFW_21_22_long <- DFW_21_22 %>%
+  pivot_longer(cols = D_Male_White:Pass_Male_nonWhite, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_21_22_long$Grade))
+
+names(DFW_22_23)
+DFW_22_23_long <- DFW_22_23 %>%
+  pivot_longer(cols = D_Female_White:Pass_Male_nonWhite, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_22_23_long$Grade))
+
+names(DFW_23_24)
+DFW_23_24_long <- DFW_23_24 %>%
+  pivot_longer(cols = D_Female_White:Pass_Male_nonWhite, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_23_24_long$Grade))
+
+DFW_201_202 <- DFW_21_22_long %>%
+  add_row(DFW_22_23_long) %>%
+  add_row(DFW_23_24_long) %>%
+  mutate(Curriculum = "New")
+
+```
+
+Combining the two datasets
+
+```{r}
+All_DFW <- BIOL205_206 %>%
+  select(names(DFW_201_202)) %>%
+  add_row(DFW_201_202) %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate(Curriculum = fct_relevel(Curriculum, c("Old", "New"))) %>%
+  mutate(`Race/Ethnicity` = fct_relevel(`Race/Ethnicity`, c("White", "nonWhite")))
+
+Only202_DFW <- All_DFW %>%
+  filter(Course != "BIOL201")
+
+summary(All_DFW)
+summary(Only202_DFW)
+
+All_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+Only202_DFW %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+```
+
+## Modeling results with negative binomial glm
+
+### Both 201 and 202
+
+```{r, echo=FALSE}
+All_DFW <- All_DFW %>%
+  mutate(DFW = Grade == "DFW")
+
+model1 <- glm.nb(DFW ~ Curriculum, data = All_DFW)
+summary(model1)
+model_full <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = All_DFW)
+summary(model_full)
+```
+
+Very interesting. 
+
+```{r}
+selected_model <- model_full %>%
+  stepAIC(direction = "backward")
+summary(selected_model)
+```
+
+
+```{r, echo=FALSE}
+newdata <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
+  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
+predict.glm(selected_model, newdata=newdata, type="response")
+selected_model
+check_zeroinflation(selected_model)
+check_overdispersion(selected_model)
+performance(selected_model)
+summary(selected_model)
+```
+
+```{r, echo=FALSE}
+exp(-2.2797)
+exp(-2.2797+0.3154)
+exp(-2.2797-0.3154)
+```
+
+
+```{r, echo=FALSE}
+exp(-1.6256)
+exp(-1.6256+0.1270)
+exp(-1.6256-0.1270)
+
+1/ exp(-1.6256)
+1/ exp(-1.6256+0.1270)
+1/ exp(-1.6256-0.1270)
+```
+
+The model indicates that students under the old curriculum were 5.1-fold (4.4 - 5.8) more likely to earn a DFW in the first two Biology courses (p = 2.54e-07).
+
+```{r, echo=FALSE}
+cat_plot(selected_model, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+```
+
+### Only 202
+
+```{r, echo=FALSE}
+Only202_DFW <- Only202_DFW %>%
+  mutate(DFW = Grade == "DFW")
+
+model1_202 <- glm.nb(DFW ~ Curriculum, data = Only202_DFW)
+summary(model1_202)
+model_full_202 <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = Only202_DFW)
+summary(model_full_202)
+```
+
+Very interesting. 
+
+```{r}
+selected_model_202 <- model_full_202 %>%
+  stepAIC(direction = "backward")
+summary(selected_model_202)
+```
+
+
+```{r, echo=FALSE}
+newdata_202 <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
+  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
+predict.glm(selected_model_202, newdata=newdata_202, type="response")
+selected_model_202
+check_zeroinflation(selected_model_202)
+check_overdispersion(selected_model_202)
+performance(selected_model_202)
+summary(selected_model_202)
+```
+
+```{r, echo=FALSE}
+exp( -2.2797)
+exp(-2.2797+0.1270)
+exp(-2.2797-0.1270)
+```
+
+
+```{r, echo=FALSE}
+exp(-3.1408)
+exp(-3.1408+1.0080)
+exp(-3.1408-1.0080)
+
+1/ exp(-3.1408)
+1/ exp(-3.14086+1.0080)
+1/ exp(-3.1408-1.0080)
+```
+
+The model indicates that students under the old curriculum were 23.1-fold (8.4 - 63.4) more likely to earn a DFW in the first two Biology courses (p = 0.00183), compared to CURE Lab.
+
+```{r, echo=FALSE}
+exp(0.4801)
+exp(0.4801+0.1999)
+exp(0.4801-0.1999)
+```
+
+```{r, echo=FALSE}
+cat_plot(selected_model_202, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+```
+
+
+## Figure 9
+
+```{r Figure 9, echo=FALSE}
+catplot_202 <- cat_plot(selected_model_202, pred = `Race/Ethnicity`, modx = Curriculum, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+catplot_202
+catplot_202_fixed <- catplot_202 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none",
+                  plot.title = element_text(size = 10, face = "plain")) 
+
+catplot_202_fixed
+```
+
+### Only 201
+
+```{r, echo=FALSE}
+Only201_DFW <- All_DFW %>%
+  filter(Course != "BIOL202")
+
+summary(All_DFW)
+summary(Only201_DFW)
+
+All_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only201_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+Only201_DFW %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+Only201_DFW <- Only201_DFW %>%
+  mutate(DFW = Grade == "DFW")
+
+model1_201 <- glm.nb(DFW ~ Curriculum, data = Only201_DFW)
+summary(model1_201)
+model_full_201 <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = Only201_DFW)
+summary(model_full_201)
+```
+
+Very interesting. 
+
+```{r}
+selected_model_201 <- model_full_201 %>%
+  stepAIC(direction = "backward")
+summary(selected_model_201)
+```
+
+
+```{r, echo=FALSE}
+newdata_201 <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
+  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
+predict.glm(selected_model_201, newdata=newdata_201, type="response")
+selected_model_201
+check_zeroinflation(selected_model_201)
+check_overdispersion(selected_model_201)
+performance(selected_model_201)
+summary(selected_model_201)
+```
+
+```{r, echo=FALSE}
+exp( -2.3109)
+exp(-2.3109+0.1235)
+exp(-2.3109-0.1235)
+```
+
+
+```{r, echo=FALSE}
+exp(-1.0451)
+exp(-1.0451+0.2230)
+exp(-1.0451-0.2230)
+
+1/ exp(-1.0451)
+1/ exp(-1.0451+0.2230)
+1/ exp(-1.0451-0.2230)
+```
+
+The model indicates that students under the old curriculum were 2.84-fold (2.27 - 3.55) more likely to earn a DFW in the first two Biology courses (p = 2.79e-06), compared to BIOL 201.
+
+```{r, echo=FALSE}
+exp(0.5556)
+exp(0.5556+0.1779)
+exp(0.5556-0.1779)
+```
+
+```{r, echo=FALSE}
+cat_plot(selected_model_201, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+```
+
+
+## Figure 9 201 version
+
+```{r Figure 9 201, echo=FALSE}
+catplot_201 <- cat_plot(selected_model_201, pred = `Race/Ethnicity`, modx = Curriculum, 
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Students of Color"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+catplot_201
+catplot_201_fixed <- catplot_201 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none",
+                  plot.title = element_text(size = 10, face = "plain")) 
+
+catplot_201_fixed
+```
