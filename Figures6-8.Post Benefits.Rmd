@@ -36,19 +36,19 @@ Note that because we want to analyze demographics for this question, we cannot l
 We also need to be careful about looking at both gender and race at the same time.
 
 ```{r Load data}
-NoInstructorYear1 <- read_delim("../Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear1 <- read_delim("Deidentified Surveys/Year1.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE) %>%
   rename(Semester = Semester_pre)
-NoInstructorYear2 <- read_delim("../Year2/Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear2 <- read_delim("Deidentified Surveys/Year2.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
-NoInstructorYear3 <- read_delim("../Year3/Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear3 <- read_delim("Deidentified Surveys/Year3.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 NoInstructor <- bind_rows(NoInstructorYear1, NoInstructorYear2, NoInstructorYear3)
 
-NoInstructorQuestions <- read_delim("../Deidentified Surveys/NoInstructorQuestions.tsv", 
+NoInstructorQuestions <- read_delim("Deidentified Surveys/Year3.NoInstructorQuestions.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```

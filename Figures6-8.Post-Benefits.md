@@ -1,7 +1,7 @@
 ---
 title: "Post Benefits Question"
 author: "Ken Field"
-date: "Last compiled on 15 July 2024"
+date: "Last compiled on 16 July 2024"
 output:
   html_document:
     toc: true
@@ -23,7 +23,7 @@ We also need to be careful about looking at both gender and race at the same tim
 
 
 ``` r
-NoInstructorYear1 <- read_delim("../Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear1 <- read_delim("Deidentified Surveys/Year1.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE) %>%
   rename(Semester = Semester_pre)
@@ -41,7 +41,7 @@ NoInstructorYear1 <- read_delim("../Deidentified Surveys/NoInstructor.tsv",
 ```
 
 ``` r
-NoInstructorYear2 <- read_delim("../Year2/Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear2 <- read_delim("Deidentified Surveys/Year2.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -58,7 +58,7 @@ NoInstructorYear2 <- read_delim("../Year2/Deidentified Surveys/NoInstructor.tsv"
 ```
 
 ``` r
-NoInstructorYear3 <- read_delim("../Year3/Deidentified Surveys/NoInstructor.tsv", 
+NoInstructorYear3 <- read_delim("Deidentified Surveys/Year3.NoInstructor.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -77,7 +77,7 @@ NoInstructorYear3 <- read_delim("../Year3/Deidentified Surveys/NoInstructor.tsv"
 ``` r
 NoInstructor <- bind_rows(NoInstructorYear1, NoInstructorYear2, NoInstructorYear3)
 
-NoInstructorQuestions <- read_delim("../Deidentified Surveys/NoInstructorQuestions.tsv", 
+NoInstructorQuestions <- read_delim("Deidentified Surveys/Year3.NoInstructorQuestions.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
