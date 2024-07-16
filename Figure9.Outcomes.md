@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2024-07-15"
+date: "Last compiled on 2024-07-16"
 output:
   html_document:
     toc: true
@@ -21,9 +21,10 @@ We wish to determine if the new core classes (CURE Lab and BIO Seminar) are help
 
 I asked the registrar to help me answer the following questions:
 1. What was the DFW rate for first-year students in BIOL 205 and 206 from SP 2017 to FA 2019?
-2. What was the DFW rate for first-year students in BIOL 201 and 202 from FA 2021 to SP 2022?
+2. What was the DFW rate for all students in BIOL 201 and 202 from FA 2021 to SP 2024?
 
 They sent us the files located in the "Grade Outcomes" folder.
+I have removed any identifying information for the students and instructors.
 
 Note that the analysis 205 and 206 only includes first-year students in these Biology classes, even though there are other students in these classes.
 This is to make it more comparable to 201 and 202 which are not taken by nearly as broad a spectrum of students.
@@ -78,7 +79,7 @@ Importing data for 205 and 206.
 ```
 
 Importing data from 201 and 202.
-The spreadsheets have a very awkward format and need to be checked carefully. 
+The spreadsheets have a very awkward format and were checked carefully. 
 Before I imported the data, I consolidated it within excel to make the three years have a consistent format.
 
 
