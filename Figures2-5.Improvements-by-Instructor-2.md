@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 15 July 2024"
+date: "Last compiled on 16 July 2024"
 output:
   html_document:
     toc: true
@@ -21,7 +21,7 @@ Loading in the results without instructor information:
 
 
 ``` r
-NoDemographicsYear1 <- read_delim("../Deidentified Surveys/NoDemographics.tsv", 
+NoDemographicsYear1 <- read_delim("Deidentified Surveys/Year1.NoDemographics.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE) %>%
   rename(Semester = Semester_pre)
@@ -39,7 +39,7 @@ NoDemographicsYear1 <- read_delim("../Deidentified Surveys/NoDemographics.tsv",
 ```
 
 ``` r
-NoDemographicsYear2 <- read_delim("../Year2/Deidentified Surveys/NoDemographics.tsv", 
+NoDemographicsYear2 <- read_delim("Deidentified Surveys/Year2.NoDemographics.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -56,7 +56,7 @@ NoDemographicsYear2 <- read_delim("../Year2/Deidentified Surveys/NoDemographics.
 ```
 
 ``` r
-NoDemographicsYear3 <- read_delim("../Year3/Deidentified Surveys/NoDemographics.tsv", 
+NoDemographicsYear3 <- read_delim("Deidentified Surveys/Year3.NoDemographics.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
@@ -75,7 +75,7 @@ NoDemographicsYear3 <- read_delim("../Year3/Deidentified Surveys/NoDemographics.
 ``` r
 NoDemographics <- bind_rows(NoDemographicsYear1, NoDemographicsYear2, NoDemographicsYear3)
 
-NoDemographicsQuestions <- read_delim("../Deidentified Surveys/NoDemographicsQuestions.tsv", 
+NoDemographicsQuestions <- read_delim("Deidentified Surveys/Year3.NoDemographicsQuestions.tsv", 
     delim = "\t", escape_double = FALSE, 
     trim_ws = TRUE)
 ```
