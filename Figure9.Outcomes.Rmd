@@ -57,7 +57,7 @@ Importing data for 205 and 206.
 BIOL205_206 <- read_excel("Grade Outcomes/BIOL205_206 Grade Distribution_First Years by Gender & Ethnicity.xlsx", 
                           sheet = "Detail by Student") %>%
   select("Academic Period Description", "Course Identification", "Student Classification", 
-         "Gender Description", "Ethnicity Description", "Final Grade") %>%
+         "Gender Description", "Ethnicity Description", "First-Generation Indicator", "Final Grade") %>%
   filter(`Student Classification` == "FR") %>%
   select(-`Student Classification`) %>%
   rename(Semester = `Academic Period Description`, Course = `Course Identification`,
@@ -201,7 +201,7 @@ Only202_DFW %>%
 
 ### Both 201 and 202
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 All_DFW <- All_DFW %>%
   mutate(DFW = Grade == "DFW")
 
@@ -211,14 +211,13 @@ model_full <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = All_DF
 summary(model_full)
 ```
 
-Very interesting. 
-
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 selected_model <- model_full %>%
   stepAIC(direction = "backward")
 summary(selected_model)
 ```
 
+A very big effect of the new curriculum and a small effect of the interaction between curriculum and race/ethnicity.
 
 ```{r, echo=FALSE}
 newdata <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
@@ -250,25 +249,30 @@ exp(-1.6256-0.1270)
 
 The model indicates that students under the old curriculum were 5.1-fold (4.4 - 5.8) more likely to earn a DFW in the first two Biology courses (p = 2.54e-07).
 
-```{r, echo=FALSE}
+```{r, Combo 201 and 202, echo=FALSE}
 cat_plot(selected_model, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
 ```
 
 ### Only 202
 
-```{r, echo=FALSE}
+Adding Fall vs Spring to the full model.
+
+```{r, echo=FALSE, warning=FALSE}
 Only202_DFW <- Only202_DFW %>%
-  mutate(DFW = Grade == "DFW")
+  mutate(DFW = Grade == "DFW") %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring"))
 
 model1_202 <- glm.nb(DFW ~ Curriculum, data = Only202_DFW)
 summary(model1_202)
-model_full_202 <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = Only202_DFW)
+model_full_202 <- glm.nb(DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, data = Only202_DFW)
 summary(model_full_202)
 ```
 
-Very interesting. 
+Fall_Spring is playing a bigger role than Curriculum. 
+We need to account for that.
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 selected_model_202 <- model_full_202 %>%
   stepAIC(direction = "backward")
 summary(selected_model_202)
@@ -276,9 +280,6 @@ summary(selected_model_202)
 
 
 ```{r, echo=FALSE}
-newdata_202 <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
-  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
-predict.glm(selected_model_202, newdata=newdata_202, type="response")
 selected_model_202
 check_zeroinflation(selected_model_202)
 check_overdispersion(selected_model_202)
@@ -286,24 +287,35 @@ performance(selected_model_202)
 summary(selected_model_202)
 ```
 
-```{r, echo=FALSE}
-exp( -2.2797)
-exp(-2.2797+0.1270)
-exp(-2.2797-0.1270)
-```
-
+Fall semester:
 
 ```{r, echo=FALSE}
-exp(-3.1408)
-exp(-3.1408+1.0080)
-exp(-3.1408-1.0080)
-
-1/ exp(-3.1408)
-1/ exp(-3.14086+1.0080)
-1/ exp(-3.1408-1.0080)
+exp(-1.9040)
+exp(-1.9040+0.1409)
+exp(-1.9040-0.1409)
 ```
 
-The model indicates that students under the old curriculum were 23.1-fold (8.4 - 63.4) more likely to earn a DFW in the first two Biology courses (p = 0.00183), compared to CURE Lab.
+Spring semester:
+
+```{r, echo=FALSE}
+exp(-1.9040-1.2884)
+exp(-1.9040-1.2884+0.1409)
+exp(-1.9040-1.2884-0.1409)
+```
+
+Curriculum effect:
+
+```{r, echo=FALSE}
+exp(-2.0715)
+exp(-2.0715+0.5104)
+exp(-2.0715-0.5104)
+
+1/ exp(-2.0715)
+1/ exp(-2.0715+0.5104)
+1/ exp(-2.0715-0.5104)
+```
+
+The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 4.94e-05), after controlling for the effect of semester. There was no significant interaction between curriculum and either race/ethnicity or gender identity.
 
 ```{r, echo=FALSE}
 exp(0.4801)
@@ -312,14 +324,14 @@ exp(0.4801-0.1999)
 ```
 
 ```{r, echo=FALSE}
-cat_plot(selected_model_202, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+cat_plot(selected_model_202, pred = Curriculum, modx = `Race/Ethnicity`, mod2 = Fall_Spring, interval = TRUE)
 ```
 
 
 ## Figure 9
 
 ```{r Figure 9, echo=FALSE}
-catplot_202 <- cat_plot(selected_model_202, pred = `Race/Ethnicity`, modx = Curriculum, 
+catplot_202 <- cat_plot(selected_model_202, pred = `Race/Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("White Students","Students of Color"),
          modx.labels = c("Prior", "CURE"),
@@ -337,9 +349,11 @@ catplot_202_fixed
 
 ### Only 201
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 Only201_DFW <- All_DFW %>%
-  filter(Course != "BIOL202")
+  filter(Course != "BIOL202") %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring"))
 
 summary(All_DFW)
 summary(Only201_DFW)
@@ -359,13 +373,12 @@ Only201_DFW <- Only201_DFW %>%
 
 model1_201 <- glm.nb(DFW ~ Curriculum, data = Only201_DFW)
 summary(model1_201)
-model_full_201 <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = Only201_DFW)
+model_full_201 <- glm.nb(DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, data = Only201_DFW)
 summary(model_full_201)
 ```
 
-Very interesting. 
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 selected_model_201 <- model_full_201 %>%
   stepAIC(direction = "backward")
 summary(selected_model_201)
@@ -373,9 +386,6 @@ summary(selected_model_201)
 
 
 ```{r, echo=FALSE}
-newdata_201 <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
-  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
-predict.glm(selected_model_201, newdata=newdata_201, type="response")
 selected_model_201
 check_zeroinflation(selected_model_201)
 check_overdispersion(selected_model_201)
@@ -383,24 +393,35 @@ performance(selected_model_201)
 summary(selected_model_201)
 ```
 
-```{r, echo=FALSE}
-exp( -2.3109)
-exp(-2.3109+0.1235)
-exp(-2.3109-0.1235)
+That is very messy.
+Let's just add semester to the simple model.
+
+```{r, echo=FALSE, warning=FALSE}
+model2_201 <- glm.nb(DFW ~ Fall_Spring * Curriculum, data = Only201_DFW)
+summary(model2_201)
+selected_model2_201 <- stepAIC(model2_201, direction = "backward")
+summary(selected_model2_201)
 ```
 
 
 ```{r, echo=FALSE}
-exp(-1.0451)
-exp(-1.0451+0.2230)
-exp(-1.0451-0.2230)
-
-1/ exp(-1.0451)
-1/ exp(-1.0451+0.2230)
-1/ exp(-1.0451-0.2230)
+exp(-1.8297)
+exp(-1.8297+0.1122)
+exp(-1.8297-0.1122)
 ```
 
-The model indicates that students under the old curriculum were 2.84-fold (2.27 - 3.55) more likely to earn a DFW in the first two Biology courses (p = 2.79e-06), compared to BIOL 201.
+
+```{r, echo=FALSE}
+exp(-1.0288)
+exp(-1.0288 +0.2228)
+exp(-1.0288 -0.2228)
+
+1/ exp(-1.0288 )
+1/ exp(-1.0288 +0.2228)
+1/ exp(-1.0288 -0.2228)
+```
+
+The model indicates that students in BIOL 201 were  2.80-fold (2.24 - 3.50) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 3.87e-06), after controlling for the effect of semester.
 
 ```{r, echo=FALSE}
 exp(0.5556)
@@ -416,9 +437,9 @@ cat_plot(selected_model_201, pred = Curriculum, modx = `Race/Ethnicity`, interva
 ## Figure 9 201 version
 
 ```{r Figure 9 201, echo=FALSE}
-catplot_201 <- cat_plot(selected_model_201, pred = `Race/Ethnicity`, modx = Curriculum, 
+catplot_201 <- cat_plot(selected_model2_201, pred = Fall_Spring, modx = Curriculum,
          interval = TRUE, errorbar.width = 0.5, 
-         pred.labels = c("White Students","Students of Color"),
+         pred.labels = c("Fall","Spring"),
          modx.labels = c("Prior", "CURE"),
          x.label = "", y.label = "DFW Likelihood")
 catplot_201
@@ -431,3 +452,69 @@ catplot_201_fixed <- catplot_201 + theme(panel.grid.major = element_blank(),
 
 catplot_201_fixed
 ```
+
+## First-gen status
+
+One of the studies of COVID impacts demonstrated that first-gen students were more highly impacted than other students.
+We would like to see how that factor translates to our outcomes.
+
+```{r, echo=FALSE}
+Firstgen_201_202 <- read_excel("Grade Outcomes/Grade Distribution_BIOL 201 & 202_2021 to 2024.Firstgen.xlsx", 
+                               sheet = "Grade Detail", col_types = c("skip", "text", "text", 
+                                                                     "text", "text", "skip", "text", "text"))
+Firstgen_201_202 <- Firstgen_201_202 %>%
+  select(Course = `Course Identification`, Semester = `Academic Period Description`, `Final Grade`,
+         Gender = `Gender Description`, `First-Generation Indicator`) %>%
+  filter(`Final Grade` != "NC")
+Firstgen_201_202_clean <- Firstgen_201_202 %>%
+  mutate(Grade = case_when(`Final Grade` %in% c("D", "F", "W") ~ "DFW",
+                           .default = "Pass")) %>%
+  mutate(Curriculum = "New") %>%
+  select(-`Final Grade`)
+
+All_DFW_Firstgen <- BIOL205_206 %>%
+  select(names(Firstgen_201_202_clean)) %>%
+  add_row(Firstgen_201_202_clean) %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate(Curriculum = fct_relevel(Curriculum, c("Old", "New"))) %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring")) %>%
+  mutate(Fall_Spring = as.factor(Fall_Spring)) %>%
+  mutate(DFW = (Grade == "DFW"))
+
+Only202_DFW_Firstgen <- All_DFW_Firstgen %>%
+  filter(Course != "BIOL201")
+Only201_DFW_Firstgen <- All_DFW_Firstgen %>%
+  filter(Course != "BIOL202")
+
+summary(All_DFW_Firstgen)
+summary(Only202_DFW_Firstgen)
+
+All_DFW_Firstgen %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW_Firstgen %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+Only202_DFW_Firstgen %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+```
+
+```{r, echo=FALSE, warning=FALSE}
+model1_Firstgen_202 <- glm.nb(DFW ~ `First-Generation Indicator` * Curriculum, data = Only202_DFW_Firstgen)
+summary(model1_Firstgen_202)
+model_full_Firstgen_202 <- glm.nb(DFW ~ `First-Generation Indicator` * Fall_Spring * Curriculum, data = Only202_DFW_Firstgen)
+summary(model_full_Firstgen_202)
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+selected_model_Firstgen_202 <- model_full_Firstgen_202 %>%
+  stepAIC(direction = "backward")
+summary(selected_model_Firstgen_202)
+```
+
+That analysis showed that including first-generation status marginally improved the model, but it was very minor compared to semester and curriculum. This was true for both the effect size and the significance.
+
