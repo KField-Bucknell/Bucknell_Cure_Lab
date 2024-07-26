@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2024-07-24"
+date: "Last compiled on 2024-07-26"
 output:
   html_document:
     toc: true
@@ -2091,5 +2091,59 @@ We would like to see how that factor translates to our outcomes.
 ##  2 x log-likelihood:  -669.554
 ```
 
+
+``` r
+# First gen
+exp(0.4003)
+```
+
+```
+## [1] 1.492272
+```
+
+``` r
+exp(0.4003-0.2582)
+```
+
+```
+## [1] 1.152692
+```
+
+``` r
+exp(0.4003+0.2582)
+```
+
+```
+## [1] 1.931892
+```
+
+``` r
+# Race/ethnicity (from earlier 202 model)
+exp(0.3117)
+```
+
+```
+## [1] 1.365745
+```
+
+``` r
+exp(0.3117-0.2326)
+```
+
+```
+## [1] 1.082313
+```
+
+``` r
+exp(0.3117+0.2326)
+```
+
+```
+## [1] 1.723402
+```
+
+
 That analysis showed that including first-generation status marginally improved the model, but it was very minor compared to semester and curriculum. This was true for both the effect size and the significance.
+
+The effect size of first-gen status (1.49 (1.15-1.93)) and significance (p = 0.121) was similar to the effect of race/ethnicity in the earlier model, (1.36 (1.08-1.72), p = 0.1803), after accounting for the effects of semester and curriculum.
 

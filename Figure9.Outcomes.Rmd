@@ -516,5 +516,19 @@ selected_model_Firstgen_202 <- model_full_Firstgen_202 %>%
 summary(selected_model_Firstgen_202)
 ```
 
+```{r}
+# First gen
+exp(0.4003)
+exp(0.4003-0.2582)
+exp(0.4003+0.2582)
+# Race/ethnicity (from earlier 202 model)
+exp(0.3117)
+exp(0.3117-0.2326)
+exp(0.3117+0.2326)
+```
+
+
 That analysis showed that including first-generation status marginally improved the model, but it was very minor compared to semester and curriculum. This was true for both the effect size and the significance.
+
+The effect size of first-gen status (1.49 (1.15-1.93)) and significance (p = 0.121) was similar to the effect of race/ethnicity in the earlier model, (1.36 (1.08-1.72), p = 0.1803), after accounting for the effects of semester and curriculum.
 
