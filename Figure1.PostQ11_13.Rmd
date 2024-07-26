@@ -134,11 +134,11 @@ major."
 
 These questions are Q13_1_post, Q13_3_post, Q13_10_post, Q13_13_post, and Q13_18_post.
 
-Q13_1_post  Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
-Q13_3_post  The process of writing in science is helpful for understanding scientific ideas             
-Q13_10_post I get personal satisfaction when I solve a scientific problem by figuring it out myself     
-Q13_13_post I can do well in science courses                                                            
-Q13_18_post Explaining science ideas to others has helped me understand the ideas better  
+- Q13_1_post  Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
+- Q13_3_post  The process of writing in science is helpful for understanding scientific ideas             
+- Q13_10_post I get personal satisfaction when I solve a scientific problem by figuring it out myself     
+- Q13_13_post I can do well in science courses                                                            
+- Q13_18_post Explaining science ideas to others has helped me understand the ideas better  
 
 https://www.grinnell.edu/sites/default/files/docs/2019-07/CUREBenchmarkStatistics2015-2108.pdf
 
@@ -472,3 +472,101 @@ Q11_long %>%
   skim(Response)
 ```
 
+## Presurvey Question 11
+
+To explore the possible differences by semester, we will look at the responses to the pre-survey question 11. These will have been influenced, in part, by their experience in BIOL201.
+
+```{r Pre Q11, echo=FALSE}
+PreQ11 <- NoInstructor %>%
+  select(starts_with("Q11")) %>%
+  select(ends_with("_pre"))
+
+Q11Text <- NoInstructorQuestions %>%
+  filter(startsWith(value, "Q11")) %>%
+  filter(endsWith(value, "_pre"))
+Q11Text$Question[1]
+Q11TextClean <- Q11Text %>%
+  mutate(Question = str_remove(Q11Text$Question, "It has become common to say that no student is an empty bucket, waiting for a teacher to pour in knowledge. Research on learning acknowledges that students approach a course with well-formed opinions of themselves and of the subject matter. In this section we present questions about science and questions about you. These will help us put learning in context. For each item below please rate your agreement with the item - "))
+Q11TextClean$Question
+
+PreQ11_Engagement <- PreQ11 %>%
+  select(Q11_1_pre, Q11_3_pre, Q11_10_pre, Q11_13_pre, Q11_18_pre)
+Q11TextClean_Engagement <- Q11TextClean %>%
+  filter(value %in% c("Q11_1_pre", "Q11_3_pre", "Q11_10_pre", "Q11_13_pre", "Q11_18_pre"))
+Q11TextClean_Engagement
+```
+
+```{r, echo=FALSE}
+Metadata <- NoInstructor %>%
+  select(Semester, FallSpring, ClassYear, Ethnicity, Gender)
+
+MergedPreQ11 <- bind_cols(Metadata, PreQ11_Engagement) 
+
+MergedPreQ11_demo <- MergedPreQ11 %>%
+  filter(Ethnicity != "Prefer not to answer") %>% 
+  filter(Gender %in% c("Male", "Female")) %>%
+  mutate(`Race/Ethnicity` = recode(Ethnicity, 
+                                   "White" = "white students", .default = "students of color")) %>%
+  mutate(`Race/Ethnicity` = factor(`Race/Ethnicity`, 
+                                   levels = c("white students", "students of color"))) %>%
+  mutate(ClassYear = as.factor(ClassYear)) %>%
+  mutate(Gender = as.factor(Gender)) %>%
+  select(-Ethnicity) 
+
+head(MergedPreQ11_demo)
+
+PreQ11Factors <- MergedPreQ11_demo %>%
+  select(starts_with("Q")) %>%
+  mutate_all(funs(ordered(.,(levels = c("Strongly disagree", "Disagree", 
+                                       "Neutral", "Agree", "Strongly agree"))))) 
+PreQ11Clean <- MergedPreQ11_demo %>%
+  select(-starts_with("Q")) %>%
+  cbind(PreQ11Factors)
+
+PreQ11Recoded <- PreQ11Clean %>%
+  mutate(across(Q11_1_pre:Q11_18_pre, ~as.numeric(recode(.,
+                                           "Strongly agree" = 2,
+                                           "Agree" = 1,
+                                           "Neutral" = 0,
+                                           "Disagree" = -1, 
+                                           "Strongly disagree" = -2)))) %>%
+  rename_with(~str_replace_all(., "_pre", "")) 
+  
+head(PreQ11Recoded)
+```
+
+Pivoting the table into long format for analysis.
+
+```{r}
+PreQ11Long <- PreQ11Recoded %>%
+  pivot_longer(cols = Q11_1:Q11_18, 
+               names_to = "Question", 
+               values_to = "Answer")
+```
+
+Now to look at a glm to see if semester is significant.
+
+```{r}
+PreQ11_model1 <- glm(Q11_1 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model1)
+
+PreQ11_model3 <- glm(Q11_3 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model3)
+
+PreQ11_model10 <- glm(Q11_10 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model10)
+
+PreQ11_model13 <- glm(Q11_13 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model13)
+
+PreQ11_model18 <- glm(Q11_18 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model18)
+```
+
+None of the engagement questions significantly depended on semester in the presurvey. 
+
+- Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
+- The process of writing in science is helpful for understanding scientific ideas             
+- I get personal satisfaction when I solve a scientific problem by figuring it out myself     
+- I can do well in science courses                                                            
+- Explaining science ideas to others has helped me understand the ideas better 

@@ -1,7 +1,7 @@
 ---
 title: "Engagement and Overall Evaluation Questions"
 author: "Ken Field"
-date: "Last compiled on 16 July 2024"
+date: "Last compiled on 26 July 2024"
 output:
   html_document:
     toc: true
@@ -118,11 +118,11 @@ major."
 
 These questions are Q13_1_post, Q13_3_post, Q13_10_post, Q13_13_post, and Q13_18_post.
 
-Q13_1_post  Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
-Q13_3_post  The process of writing in science is helpful for understanding scientific ideas             
-Q13_10_post I get personal satisfaction when I solve a scientific problem by figuring it out myself     
-Q13_13_post I can do well in science courses                                                            
-Q13_18_post Explaining science ideas to others has helped me understand the ideas better  
+- Q13_1_post  Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
+- Q13_3_post  The process of writing in science is helpful for understanding scientific ideas             
+- Q13_10_post I get personal satisfaction when I solve a scientific problem by figuring it out myself     
+- Q13_13_post I can do well in science courses                                                            
+- Q13_18_post Explaining science ideas to others has helped me understand the ideas better  
 
 https://www.grinnell.edu/sites/default/files/docs/2019-07/CUREBenchmarkStatistics2015-2108.pdf
 
@@ -568,3 +568,243 @@ Table: Data summary
 |Response      |Q13_18   |         1|             1| 4.16| 0.68|  2|   4|   4|   5|    5|▁▂▁▇▅ |
 |Response      |Q13_3    |         0|             1| 4.28| 0.61|  3|   4|   4|   5|    5|▁▁▇▁▅ |
 
+## Presurvey Question 11
+
+To explore the possible differences by semester, we will look at the responses to the pre-survey question 11. These will have been influenced, in part, by their experience in BIOL201.
+
+
+```
+## [1] "It has become common to say that no student is an empty bucket, waiting for a teacher to pour in knowledge. Research on learning acknowledges that students approach a course with well-formed opinions of themselves and of the subject matter. In this section we present questions about science and questions about you. These will help us put learning in context. For each item below please rate your agreement with the item - Even if I forget the facts, I'll still be able to use the thinking skills I learn in science"
+```
+
+```
+##  [1] "Even if I forget the facts, I'll still be able to use the thinking skills I learn in science"          
+##  [2] "You can rely on scientific results to be true and correct"                                             
+##  [3] "The process of writing in science is helpful for understanding scientific ideas"                       
+##  [4] "When scientific results conflict with my personal experience, I follow my experience in making choices"
+##  [5] "Students who do not major/concentrate in science should not have to take science courses"              
+##  [6] "I wish science instructors would just tell us what we need to now so we can learn it"                  
+##  [7] "Creativity does not play a role in science"                                                            
+##  [8] "Science is not connected to non-science fields such as history, literature, economics, or art"         
+##  [9] "When experts disagree on a science question, it's because they don't know all the facts yet"           
+## [10] "I get personal satisfaction when I solve a scientific problem by figuring it out myself"               
+## [11] "Since nothing in science is known for certain, all theories are equally valid"                         
+## [12] "Science is essentially an accumulation of facts, rules, and formulas"                                  
+## [13] "I can do well in science courses"                                                                      
+## [14] "Real scientists don't follow the scientific method in a straight line"                                 
+## [15] "There is too much emphasis in science classes on figuring things out for yourself"                     
+## [16] "Only scientific experts are qualified to make judgments on scientific issues"                          
+## [17] "Scientists know what the results of their experiments will be before they start"                       
+## [18] "Explaining science ideas to others has helped me understand the ideas better"                          
+## [19] "The main job of the instructor is to structure the work so that we can learn it ourselves"             
+## [20] "Scientists play with statistics to support their own ideas"                                            
+## [21] "Lab experiments are used to confirm information studied in science class"                              
+## [22] "If an experiment shows that something doesn't work, the experiment was a failure"
+```
+
+```
+## # A tibble: 5 × 2
+##   value      Question                                                           
+##   <chr>      <chr>                                                              
+## 1 Q11_1_pre  Even if I forget the facts, I'll still be able to use the thinking…
+## 2 Q11_3_pre  The process of writing in science is helpful for understanding sci…
+## 3 Q11_10_pre I get personal satisfaction when I solve a scientific problem by f…
+## 4 Q11_13_pre I can do well in science courses                                   
+## 5 Q11_18_pre Explaining science ideas to others has helped me understand the id…
+```
+
+
+```
+## # A tibble: 6 × 10
+##   Semester FallSpring ClassYear Gender Q11_1_pre Q11_3_pre Q11_10_pre Q11_13_pre
+##   <fct>    <fct>      <fct>     <fct>  <chr>     <chr>     <chr>      <chr>     
+## 1 Fall 20… Fall       First     Female Agree     Agree     Strongly … Agree     
+## 2 Fall 20… Fall       First     Female Strongly… Agree     Agree      Strongly …
+## 3 Fall 20… Fall       First     Female Agree     Agree     Strongly … Agree     
+## 4 Fall 20… Fall       First     Female Neutral   Agree     Strongly … Strongly …
+## 5 Fall 20… Fall       First     Female Agree     Agree     Agree      Agree     
+## 6 Fall 20… Fall       First     Female Strongly… Strongly… Strongly … Strongly …
+## # ℹ 2 more variables: Q11_18_pre <chr>, `Race/Ethnicity` <fct>
+```
+
+```
+## Warning: `funs()` was deprecated in dplyr 0.8.0.
+## ℹ Please use a list of either functions or lambdas:
+## 
+## # Simple named list: list(mean = mean, median = median)
+## 
+## # Auto named with `tibble::lst()`: tibble::lst(mean, median)
+## 
+## # Using lambdas list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+```
+##    Semester FallSpring ClassYear Gender    Race/Ethnicity Q11_1 Q11_3 Q11_10
+## 1 Fall 2021       Fall     First Female    white students     1     1      2
+## 2 Fall 2021       Fall     First Female    white students     2     1      1
+## 3 Fall 2021       Fall     First Female    white students     1     1      2
+## 4 Fall 2021       Fall     First Female    white students     0     1      2
+## 5 Fall 2021       Fall     First Female students of color     1     1      1
+## 6 Fall 2021       Fall     First Female    white students     2     2      2
+##   Q11_13 Q11_18
+## 1      1      0
+## 2      2      2
+## 3      1      1
+## 4      2      2
+## 5      1      1
+## 6      2      1
+```
+
+Pivoting the table into long format for analysis.
+
+
+``` r
+PreQ11Long <- PreQ11Recoded %>%
+  pivot_longer(cols = Q11_1:Q11_18, 
+               names_to = "Question", 
+               values_to = "Answer")
+```
+
+Now to look at a glm to see if semester is significant.
+
+
+``` r
+PreQ11_model1 <- glm(Q11_1 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model1)
+```
+
+```
+## 
+## Call:
+## glm(formula = Q11_1 ~ FallSpring, data = PreQ11Recoded)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       1.05102    0.06212  16.919   <2e-16 ***
+## FallSpringSpring  0.08573    0.08421   1.018     0.31    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.3782012)
+## 
+##     Null deviance: 80.949  on 214  degrees of freedom
+## Residual deviance: 80.557  on 213  degrees of freedom
+## AIC: 405.08
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+``` r
+PreQ11_model3 <- glm(Q11_3 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model3)
+```
+
+```
+## 
+## Call:
+## glm(formula = Q11_3 ~ FallSpring, data = PreQ11Recoded)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       1.06122    0.06313  16.810   <2e-16 ***
+## FallSpringSpring  0.04989    0.08558   0.583    0.561    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.390555)
+## 
+##     Null deviance: 83.321  on 214  degrees of freedom
+## Residual deviance: 83.188  on 213  degrees of freedom
+## AIC: 411.99
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+``` r
+PreQ11_model10 <- glm(Q11_10 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model10)
+```
+
+```
+## 
+## Call:
+## glm(formula = Q11_10 ~ FallSpring, data = PreQ11Recoded)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       1.41837    0.06173  22.979   <2e-16 ***
+## FallSpringSpring -0.03906    0.08384  -0.466    0.642    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.3733834)
+## 
+##     Null deviance: 79.238  on 213  degrees of freedom
+## Residual deviance: 79.157  on 212  degrees of freedom
+##   (1 observation deleted due to missingness)
+## AIC: 400.47
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+``` r
+PreQ11_model13 <- glm(Q11_13 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model13)
+```
+
+```
+## 
+## Call:
+## glm(formula = Q11_13 ~ FallSpring, data = PreQ11Recoded)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       1.06122    0.06189  17.147   <2e-16 ***
+## FallSpringSpring  0.05843    0.08390   0.696    0.487    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.375387)
+## 
+##     Null deviance: 80.140  on 214  degrees of freedom
+## Residual deviance: 79.957  on 213  degrees of freedom
+## AIC: 403.48
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+``` r
+PreQ11_model18 <- glm(Q11_18 ~ FallSpring , data = PreQ11Recoded)
+summary(PreQ11_model18)
+```
+
+```
+## 
+## Call:
+## glm(formula = Q11_18 ~ FallSpring, data = PreQ11Recoded)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       1.08163    0.06797   15.91   <2e-16 ***
+## FallSpringSpring  0.12350    0.09213    1.34    0.182    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.4526942)
+## 
+##     Null deviance: 97.237  on 214  degrees of freedom
+## Residual deviance: 96.424  on 213  degrees of freedom
+## AIC: 443.74
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+None of the engagement questions significantly depended on semester in the presurvey. 
+
+- Even if I forget the facts, I'll still be able to use the thinking skills I learn in science
+- The process of writing in science is helpful for understanding scientific ideas             
+- I get personal satisfaction when I solve a scientific problem by figuring it out myself     
+- I can do well in science courses                                                            
+- Explaining science ideas to others has helped me understand the ideas better 
