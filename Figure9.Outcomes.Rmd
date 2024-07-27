@@ -253,6 +253,30 @@ The model indicates that students under the old curriculum were 5.1-fold (4.4 - 
 cat_plot(selected_model, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
 ```
 
+### Only 201 and 202 by Semester
+
+We want to see how much of the difference between 201 and 202 can be explained by the semester that they are more 
+likely to be offered. 
+
+```{r, echo=FALSE}
+All_DFW_Semester <- All_DFW %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring"))
+Only201202_DFW_Semester <- All_DFW_Semester %>%
+  filter(Course %in% c("BIOL201", "BIOL202"))
+
+model_semester <- glm.nb(DFW ~ FallSpring * Course, data = Only201202_DFW_Semester)
+summary(model_semester)
+selected_model_semester <- stepAIC(model_semester)
+summary(selected_model_semester)
+```
+
+This demonstrates that the DFW rates are signficantly lower in BIOL202 than BIOL201, 
+after accounting for the effect of Fall versus Spring.
+
+That is not surprising given the different objectives of these courses.
+
+
 ### Only 202
 
 Adding Fall vs Spring to the full model.
@@ -328,7 +352,7 @@ cat_plot(selected_model_202, pred = Curriculum, modx = `Race/Ethnicity`, mod2 = 
 ```
 
 
-## Figure 9
+#### Figure 9
 
 ```{r Figure 9, echo=FALSE}
 catplot_202 <- cat_plot(selected_model_202, pred = `Race/Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
@@ -434,7 +458,7 @@ cat_plot(selected_model_201, pred = Curriculum, modx = `Race/Ethnicity`, interva
 ```
 
 
-## Figure 9 201 version
+#### Figure 9 201 version
 
 ```{r Figure 9 201, echo=FALSE}
 catplot_201 <- cat_plot(selected_model2_201, pred = Fall_Spring, modx = Curriculum,

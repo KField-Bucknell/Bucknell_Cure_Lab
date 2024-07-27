@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2024-07-26"
+date: "Last compiled on 2024-07-27"
 output:
   html_document:
     toc: true
@@ -616,6 +616,135 @@ The model indicates that students under the old curriculum were 5.1-fold (4.4 - 
 
 ![](Figure9.Outcomes_files/figure-html/Combo 201 and 202-1.png)<!-- -->
 
+### Only 201 and 202 by Semester
+
+We want to see how much of the difference between 201 and 202 can be explained by the semester that they are more 
+likely to be offered. 
+
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## 
+## Call:
+## glm.nb(formula = DFW ~ FallSpring * Course, data = Only201202_DFW_Semester, 
+##     init.theta = 431.5732873, link = log)
+## 
+## Coefficients:
+##                                Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)                     -2.9475     0.2426 -12.152   <2e-16 ***
+## FallSpringSpring                -0.4743     0.4288  -1.106    0.269    
+## CourseBIOL202                   -0.7245     0.6262  -1.157    0.247    
+## FallSpringSpring:CourseBIOL202  -1.1111     1.2317  -0.902    0.367    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for Negative Binomial(431.5733) family taken to be 1)
+## 
+##     Null deviance: 197.80  on 878  degrees of freedom
+## Residual deviance: 187.45  on 875  degrees of freedom
+## AIC: 255.52
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  432 
+##           Std. Err.:  4392 
+## Warning while fitting theta: iteration limit reached 
+## 
+##  2 x log-likelihood:  -245.515
+```
+
+```
+## Start:  AIC=253.52
+## DFW ~ FallSpring * Course
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+##                     Df    AIC
+## - FallSpring:Course  1 252.42
+## <none>                 253.51
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+## 
+## Step:  AIC=252.42
+## DFW ~ FallSpring + Course
+```
+
+```
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+## Warning in theta.ml(Y, mu, sum(w), w, limit = control$maxit, trace =
+## control$trace > : iteration limit reached
+```
+
+```
+##              Df    AIC
+## <none>          252.42
+## - FallSpring  1 253.05
+## - Course      1 255.71
+```
+
+```
+## 
+## Call:
+## glm.nb(formula = DFW ~ FallSpring + Course, data = Only201202_DFW_Semester, 
+##     init.theta = 614.635335, link = log)
+## 
+## Coefficients:
+##                  Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)       -2.8987     0.2311 -12.542   <2e-16 ***
+## FallSpringSpring  -0.6357     0.4049  -1.570   0.1164    
+## CourseBIOL202     -1.1072     0.5433  -2.038   0.0415 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for Negative Binomial(614.6353) family taken to be 1)
+## 
+##     Null deviance: 197.82  on 878  degrees of freedom
+## Residual deviance: 188.38  on 876  degrees of freedom
+## AIC: 254.42
+## 
+## Number of Fisher Scoring iterations: 1
+## 
+## 
+##               Theta:  615 
+##           Std. Err.:  7511 
+## Warning while fitting theta: iteration limit reached 
+## 
+##  2 x log-likelihood:  -246.424
+```
+
+This demonstrates that the DFW rates are signficantly lower in BIOL202 than BIOL201, 
+after accounting for the effect of Fall versus Spring.
+
+That is not surprising given the different objectives of these courses.
+
+
 ### Only 202
 
 Adding Fall vs Spring to the full model.
@@ -1111,10 +1240,10 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## interaction with one another in the model.
 ```
 
-![](Figure9.Outcomes_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](Figure9.Outcomes_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 
-## Figure 9
+#### Figure 9
 
 
 ```
@@ -1803,10 +1932,10 @@ The model indicates that students in BIOL 201 were  2.80-fold (2.24 - 3.50) less
 ## [1] 1.458925
 ```
 
-![](Figure9.Outcomes_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+![](Figure9.Outcomes_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 
-## Figure 9 201 version
+#### Figure 9 201 version
 
 
 ```
