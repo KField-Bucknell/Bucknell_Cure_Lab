@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 16 July 2024"
+date: "Last compiled on 27 July 2024"
 output:
   html_document:
     toc: true
@@ -3041,5 +3041,650 @@ interact_plot(model = interact_model, pred = Emphasis, modx = Instructor,
 ```
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+
+## Presurvey by Semester
+
+Responses on the presurvey had an effect on the student perceived gain for several questions.
+We want to check to see if the presurvey responses were significantly different in the two semesters,
+because that could be a confounding factor.
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_1_pre) ~ FallSpring, data = Q_1Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.29897    0.08399  39.278   <2e-16 ***
+## FallSpringSpring  0.22645    0.11337   1.997   0.0471 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.6842893)
+## 
+##     Null deviance: 148.48  on 214  degrees of freedom
+## Residual deviance: 145.75  on 213  degrees of freedom
+## AIC: 532.57
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_2_pre) ~ FallSpring, data = Q_2Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.15152    0.08484  37.146   <2e-16 ***
+## FallSpringSpring  0.21917    0.11551   1.898   0.0591 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.7126179)
+## 
+##     Null deviance: 154.35  on 214  degrees of freedom
+## Residual deviance: 151.79  on 213  degrees of freedom
+## AIC: 541.29
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_3_pre) ~ FallSpring, data = Q_3Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        2.0792     0.1020  20.376  < 2e-16 ***
+## FallSpringSpring   0.4662     0.1382   3.373 0.000878 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.051665)
+## 
+##     Null deviance: 243.33  on 221  degrees of freedom
+## Residual deviance: 231.37  on 220  degrees of freedom
+## AIC: 645.18
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_4_pre) ~ FallSpring, data = Q_4Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.62376    0.07891  45.922   <2e-16 ***
+## FallSpringSpring  0.17299    0.10649   1.624    0.106    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.6289264)
+## 
+##     Null deviance: 141.28  on 223  degrees of freedom
+## Residual deviance: 139.62  on 222  degrees of freedom
+## AIC: 535.8
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_5_pre) ~ FallSpring, data = Q_5Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       2.88119    0.09865  29.205   <2e-16 ***
+## FallSpringSpring  0.30734    0.13338   2.304   0.0221 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.9829782)
+## 
+##     Null deviance: 222.46  on 222  degrees of freedom
+## Residual deviance: 217.24  on 221  degrees of freedom
+## AIC: 633.01
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_6_pre) ~ FallSpring, data = Q_6Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        2.5300     0.1203  21.037   <2e-16 ***
+## FallSpringSpring   0.2634     0.1625   1.621    0.107    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.446323)
+## 
+##     Null deviance: 320.54  on 220  degrees of freedom
+## Residual deviance: 316.74  on 219  degrees of freedom
+## AIC: 712.72
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_7_pre) ~ FallSpring, data = Q_7Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.75248    0.10078  37.236   <2e-16 ***
+## FallSpringSpring  0.04261    0.13625   0.313    0.755    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.025742)
+## 
+##     Null deviance: 226.79  on 222  degrees of freedom
+## Residual deviance: 226.69  on 221  degrees of freedom
+## AIC: 642.51
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_8_pre) ~ FallSpring, data = Q_8Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        3.5545     0.1055  33.692   <2e-16 ***
+## FallSpringSpring  -0.2780     0.1424  -1.953   0.0521 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.124109)
+## 
+##     Null deviance: 253.84  on 223  degrees of freedom
+## Residual deviance: 249.55  on 222  degrees of freedom
+## AIC: 665.88
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_9_pre) ~ FallSpring, data = Q_9Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       4.03960    0.07204  56.072   <2e-16 ***
+## FallSpringSpring  0.05056    0.09740   0.519    0.604    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.5242072)
+## 
+##     Null deviance: 115.99  on 222  degrees of freedom
+## Residual deviance: 115.85  on 221  degrees of freedom
+## AIC: 492.81
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_10_pre) ~ FallSpring, data = Q_10Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.82178    0.07838  48.762   <2e-16 ***
+## FallSpringSpring  0.22780    0.10616   2.146    0.033 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.6204298)
+## 
+##     Null deviance: 139.35  on 221  degrees of freedom
+## Residual deviance: 136.49  on 220  degrees of freedom
+## AIC: 528.03
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_11_pre) ~ FallSpring, data = Q_11Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       2.89000    0.09173  31.506  < 2e-16 ***
+## FallSpringSpring  0.70836    0.12374   5.725 3.37e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.8414076)
+## 
+##     Null deviance: 212.68  on 221  degrees of freedom
+## Residual deviance: 185.11  on 220  degrees of freedom
+## AIC: 595.66
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_12_pre) ~ FallSpring, data = Q_12Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        2.4100     0.1128  21.367   <2e-16 ***
+## FallSpringSpring   0.3751     0.1524   2.461   0.0146 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.272161)
+## 
+##     Null deviance: 286.31  on 220  degrees of freedom
+## Residual deviance: 278.60  on 219  degrees of freedom
+## AIC: 684.36
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_13_pre) ~ FallSpring, data = Q_13Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.73267    0.08774  42.541   <2e-16 ***
+## FallSpringSpring -0.03019    0.11885  -0.254      0.8    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.7775974)
+## 
+##     Null deviance: 171.12  on 221  degrees of freedom
+## Residual deviance: 171.07  on 220  degrees of freedom
+## AIC: 578.16
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_14_pre) ~ FallSpring, data = Q_14Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.71287    0.08724  42.560   <2e-16 ***
+## FallSpringSpring -0.03519    0.11816  -0.298    0.766    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.7686501)
+## 
+##     Null deviance: 169.17  on 221  degrees of freedom
+## Residual deviance: 169.10  on 220  degrees of freedom
+## AIC: 575.59
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_15_pre) ~ FallSpring, data = Q_15Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        3.1600     0.1070  29.533   <2e-16 ***
+## FallSpringSpring   0.1375     0.1446   0.951    0.343    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.144882)
+## 
+##     Null deviance: 251.76  on 220  degrees of freedom
+## Residual deviance: 250.73  on 219  degrees of freedom
+## AIC: 661.06
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_16_pre) ~ FallSpring, data = Q_16Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.32000    0.09988  33.241   <2e-16 ***
+## FallSpringSpring -0.13301    0.13448  -0.989    0.324    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.9975529)
+## 
+##     Null deviance: 221.43  on 222  degrees of freedom
+## Residual deviance: 220.46  on 221  degrees of freedom
+## AIC: 636.29
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_17_pre) ~ FallSpring, data = Q_17Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        3.3069     0.1048  31.542   <2e-16 ***
+## FallSpringSpring  -0.2741     0.1417  -1.934   0.0544 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.110199)
+## 
+##     Null deviance: 249.51  on 222  degrees of freedom
+## Residual deviance: 245.35  on 221  degrees of freedom
+## AIC: 660.15
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_18_pre) ~ FallSpring, data = Q_18Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        2.6263     0.1028  25.542  < 2e-16 ***
+## FallSpringSpring   0.5295     0.1384   3.826  0.00017 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.046633)
+## 
+##     Null deviance: 244.53  on 220  degrees of freedom
+## Residual deviance: 229.21  on 219  degrees of freedom
+## AIC: 641.23
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_19_pre) ~ FallSpring, data = Q_19Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        3.6837     0.1065  34.583   <2e-16 ***
+## FallSpringSpring   0.3499     0.1438   2.433   0.0158 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.111904)
+## 
+##     Null deviance: 245.64  on 216  degrees of freedom
+## Residual deviance: 239.06  on 215  degrees of freedom
+## AIC: 642.83
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_20_pre) ~ FallSpring, data = Q_20Clean_Semester)
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.835165   0.116069  33.042   <2e-16 ***
+## FallSpringSpring -0.009922   0.159293  -0.062     0.95    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.225947)
+## 
+##     Null deviance: 235.39  on 193  degrees of freedom
+## Residual deviance: 235.38  on 192  degrees of freedom
+## AIC: 594.06
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_21_pre) ~ FallSpring, data = Q_21Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.87500    0.09964   38.89   <2e-16 ***
+## FallSpringSpring -0.01641    0.13695   -0.12    0.905    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.8737578)
+## 
+##     Null deviance: 161.66  on 186  degrees of freedom
+## Residual deviance: 161.65  on 185  degrees of freedom
+## AIC: 509.44
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_22_pre) ~ FallSpring, data = Q_22Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        4.1236     0.1052  39.186   <2e-16 ***
+## FallSpringSpring  -0.1830     0.1443  -1.268    0.206    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.9855533)
+## 
+##     Null deviance: 186.87  on 189  degrees of freedom
+## Residual deviance: 185.28  on 188  degrees of freedom
+## AIC: 540.42
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_23_pre) ~ FallSpring, data = Q_23Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.95050    0.08739  45.208   <2e-16 ***
+## FallSpringSpring  0.02471    0.11837   0.209    0.835    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.7712641)
+## 
+##     Null deviance: 169.71  on 221  degrees of freedom
+## Residual deviance: 169.68  on 220  degrees of freedom
+## AIC: 576.34
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_24_pre) ~ FallSpring, data = Q_24Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3.32673    0.11569  28.755   <2e-16 ***
+## FallSpringSpring -0.02501    0.15824  -0.158    0.875    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.351895)
+## 
+##     Null deviance: 290.69  on 216  degrees of freedom
+## Residual deviance: 290.66  on 215  degrees of freedom
+## AIC: 685.24
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+```
+## 
+## Call:
+## glm(formula = as.numeric(Q10_25_pre) ~ FallSpring, data = Q_25Clean_Semester)
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       2.15054    0.11653  18.455   <2e-16 ***
+## FallSpringSpring  0.04415    0.15733   0.281    0.779    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 1.262791)
+## 
+##     Null deviance: 257.71  on 205  degrees of freedom
+## Residual deviance: 257.61  on 204  degrees of freedom
+## AIC: 636.66
+## 
+## Number of Fisher Scoring iterations: 2
+```
+
+
+``` r
+Q10TextClean$Question[3] # p = 0.000878, Estimate = 0.4662
+```
+
+```
+## [1] "A lab or project where no one knows the outcome"
+```
+
+``` r
+Q10TextClean$Question[4] # p = 0.106, Estimate = 0.17299
+```
+
+```
+## [1] "At least one project that is assigned and structured by the instructor"
+```
+
+``` r
+Q10TextClean$Question[6] # p = 0.107, Estimate = 0.2634
+```
+
+```
+## [1] "A project entirely of student design"
+```
+
+``` r
+Q10TextClean$Question[11] # p = 3.37e-08, Estimate = 0.70836
+```
+
+```
+## [1] "Read primary scientific literature"
+```
+
+``` r
+Q10TextClean$Question[12] # p = 0.0146, Estimate = 0.3751
+```
+
+```
+## [1] "Write a research proposal"
+```
+
+``` r
+Q10TextClean$Question[18] # p = 0.00017, Estimate = 0.5295
+```
+
+```
+## [1] "Critique the work of other students"
+```
+
+``` r
+Q10TextClean$Question[19] # p = 0.0158, Estimate =  0.3499
+```
+
+```
+## [1] "Listen to lectures"
+```
+
+After discussion with Moria, we would like to show, as a supplemental table the questions that have p.adjust < 0.05.
+
+## Table S4
+
+
+``` r
+stats_table <- tibble(Question = Q10TextClean$Question[11], 
+                      Estimate = Q_11_pre_model$coefficients[[2]],
+                      p = coef(summary(Q_11_pre_model))[,4][[2]],
+                      `p.adj` = p.adjust(coef(summary(Q_11_pre_model))[,4][[2]], n = 25))
+stats_table <- stats_table %>%
+  add_row(Question = Q10TextClean$Question[18], 
+          Estimate = Q_18_pre_model$coefficients[[2]], 
+          p = coef(summary(Q_18_pre_model))[,4][[2]], 
+          `p.adj` = p.adjust(coef(summary(Q_18_pre_model))[,4][[2]], n = 25))
+stats_table <- stats_table %>%
+  add_row(Question = Q10TextClean$Question[3], 
+          Estimate = Q_3_pre_model$coefficients[[2]], 
+          p = coef(summary(Q_3_pre_model))[,4][[2]], 
+          `p.adj` = p.adjust(coef(summary(Q_3_pre_model))[,4][[2]], n = 25))
+
+kable(stats_table, "simple")
+```
+
+
+
+Question                                            Estimate           p       p.adj
+------------------------------------------------  ----------  ----------  ----------
+Read primary scientific literature                 0.7083607   0.0000000   0.0000008
+Critique the work of other students                0.5294751   0.0001699   0.0042470
+A lab or project where no one knows the outcome    0.4662466   0.0008776   0.0219398
 
 

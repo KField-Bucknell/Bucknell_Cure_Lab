@@ -26,6 +26,7 @@ if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() functio
 if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
 if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
 if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require('knitr')) install.packages('knitr'); library(knitr) #kable
 if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
 if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
 conflict_prefer_all("dplyr", quiet = TRUE)
@@ -1338,6 +1339,320 @@ Just to show the interaction:
 interact_plot(model = interact_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  
               y.label = "Student Percieved Gain")
+```
+
+## Presurvey by Semester
+
+Responses on the presurvey had an effect on the student perceived gain for several questions.
+We want to check to see if the presurvey responses were significantly different in the two semesters,
+because that could be a confounding factor.
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_1_pre, Q9_1_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_1Clean_Semester
+
+Q_1_pre_model <- glm(as.numeric(Q10_1_pre) ~ FallSpring, data = Q_1Clean_Semester)
+summary(Q_1_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_2_pre, Q9_2_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_2Clean_Semester
+
+Q_2_pre_model <- glm(as.numeric(Q10_2_pre) ~ FallSpring, data = Q_2Clean_Semester)
+summary(Q_2_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_3_pre, Q9_3_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_3Clean_Semester
+
+Q_3_pre_model <- glm(as.numeric(Q10_3_pre) ~ FallSpring, data = Q_3Clean_Semester)
+summary(Q_3_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_4_pre, Q9_4_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_4Clean_Semester
+
+Q_4_pre_model <- glm(as.numeric(Q10_4_pre) ~ FallSpring, data = Q_4Clean_Semester)
+summary(Q_4_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_5_pre, Q9_5_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_5Clean_Semester
+
+Q_5_pre_model <- glm(as.numeric(Q10_5_pre) ~ FallSpring, data = Q_5Clean_Semester)
+summary(Q_5_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_6_pre, Q9_6_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_6Clean_Semester
+
+Q_6_pre_model <- glm(as.numeric(Q10_6_pre) ~ FallSpring, data = Q_6Clean_Semester)
+summary(Q_6_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_7_pre, Q9_7_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_7Clean_Semester
+
+Q_7_pre_model <- glm(as.numeric(Q10_7_pre) ~ FallSpring, data = Q_7Clean_Semester)
+summary(Q_7_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_8_pre, Q9_8_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_8Clean_Semester
+
+Q_8_pre_model <- glm(as.numeric(Q10_8_pre) ~ FallSpring, data = Q_8Clean_Semester)
+summary(Q_8_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_9_pre, Q9_9_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_9Clean_Semester
+
+Q_9_pre_model <- glm(as.numeric(Q10_9_pre) ~ FallSpring, data = Q_9Clean_Semester)
+summary(Q_9_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_10_pre, Q9_10_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_10Clean_Semester
+
+Q_10_pre_model <- glm(as.numeric(Q10_10_pre) ~ FallSpring, data = Q_10Clean_Semester)
+summary(Q_10_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_11_pre, Q9_11_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_11Clean_Semester
+
+Q_11_pre_model <- glm(as.numeric(Q10_11_pre) ~ FallSpring, data = Q_11Clean_Semester)
+summary(Q_11_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_12_pre, Q9_12_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_12Clean_Semester
+
+Q_12_pre_model <- glm(as.numeric(Q10_12_pre) ~ FallSpring, data = Q_12Clean_Semester)
+summary(Q_12_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_13_pre, Q9_13_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_13Clean_Semester
+
+Q_13_pre_model <- glm(as.numeric(Q10_13_pre) ~ FallSpring, data = Q_13Clean_Semester)
+summary(Q_13_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_14_pre, Q9_14_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_14Clean_Semester
+
+Q_14_pre_model <- glm(as.numeric(Q10_14_pre) ~ FallSpring, data = Q_14Clean_Semester)
+summary(Q_14_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_15_pre, Q9_15_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_15Clean_Semester
+
+Q_15_pre_model <- glm(as.numeric(Q10_15_pre) ~ FallSpring, data = Q_15Clean_Semester)
+summary(Q_15_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_16_pre, Q9_16_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_16Clean_Semester
+
+Q_16_pre_model <- glm(as.numeric(Q10_16_pre) ~ FallSpring, data = Q_16Clean_Semester)
+summary(Q_16_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_17_pre, Q9_17_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_17Clean_Semester
+
+Q_17_pre_model <- glm(as.numeric(Q10_17_pre) ~ FallSpring, data = Q_17Clean_Semester)
+summary(Q_17_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_18_pre, Q9_18_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_18Clean_Semester
+
+Q_18_pre_model <- glm(as.numeric(Q10_18_pre) ~ FallSpring, data = Q_18Clean_Semester)
+summary(Q_18_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_19_pre, Q9_19_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_19Clean_Semester
+
+Q_19_pre_model <- glm(as.numeric(Q10_19_pre) ~ FallSpring, data = Q_19Clean_Semester)
+summary(Q_19_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_20_pre, Q9_20_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_20Clean_Semester
+
+Q_20_pre_model <- glm(as.numeric(Q10_20_pre) ~ FallSpring, data = Q_20Clean_Semester)
+summary(Q_20_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_21_pre, Q9_21_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_21Clean_Semester
+
+Q_21_pre_model <- glm(as.numeric(Q10_21_pre) ~ FallSpring, data = Q_21Clean_Semester)
+summary(Q_21_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_22_pre, Q9_22_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_22Clean_Semester
+
+Q_22_pre_model <- glm(as.numeric(Q10_22_pre) ~ FallSpring, data = Q_22Clean_Semester)
+summary(Q_22_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_23_pre, Q9_23_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_23Clean_Semester
+
+Q_23_pre_model <- glm(as.numeric(Q10_23_pre) ~ FallSpring, data = Q_23Clean_Semester)
+summary(Q_23_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_24_pre, Q9_24_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_24Clean_Semester
+
+Q_24_pre_model <- glm(as.numeric(Q10_24_pre) ~ FallSpring, data = Q_24Clean_Semester)
+summary(Q_24_pre_model)
+```
+
+```{r, echo=FALSE}
+Q10Clean_withNA %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring")) %>%
+  select(Q10_25_pre, Q9_25_post, Instructor, Rookie, FallSpring) %>%
+  na.omit() -> Q_25Clean_Semester
+
+Q_25_pre_model <- glm(as.numeric(Q10_25_pre) ~ FallSpring, data = Q_25Clean_Semester)
+summary(Q_25_pre_model)
+```
+
+```{r}
+Q10TextClean$Question[3] # p = 0.000878, Estimate = 0.4662
+Q10TextClean$Question[4] # p = 0.106, Estimate = 0.17299
+Q10TextClean$Question[6] # p = 0.107, Estimate = 0.2634
+Q10TextClean$Question[11] # p = 3.37e-08, Estimate = 0.70836
+Q10TextClean$Question[12] # p = 0.0146, Estimate = 0.3751
+Q10TextClean$Question[18] # p = 0.00017, Estimate = 0.5295
+Q10TextClean$Question[19] # p = 0.0158, Estimate =  0.3499
+```
+
+After discussion with Moria, we would like to show, as a supplemental table the questions that have p.adjust < 0.05.
+
+## Table S4
+
+```{r Table S4}
+stats_table <- tibble(Question = Q10TextClean$Question[11], 
+                      Estimate = Q_11_pre_model$coefficients[[2]],
+                      p = coef(summary(Q_11_pre_model))[,4][[2]],
+                      `p.adj` = p.adjust(coef(summary(Q_11_pre_model))[,4][[2]], n = 25))
+stats_table <- stats_table %>%
+  add_row(Question = Q10TextClean$Question[18], 
+          Estimate = Q_18_pre_model$coefficients[[2]], 
+          p = coef(summary(Q_18_pre_model))[,4][[2]], 
+          `p.adj` = p.adjust(coef(summary(Q_18_pre_model))[,4][[2]], n = 25))
+stats_table <- stats_table %>%
+  add_row(Question = Q10TextClean$Question[3], 
+          Estimate = Q_3_pre_model$coefficients[[2]], 
+          p = coef(summary(Q_3_pre_model))[,4][[2]], 
+          `p.adj` = p.adjust(coef(summary(Q_3_pre_model))[,4][[2]], n = 25))
+
+kable(stats_table, "simple")
 ```
 
 
