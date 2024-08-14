@@ -12,26 +12,25 @@ Code and data repository to accompany paper at **to be determined**
 survey results, match the pre- and post- surveys by email address, and
 then deidentify the results. The survey results were then saved in two
 different versions, found in the folder `Deidentified Surveys`,
-`NoDemographics.tsv` and `NoInstructor.tsv`. The deidentified
-post-survey results were also saved separately, without removing the
-students whose emails did not match the pre-survey, at `PostSurvey.tsv`.
+`NoDemographics.tsv` and `NoInstructor.tsv`. This process was performed
+separately for each of the three academic years analyzed.
 
-## Question 11 Exploration (Figure 1)
+## Question 11 and 13 Exploration (Figure 1)
 
-`Figure1.Question11Exploration.Rmd` -> [Figure1.Question11Exploration.md](Figure1.Question11Exploration.md)
+`Figure1.PostQ11_13.Rmd` -> [Figure1.PostQ11_13.md](Figure1.PostQ11_13.md)
 
 ## Improvements by Instructor (Figures 2 - 5)
 
 `Figures2-5.Improvements by Instructor 2.Rmd` -> [Figures2-5.Improvements-by-Instructor-2.md](Figures2-5.Improvements-by-Instructor-2.md)
 
-## Post Benefits (Figures 6 - 7)
+## Post Benefits (Figures 6 - 8)
 
-`Figures6-7.Post Benefits.Rmd` -> [Figures6-7.Post-Benefits.md](Figures6-7.Post-Benefits.md)
+`Figures6-8.Post Benefits.Rmd` -> [Figures6-8.Post-Benefits.md](Figures6-8.Post-Benefits.md)
 
-## Outcomes (Figure 8)
+## Outcomes (Figure 9)
 
-`Figure8.Outcomes.Rmd` -> [Figure8.Outcomes.md](Figure8.Outcomes.md)
+`Figure9.Outcomes.Rmd` -> [Figure9.Outcomes.md](Figure9.Outcomes.md)
 
 ## Supplemental Information
 
-`ChemistryMath.Outcomes.Rmd` -> [ChemistryMath.Outcomes.md](ChemistryMath.Outcomes.md)
+`BenchmarkComparison.Rmd` -> [BenchmarkComparison.md](BenchmarkComparison.md)
