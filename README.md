@@ -33,4 +33,6 @@ separately for each of the three academic years analyzed.
 
 ## Supplemental Information
 
+Figure S1 is part of [Figure1.PostQ11_13.md](Figure1.PostQ11_13.md)
+
 `BenchmarkComparison.Rmd` -> [BenchmarkComparison.md](BenchmarkComparison.md)
