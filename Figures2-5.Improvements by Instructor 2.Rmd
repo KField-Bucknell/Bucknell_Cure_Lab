@@ -216,7 +216,7 @@ summary(imp_model_Q10_1)
 
 step_imp_model_Q10_1 <- stepAIC(imp_model_Q10_1, direction = "backward")
 summary(step_imp_model_Q10_1)
-
+drop1(step_imp_model_Q10_1, test = "LRT")
 ```
 
 ### Q10_2
@@ -245,6 +245,7 @@ summary(imp_model_Q10_2)
 
 step_imp_model_Q10_2 <- stepAIC(imp_model_Q10_2, direction = "backward")
 summary(step_imp_model_Q10_2)
+drop1(step_imp_model_Q10_2, test = "LRT")
 ```
 
 ### Q10_3
@@ -273,6 +274,7 @@ summary(imp_model_Q10_3)
 
 step_imp_model_Q10_3 <- stepAIC(imp_model_Q10_3, direction = "backward")
 summary(step_imp_model_Q10_3)
+drop1(step_imp_model_Q10_3, test = "LRT")
 ```
 
 ### Q10_4
@@ -301,6 +303,7 @@ summary(imp_model_Q10_4)
 
 step_imp_model_Q10_4 <- stepAIC(imp_model_Q10_4, direction = "backward")
 summary(step_imp_model_Q10_4)
+drop1(step_imp_model_Q10_4, test = "LRT")
 ```
 
 ### Final Figure 3A Q10_5
@@ -329,6 +332,7 @@ summary(imp_model_Q10_5)
 
 step_imp_model_Q10_5 <- stepAIC(imp_model_Q10_5, direction = "backward")
 summary(step_imp_model_Q10_5)
+drop1(step_imp_model_Q10_5, test = "LRT")
 ```
 
 ### Q10_6
@@ -356,6 +360,7 @@ summary(imp_model_Q10_6)
 
 step_imp_model_Q10_6 <- stepAIC(imp_model_Q10_6, direction = "backward")
 summary(step_imp_model_Q10_6)
+drop1(step_imp_model_Q10_6, test = "LRT")
 ```
 
 ### Q10_7
@@ -383,6 +388,7 @@ summary(imp_model_Q10_7)
 
 step_imp_model_Q10_7 <- stepAIC(imp_model_Q10_7, direction = "backward")
 summary(step_imp_model_Q10_7)
+drop1(step_imp_model_Q10_7, test = "LRT")
 ```
 
 ### Q10_8
@@ -411,6 +417,7 @@ summary(imp_model_Q10_8)
 
 step_imp_model_Q10_8 <- stepAIC(imp_model_Q10_8, direction = "backward")
 summary(step_imp_model_Q10_8)
+drop1(step_imp_model_Q10_8, test = "LRT")
 ```
 
 ### Final Figure 3B Q10_9
@@ -438,6 +445,7 @@ summary(imp_model_Q10_9)
 
 step_imp_model_Q10_9 <- stepAIC(imp_model_Q10_9, direction = "backward")
 summary(step_imp_model_Q10_9)
+drop1(step_imp_model_Q10_9, test = "LRT")
 ```
 
 ### Q10_10
@@ -466,6 +474,7 @@ summary(imp_model_Q10_10)
 
 step_imp_model_Q10_10 <- stepAIC(imp_model_Q10_10, direction = "backward")
 summary(step_imp_model_Q10_10)
+drop1(step_imp_model_Q10_10, test = "LRT")
 ```
 
 ### Final Figure 3C Q10_11
@@ -497,7 +506,7 @@ summary(imp_model_Q10_11)
 
 step_imp_model_Q10_11 <- stepAIC(imp_model_Q10_11, direction = "backward")
 summary(step_imp_model_Q10_11)
-
+drop1(step_imp_model_Q10_11, test = "LRT")
 ```
 
 ### Final Figure 3D Q10_12
@@ -525,6 +534,7 @@ summary(imp_model_Q10_12)
 
 step_imp_model_Q10_12 <- stepAIC(imp_model_Q10_12, direction = "backward")
 summary(step_imp_model_Q10_12)
+drop1(step_imp_model_Q10_12, test = "LRT")
 ```
 
 ### Q10_13
@@ -554,6 +564,7 @@ summary(imp_model_Q10_13)
 
 step_imp_model_Q10_13 <- stepAIC(imp_model_Q10_13, direction = "backward")
 summary(step_imp_model_Q10_13)
+drop1(step_imp_model_Q10_13, test = "LRT")
 ```
 
 ### Final Figure 3E Q10_14
@@ -581,6 +592,7 @@ summary(imp_model_Q10_14)
 
 step_imp_model_Q10_14 <- stepAIC(imp_model_Q10_14, direction = "backward")
 summary(step_imp_model_Q10_14)
+drop1(step_imp_model_Q10_14, test = "LRT")
 ```
 
 ### Final Figure 3F Q10_15
@@ -608,6 +620,7 @@ summary(imp_model_Q10_15)
 
 step_imp_model_Q10_15 <- stepAIC(imp_model_Q10_15, direction = "backward")
 summary(step_imp_model_Q10_15)
+drop1(step_imp_model_Q10_15, test = "LRT")
 ```
 
 ### Final Figure 3G Q10_16
@@ -635,6 +648,7 @@ summary(imp_model_Q10_16)
 
 step_imp_model_Q10_16 <- stepAIC(imp_model_Q10_16, direction = "backward")
 summary(step_imp_model_Q10_16)
+drop1(step_imp_model_Q10_16, test = "LRT")
 ```
 
 ### Q10_17
@@ -662,6 +676,7 @@ summary(imp_model_Q10_17)
 
 step_imp_model_Q10_17 <- stepAIC(imp_model_Q10_17, direction = "backward")
 summary(step_imp_model_Q10_17)
+drop1(step_imp_model_Q10_17, test = "LRT")
 ```
 
 ### Final Figure 3H Q10_18
@@ -689,6 +704,7 @@ summary(imp_model_Q10_18)
 
 step_imp_model_Q10_18 <- stepAIC(imp_model_Q10_18, direction = "backward")
 summary(step_imp_model_Q10_18)
+drop1(step_imp_model_Q10_18, test = "LRT")
 ```
 
 ### Q10_19
@@ -770,6 +786,7 @@ summary(imp_model_Q10_21)
 
 step_imp_model_Q10_21 <- stepAIC(imp_model_Q10_21, direction = "backward")
 summary(step_imp_model_Q10_21)
+drop1(step_imp_model_Q10_21, test = "LRT")
 ```
 
 ### Q10_22
@@ -797,6 +814,7 @@ summary(imp_model_Q10_22)
 
 step_imp_model_Q10_22 <- stepAIC(imp_model_Q10_22, direction = "backward")
 summary(step_imp_model_Q10_22)
+drop1(step_imp_model_Q10_22, test = "LRT")
 ```
 
 ### Q10_23
@@ -825,6 +843,7 @@ summary(imp_model_Q10_23)
 
 step_imp_model_Q10_23 <- stepAIC(imp_model_Q10_23, direction = "backward")
 summary(step_imp_model_Q10_23)
+drop1(step_imp_model_Q10_23, test = "LRT")
 ```
 
 ### Final Figure 3I Q10_24
@@ -852,6 +871,7 @@ summary(imp_model_Q10_24)
 
 step_imp_model_Q10_24 <- stepAIC(imp_model_Q10_24, direction = "backward")
 summary(step_imp_model_Q10_24)
+drop1(step_imp_model_Q10_24, test = "LRT")
 ```
 
 ### Q10_25
@@ -879,6 +899,7 @@ summary(imp_model_Q10_25)
 
 step_imp_model_Q10_25 <- stepAIC(imp_model_Q10_25, direction = "backward")
 summary(step_imp_model_Q10_25)
+drop1(step_imp_model_Q10_25, test = "LRT")
 ```
 
 ## Summary
@@ -1304,6 +1325,7 @@ summary(Q10_post_merged)
 
 emphasis_model <- glm(as.numeric(Gain) ~ Emphasis ,data = Q10_post_merged)
 summary(emphasis_model)
+drop1(emphasis_model, test = "LRT")
 ```
 
 Self-reported gain in these skills is highly dependent on the emphasis placed by the instructor (p < 2e-16).
@@ -1327,6 +1349,8 @@ Q10_post_refactored <- Q10_post_merged %>%
   mutate(Gain = as.numeric(Gain))
 
 cat_model <- glm(Gain ~ Emphasis + Instructor, data = Q10_post_refactored)
+
+drop1(cat_model, test = "LRT")
 
 cat_plot(model = cat_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  

@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 27 July 2024"
+date: "Last compiled on 10 February 2026"
 output:
   html_document:
     toc: true
@@ -476,6 +476,20 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## Q9_1_post ~ Q10_1_pre + Instructor + Rookie
+##            Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>          227.03 637.85                       
+## Q10_1_pre   1   229.51 638.18      2.3299   0.1269  
+## Instructor  4   235.72 637.92      8.0686   0.0891 .
+## Rookie      1   229.76 638.42      2.5674   0.1091  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_2
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_2-1.png)<!-- -->
@@ -568,6 +582,15 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 612.09
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_2_post) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      212.96 612.09
 ```
 
 ### Q10_3
@@ -665,6 +688,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_3_post) ~ Instructor
+##            Df Deviance    AIC scaled dev. Pr(>Chi)   
+## <none>          217.69 637.65                        
+## Instructor  4   231.93 643.72      14.069 0.007079 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_4
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_4-1.png)<!-- -->
@@ -744,6 +779,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 521.01
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## Q9_4_post ~ Instructor + Rookie + Instructor:Rookie
+##                   Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>                 121.69 521.01                       
+## Instructor:Rookie  4   128.23 524.73       11.72  0.01956 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Final Figure 3A Q10_5
@@ -834,6 +881,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 451.06
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_5_post) ~ as.numeric(Q10_5_pre) + Instructor
+##                       Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                     92.684 451.06                          
+## as.numeric(Q10_5_pre)  1   94.271 452.85       3.788   0.05162 .  
+## Instructor             4  111.608 484.49      41.434 2.185e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_6
@@ -931,6 +991,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_6_post) ~ Instructor
+##            Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>          102.03 468.35                          
+## Instructor  4   155.83 553.95      93.598 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_7
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_7-1.png)<!-- -->
@@ -1025,6 +1097,15 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_7_post) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      238.72 652.03
+```
+
 ### Q10_8
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_8-1.png)<!-- -->
@@ -1102,6 +1183,20 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 667.81
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## Q9_8_post ~ Q10_8_pre + Instructor + Rookie
+##            Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>          240.72 667.81                          
+## Q10_8_pre   1   244.08 668.92      3.1047 0.0780678 .  
+## Instructor  4   261.44 678.31     18.4962 0.0009869 ***
+## Rookie      1   246.64 671.25      5.4404 0.0196767 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Final Figure 3B Q10_9
@@ -1194,6 +1289,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_9_post) ~ as.numeric(Q10_9_pre) + Instructor
+##                       Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>                     86.729 436.25                       
+## as.numeric(Q10_9_pre)  1   87.550 436.35      2.1023  0.14708  
+## Instructor             4   90.667 438.15      9.9032  0.04209 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_10
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_10-1.png)<!-- -->
@@ -1273,6 +1381,20 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 414.37
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## Q9_10_post ~ Q10_10_pre + Instructor + Rookie
+##            Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>          78.200 414.37                          
+## Q10_10_pre  1   80.014 417.46      5.0918 0.0240387 *  
+## Instructor  4   85.820 427.01     20.6415 0.0003729 ***
+## Rookie      1   79.805 416.88      4.5101 0.0336950 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Final Figure 3C Q10_11
@@ -1396,6 +1518,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_11_post) ~ as.numeric(Q10_11_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      94.984 455.54                          
+## as.numeric(Q10_11_pre)  1   97.801 460.03       6.487   0.01087 *  
+## Instructor              4  110.792 481.71      34.175 6.861e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Final Figure 3D Q10_12
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 3 Q10_12-1.png)<!-- -->
@@ -1486,6 +1621,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_12_post) ~ as.numeric(Q10_12_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      179.65 595.39                          
+## as.numeric(Q10_12_pre)  1   183.07 597.56      4.1689 0.0411729 *  
+## Instructor              4   195.63 606.22     18.8297 0.0008489 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_13
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_13-1.png)<!-- -->
@@ -1567,6 +1715,21 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 446.09
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_13_post) ~ as.numeric(Q10_13_pre) + Instructor + 
+##     Rookie
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      90.208 446.09                          
+## as.numeric(Q10_13_pre)  1   92.510 449.68       5.594   0.01802 *  
+## Instructor              4  108.278 478.62      40.534 3.356e-08 ***
+## Rookie                  1   91.848 448.09       4.000   0.04550 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Final Figure 3E Q10_14
@@ -1659,6 +1822,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_14_post) ~ as.numeric(Q10_14_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      91.246 446.63                          
+## as.numeric(Q10_14_pre)  1   96.494 457.04      12.413 0.0004263 ***
+## Instructor              4  111.281 482.69      44.065 6.218e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Final Figure 3F Q10_15
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 3 Q10_15-1.png)<!-- -->
@@ -1749,6 +1925,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_15_post) ~ as.numeric(Q10_15_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      153.50 560.63                          
+## as.numeric(Q10_15_pre)  1   159.89 567.64       9.012  0.002682 ** 
+## Instructor              4   181.72 589.93      37.301 1.562e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Final Figure 3G Q10_16
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 3 Q10_16-1.png)<!-- -->
@@ -1837,6 +2026,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 522.53
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_16_post) ~ as.numeric(Q10_16_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      127.70 522.53                          
+## as.numeric(Q10_16_pre)  1   130.96 526.15      5.6198 0.0177590 *  
+## Instructor              4   141.19 536.92     22.3935 0.0001673 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_17
@@ -1934,6 +2136,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_17_post) ~ Instructor
+##            Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>           154.3 562.72                          
+## Instructor  4    168.2 573.95      19.235 0.0007067 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Final Figure 3H Q10_18
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 3 Q10_18-1.png)<!-- -->
@@ -2022,6 +2236,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 551.46
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_18_post) ~ as.numeric(Q10_18_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      147.26 551.46                          
+## as.numeric(Q10_18_pre)  1   151.66 555.96       6.506   0.01075 *  
+## Instructor              4   177.67 584.94      41.483 2.135e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_19
@@ -2308,6 +2535,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_21_post) ~ Instructor
+##            Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>          309.63 636.98                       
+## Instructor  4   328.99 640.33      11.342  0.02298 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_22
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_22-1.png)<!-- -->
@@ -2403,6 +2642,18 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_22_post) ~ Instructor
+##            Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>          266.07 615.17                       
+## Instructor  4   283.45 619.20      12.026  0.01716 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_23
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_23-1.png)<!-- -->
@@ -2477,6 +2728,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 586.07
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## Q9_23_post ~ Q10_23_pre + Instructor * Rookie
+##                   Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>                 163.47 586.07                       
+## Q10_23_pre         1   168.03 590.17      6.1004  0.01352 *
+## Instructor:Rookie  4   169.87 586.59      8.5171  0.07437 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Final Figure 3I Q10_24
@@ -2569,6 +2833,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_24_post) ~ as.numeric(Q10_24_pre) + Instructor
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      143.67 540.33                          
+## as.numeric(Q10_24_pre)  1   148.27 545.18       6.847  0.008878 ** 
+## Instructor              4   250.19 652.70     120.368 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_25
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Q10_25-1.png)<!-- -->
@@ -2650,6 +2927,21 @@ Please rate how much learning you gained from each element you experienced in th
 ## AIC: 620.29
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Q9_25_post) ~ as.numeric(Q10_25_pre) + Instructor + 
+##     Rookie
+##                        Df Deviance    AIC scaled dev.  Pr(>Chi)    
+## <none>                      226.66 620.29                          
+## as.numeric(Q10_25_pre)  1   233.43 624.35       6.063    0.0138 *  
+## Instructor              4   274.22 651.53      39.239 6.219e-08 ***
+## Rookie                  1   229.28 620.66       2.372    0.1235    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ## Summary
@@ -2956,6 +3248,18 @@ Looking at all the questions together, including those in the previous list wher
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Gain) ~ Emphasis
+##          Df Deviance   AIC scaled dev.  Pr(>Chi)    
+## <none>        5698.5 15683                          
+## Emphasis  1   7344.9 17060      1378.9 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 Self-reported gain in these skills is highly dependent on the emphasis placed by the instructor (p < 2e-16).
 
 Now to explore whether this also depended on the instructor.
@@ -3017,6 +3321,19 @@ Now to explore whether this also depended on the instructor.
 ```
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 5B Gain Emphasis Interaction-1.png)<!-- -->
+
+```
+## Single term deletions
+## 
+## Model:
+## Gain ~ Emphasis + Instructor
+##            Df Deviance   AIC scaled dev.  Pr(>Chi)    
+## <none>          5379.9 15383                          
+## Emphasis    3   7052.2 16847     1470.51 < 2.2e-16 ***
+## Instructor  4   5676.9 15667      291.93 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
 
 ```
 ## Warning: Emphasis and Instructor are not included in an interaction with one another
