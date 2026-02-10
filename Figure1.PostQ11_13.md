@@ -1,7 +1,7 @@
 ---
 title: "Engagement and Overall Evaluation Questions"
 author: "Ken Field"
-date: "Last compiled on 26 July 2024"
+date: "Last compiled on 10 February 2026"
 output:
   html_document:
     toc: true
@@ -502,17 +502,30 @@ This PCA demonstrated that all of the questions except Q11_2 are grouped togethe
 ## (`geom_text()`).
 ```
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1AB Question Correlation-1.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-1.png)<!-- -->
 
 ```
 ## Warning: Removed 2 rows containing missing values or values outside the scale range
 ## (`geom_segment()`).
 ```
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1AB Question Correlation-2.png)<!-- -->![](Figure1.PostQ11_13_files/figure-html/Fig 1AB Question Correlation-3.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-2.png)<!-- -->
+
+```
+## Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
+## ℹ Please use tidy evaluation idioms with `aes()`.
+## ℹ See also `vignette("ggplot2-in-packages")` for more information.
+## ℹ The deprecated feature was likely used in the ggcorrplot package.
+##   Please report the issue at <https://github.com/kassambara/ggcorrplot/issues>.
+## This warning is displayed once per session.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+```
+
+![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-3.png)<!-- -->
 
 Interesting. There is a strong correlation between all three Q11 questions, even though the PCA shows that question 11_2 is different. 
-I will plan on showing the PCA for Figure 1, then the two appropriate correlation plots.
+I will plan on showing the correlation plot for Figure 1B, then the PCA in Supplemental Figure 1.
 
 Q11_2 is "This course was a good way of learning about the process of scientific research" 
 while the other two questions on the overall evaluation are "This course was a good way of learning about the subject matter" 
@@ -534,9 +547,9 @@ Given the high degree of correlation between 11_1 and 11_3, we will only look at
 
 
 
-## Figure 1C
+## Figure 1A
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1C Q10 By Semester-1.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Fig 1A Q10 By Semester-1.png)<!-- -->
 
 ## Summary Statistics
 

@@ -372,7 +372,7 @@ This PCA demonstrated that all of the questions except Q11_2 are grouped togethe
 
 ## Fig 1 Question Correlation
 
-```{r Fig 1AB Question Correlation, echo=FALSE}
+```{r Fig 1B Question Correlation, echo=FALSE}
 SurveyCorrelation <- Q11Recoded %>%
   select(Q11_1:Q13_18)
 
@@ -409,7 +409,7 @@ model.matrix(~0+., data=SurveyCorrelation) %>%
 ```
 
 Interesting. There is a strong correlation between all three Q11 questions, even though the PCA shows that question 11_2 is different. 
-I will plan on showing the PCA for Figure 1, then the two appropriate correlation plots.
+I will plan on showing the correlation plot for Figure 1B, then the PCA in Supplemental Figure 1.
 
 Q11_2 is "This course was a good way of learning about the process of scientific research" 
 while the other two questions on the overall evaluation are "This course was a good way of learning about the subject matter" 
@@ -448,9 +448,9 @@ Q11_long <- Q11Clean %>%
 ```
 
 
-## Figure 1C
+## Figure 1A
 
-```{r Fig 1C Q10 By Semester, fig.width=5, fig.height=6, echo=FALSE}
+```{r Fig 1A Q10 By Semester, fig.width=5, fig.height=6, echo=FALSE}
 ggplot(Q11_long) +
   geom_bar(aes(x = FallSpring, fill = fct_rev(Response)), position = 'fill', width = 0.75) +
   facet_grid(as.factor(Q11_long$Question)) +
