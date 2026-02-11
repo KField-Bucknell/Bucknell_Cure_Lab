@@ -1,7 +1,7 @@
 ---
 title: "Post Benefits Question"
 author: "Ken Field"
-date: "Last compiled on 16 July 2024"
+date: "Last compiled on 11 February 2026"
 output:
   html_document:
     toc: true
@@ -488,6 +488,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      239.36 631.40                     
+## Gender  1   241.83 631.57      2.1643   0.1413
+```
+
 ### Q10_02
 
 
@@ -540,6 +550,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      133.28 513.34                     
+## Gender  1   134.62 513.49      2.1478   0.1428
+```
+
 ### Q10_03
 
 
@@ -578,6 +598,18 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 527.11
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)   
+## <none>                139.48 527.11                        
+## ClassYear:Gender  1   144.17 532.22      7.1117 0.007658 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```
@@ -643,6 +675,18 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear
+##           Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>         162.59 556.07                       
+## ClassYear  1   165.97 558.50      4.4298  0.03532 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_05
 
 
@@ -695,6 +739,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 540.76
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>         155 540.76
 ```
 
 ### Q10_06
@@ -751,6 +804,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      138.44 518.09
+```
+
 ### Q10_07
 
 
@@ -803,6 +865,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      171.12 563.83                     
+## Gender  1   172.88 564.02      2.1857   0.1393
+```
+
 ### Q10_08
 
 
@@ -841,6 +913,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 534.81
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                144.57 534.81                     
+## ClassYear:Gender  1   146.10 535.08      2.2683    0.132
 ```
 
 ### Q10_09
@@ -897,6 +979,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance   AIC scaled dev. Pr(>Chi)
+## <none>      164.44 556.5
+```
+
 ### Q10_10
 
 
@@ -951,6 +1042,24 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance   AIC scaled dev. Pr(>Chi)
+## <none>      144.49 528.7
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance   AIC scaled dev. Pr(>Chi)
+## <none>      144.49 528.7
+```
+
 ### Q10_11
 
 
@@ -989,6 +1098,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 563.44
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                165.16 563.44                     
+## ClassYear:Gender  1   167.23 564.12      2.6765   0.1018
 ```
 
 ### Q10_12
@@ -1041,6 +1160,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 647.64
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear
+##           Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>         251.24 647.64                     
+## ClassYear  1   253.84 647.84      2.2027   0.1378
 ```
 
 ### Q10_13
@@ -1097,6 +1226,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      137.74 518.41
+```
+
 ### Q10_14
 
 
@@ -1149,6 +1287,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 563.71
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      171.33 563.71
 ```
 
 ### Q10_15
@@ -1205,6 +1352,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      202.72 596.14
+```
+
 ### Q10_16
 
 
@@ -1257,6 +1413,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 551.9
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance   AIC scaled dev. Pr(>Chi)
+## <none>      160.96 551.9
 ```
 
 ### Q10_17
@@ -1313,6 +1478,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      238.53 636.47
+```
+
 ### Q10_18
 
 
@@ -1351,6 +1525,16 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 562.6
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                164.51 562.60                     
+## ClassYear:Gender  1   166.43 563.08      2.4857   0.1149
 ```
 
 ### Q10_19
@@ -1407,6 +1591,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      243.66 641.04
+```
+
 ### Q10_20
 
 
@@ -1461,6 +1654,15 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      170.81 564.67
+```
+
 ### Q10_21
 
 
@@ -1499,6 +1701,18 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## AIC: 660.7
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>                267.21 660.70                       
+## ClassYear:Gender  1   274.02 664.03      5.3295  0.02097 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ## Summary of Analysis by ClassYear and Gender
@@ -1629,6 +1843,17 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender + `Race/Ethnicity`
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                215.36 584.62                     
+## Gender            1   217.78 584.82      2.2051   0.1376
+## `Race/Ethnicity`  1   218.06 585.07      2.4533   0.1173
+```
+
 ### Q10_02
 
 
@@ -1689,6 +1914,18 @@ Here are the cat_plots showing these interactions:
 ## AIC: 476.85
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>        122.48 476.85                       
+## Semester  1   125.52 479.78      4.9321  0.02636 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_03
@@ -1753,6 +1990,15 @@ Here are the cat_plots showing these interactions:
 ## AIC: 497.01
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      136.76 497.01
 ```
 
 ```
@@ -1828,6 +2074,18 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>        148.95 516.18                       
+## Semester  1   151.37 517.42      3.2395  0.07188 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_05
 
 
@@ -1890,6 +2148,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      141.06 500.25
+```
+
 ### Q10_06
 
 
@@ -1941,6 +2208,26 @@ Here are the cat_plots showing these interactions:
 ## AIC: 480
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender + `Race/Ethnicity` + Gender:`Race/Ethnicity`
+##                         Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                       122.78 480.00                     
+## Gender:`Race/Ethnicity`  1   124.04 480.04      2.0403   0.1532
+```
+
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: 5 - as.numeric(Response)
+##                         LR Chisq Df Pr(>Chisq)
+## Gender                   1.50731  1     0.2195
+## `Race/Ethnicity`         0.00015  1     0.9904
+## Gender:`Race/Ethnicity`  2.00975  1     0.1563
 ```
 
 ### Q10_07
@@ -1997,6 +2284,19 @@ Here are the cat_plots showing these interactions:
 ## AIC: 524.87
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester + Gender
+##          Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>        156.45 524.87                       
+## Semester  1   158.82 525.86      2.9886  0.08385 .
+## Gender    1   158.75 525.78      2.9064  0.08823 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_08
@@ -2063,6 +2363,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      135.98 495.86
+```
+
 ### Q10_09
 
 
@@ -2114,6 +2423,26 @@ Here are the cat_plots showing these interactions:
 ## AIC: 516.48
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender + `Race/Ethnicity` + Gender:`Race/Ethnicity`
+##                         Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                       146.24 516.48                     
+## Gender:`Race/Ethnicity`  1   148.13 517.06      2.5798   0.1082
+```
+
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: 5 - as.numeric(Response)
+##                         LR Chisq Df Pr(>Chisq)
+## Gender                   0.39316  1     0.5306
+## `Race/Ethnicity`         0.10197  1     0.7495
+## Gender:`Race/Ethnicity`  2.54470  1     0.1107
 ```
 
 ### Q10_10
@@ -2176,6 +2505,15 @@ Here are the cat_plots showing these interactions:
 ## AIC: 498.84
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      138.01 498.84
 ```
 
 ### Q10_11
@@ -2242,6 +2580,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      155.28 522.54
+```
+
 ### Q10_12
 
 
@@ -2293,6 +2640,30 @@ Here are the cat_plots showing these interactions:
 ## AIC: 602.29
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Gender + `Race/Ethnicity` + Gender:`Race/Ethnicity`
+##                         Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>                       226.31 602.29                       
+## Gender:`Race/Ethnicity`  1   230.19 603.69      3.4037  0.06505 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: 5 - as.numeric(Response)
+##                         LR Chisq Df Pr(>Chisq)  
+## Gender                    0.1203  1    0.72868  
+## `Race/Ethnicity`          1.8955  1    0.16859  
+## Gender:`Race/Ethnicity`   3.3642  1    0.06663 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_13
@@ -2357,6 +2728,18 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)   
+## <none>        118.67 470.49                        
+## Semester  1   124.49 478.11      9.6251 0.001919 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_14
 
 
@@ -2417,6 +2800,18 @@ Here are the cat_plots showing these interactions:
 ## AIC: 518.86
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>        152.13 518.86                       
+## Semester  1   156.75 522.85        5.99  0.01439 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ### Q10_15
@@ -2481,6 +2876,18 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)  
+## <none>        181.34 550.50                       
+## Semester  1   184.34 551.75       3.249  0.07147 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Q10_16
 
 
@@ -2541,6 +2948,16 @@ Here are the cat_plots showing these interactions:
 ## AIC: 511.38
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester
+##          Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>        145.44 511.38                     
+## Semester  1   146.96 511.46      2.0847   0.1488
 ```
 
 ### Q10_17
@@ -2607,6 +3024,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>         211 584.17
+```
+
 ### Q10_18
 
 
@@ -2669,6 +3095,15 @@ Here are the cat_plots showing these interactions:
 ## AIC: 520.89
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      154.01 520.89
 ```
 
 ### Q10_19
@@ -2735,6 +3170,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance   AIC scaled dev. Pr(>Chi)
+## <none>      220.15 592.7
+```
+
 ### Q10_20
 
 
@@ -2797,6 +3241,15 @@ Here are the cat_plots showing these interactions:
 ## Number of Fisher Scoring iterations: 2
 ```
 
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ 1
+##        Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>      158.16 526.23
+```
+
 ### Q10_21
 
 
@@ -2852,6 +3305,17 @@ Here are the cat_plots showing these interactions:
 ## AIC: 606.47
 ## 
 ## Number of Fisher Scoring iterations: 2
+```
+
+```
+## Single term deletions
+## 
+## Model:
+## 5 - as.numeric(Response) ~ Semester + `Race/Ethnicity`
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                238.17 606.47                     
+## Semester          1   241.12 606.92      2.4420   0.1181
+## `Race/Ethnicity`  1   240.83 606.67      2.1986   0.1381
 ```
 
 

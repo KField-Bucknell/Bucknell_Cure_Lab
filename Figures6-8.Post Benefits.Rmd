@@ -22,6 +22,7 @@ if (!require("plotly")) install.packages("plotly"); library(plotly)
 if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
 if (!require("stringr")) install.packages("stringr"); library(stringr)
 if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("car")) install.packages("car"); library(car) #Anova
 if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
 if (!require("conflicted")) install.packages("conflicted"); library(conflicted) #dplyr to rule them all
 if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
@@ -316,6 +317,7 @@ Q01_model_1 <- glm(data = Q01_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q01_model_1)
+Q01_drop1 <- drop1(Q01_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_02
@@ -329,6 +331,7 @@ Q02_model_1 <- glm(data = Q02_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q02_model_1)
+Q02_drop1 <- drop1(Q02_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_03
@@ -342,6 +345,7 @@ Q03_model_1 <- glm(data = Q03_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q03_model_1)
+Q03_drop1 <- drop1(Q03_model_1, test = "LRT") %>% print()
 
 Q03_select %>% group_by(Response) %>% tally()
 ```
@@ -357,6 +361,7 @@ Q04_model_1 <- glm(data = Q04_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q04_model_1)
+Q04_drop1 <- drop1(Q04_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_05
@@ -370,6 +375,7 @@ Q05_model_1 <- glm(data = Q05_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q05_model_1)
+Q05_drop1 <- drop1(Q05_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_06
@@ -383,6 +389,7 @@ Q06_model_1 <- glm(data = Q06_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q06_model_1)
+Q06_drop1 <- drop1(Q06_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_07
@@ -396,6 +403,7 @@ Q07_model_1 <- glm(data = Q07_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q07_model_1)
+Q07_drop1 <- drop1(Q07_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_08
@@ -409,6 +417,7 @@ Q08_model_1 <- glm(data = Q08_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q08_model_1)
+Q08_drop1 <- drop1(Q08_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_09
@@ -422,6 +431,7 @@ Q09_model_1 <- glm(data = Q09_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q09_model_1)
+Q09_drop1 <- drop1(Q09_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_10
@@ -435,6 +445,8 @@ Q10_model_1 <- glm(data = Q10_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q10_model_1)
+drop1(Q10_model_1, test = "LRT")
+Q10_drop1 <- drop1(Q10_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_11
@@ -448,6 +460,7 @@ Q11_model_1 <- glm(data = Q11_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q11_model_1)
+Q11_drop1 <- drop1(Q11_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_12
@@ -461,6 +474,7 @@ Q12_model_1 <- glm(data = Q12_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q12_model_1)
+Q12_drop1 <- drop1(Q12_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_13
@@ -474,6 +488,7 @@ Q13_model_1 <- glm(data = Q13_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q13_model_1)
+Q13_drop1 <- drop1(Q13_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_14
@@ -487,6 +502,7 @@ Q14_model_1 <- glm(data = Q14_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q14_model_1)
+Q14_drop1 <- drop1(Q14_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_15
@@ -500,6 +516,7 @@ Q15_model_1 <- glm(data = Q15_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q15_model_1)
+Q15_drop1 <- drop1(Q15_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_16
@@ -513,6 +530,7 @@ Q16_model_1 <- glm(data = Q16_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q16_model_1)
+Q16_drop1 <- drop1(Q16_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_17
@@ -526,6 +544,7 @@ Q17_model_1 <- glm(data = Q17_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q17_model_1)
+Q17_drop1 <- drop1(Q17_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_18
@@ -539,6 +558,7 @@ Q18_model_1 <- glm(data = Q18_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q18_model_1)
+Q18_drop1 <- drop1(Q18_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_19
@@ -552,6 +572,7 @@ Q19_model_1 <- glm(data = Q19_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q19_model_1)
+Q19_drop1 <- drop1(Q19_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_20
@@ -565,6 +586,7 @@ Q20_model_1 <- glm(data = Q20_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q20_model_1)
+Q20_drop1 <- drop1(Q20_model_1, test = "LRT") %>% print()
 ```
 
 ### Q10_21
@@ -578,6 +600,7 @@ Q21_model_1 <- glm(data = Q21_select,
                  5-as.numeric(Response) ~ ClassYear * Gender) %>%
   stepAIC(direction = "backward")
 summary(Q21_model_1)
+Q21_drop1 <- drop1(Q21_model_1, test = "LRT") %>% print()
 ```
 
 ## Summary of Analysis by ClassYear and Gender
@@ -649,6 +672,7 @@ Q01_model <- glm(data = Q01_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q01_model)
+Q01_drop <- drop1(Q01_model, test = "LRT") %>% print()
 ```
 
 ### Q10_02
@@ -662,6 +686,7 @@ Q02_model <- glm(data = Q02_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q02_model)
+Q02_drop <- drop1(Q02_model, test = "LRT") %>% print()
 ```
 
 ### Q10_03
@@ -675,6 +700,7 @@ Q03_model <- glm(data = Q03_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q03_model)
+Q03_drop <- drop1(Q03_model, test = "LRT") %>% print()
 
 Q03_select %>% group_by(Response) %>% tally()
 ```
@@ -690,6 +716,7 @@ Q04_model <- glm(data = Q04_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q04_model)
+Q04_drop <- drop1(Q04_model, test = "LRT") %>% print()
 ```
 
 ### Q10_05
@@ -703,6 +730,7 @@ Q05_model <- glm(data = Q05_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q05_model)
+Q05_drop <- drop1(Q05_model, test = "LRT") %>% print()
 ```
 
 ### Q10_06
@@ -716,6 +744,8 @@ Q06_model <- glm(data = Q06_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q06_model)
+Q06_drop <- drop1(Q06_model, test = "LRT") %>% print()
+Anova(Q06_model, type=3) # shows each term in interaction
 ```
 
 ### Q10_07
@@ -729,6 +759,7 @@ Q07_model <- glm(data = Q07_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q07_model)
+Q07_drop <- drop1(Q07_model, test = "LRT") %>% print()
 ```
 
 ### Q10_08
@@ -742,6 +773,7 @@ Q08_model <- glm(data = Q08_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q08_model)
+Q08_drop <- drop1(Q08_model, test = "LRT") %>% print()
 ```
 
 ### Q10_09
@@ -755,6 +787,9 @@ Q09_model <- glm(data = Q09_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q09_model)
+Q09_drop <- drop1(Q09_model, test = "LRT") %>% print()
+
+Anova(Q09_model, type=3) # shows each term in interaction
 ```
 
 ### Q10_10
@@ -768,6 +803,7 @@ Q10_model <- glm(data = Q10_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q10_model)
+Q10_drop <- drop1(Q10_model, test = "LRT") %>% print()
 ```
 
 ### Q10_11
@@ -781,6 +817,7 @@ Q11_model <- glm(data = Q11_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q11_model)
+Q11_drop <- drop1(Q11_model, test = "LRT") %>% print()
 ```
 
 ### Q10_12
@@ -794,6 +831,9 @@ Q12_model <- glm(data = Q12_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q12_model)
+Q12_drop <- drop1(Q12_model, test = "LRT") %>% print()
+
+Anova(Q12_model, type=3)
 ```
 
 ### Q10_13
@@ -807,6 +847,7 @@ Q13_model <- glm(data = Q13_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q13_model)
+Q13_drop <- drop1(Q13_model, test = "LRT") %>% print()
 ```
 
 ### Q10_14
@@ -820,6 +861,7 @@ Q14_model <- glm(data = Q14_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q14_model)
+Q14_drop <- drop1(Q14_model, test = "LRT") %>% print()
 ```
 
 ### Q10_15
@@ -833,6 +875,7 @@ Q15_model <- glm(data = Q15_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q15_model)
+Q15_drop <- drop1(Q15_model, test = "LRT") %>% print()
 ```
 
 ### Q10_16
@@ -846,6 +889,7 @@ Q16_model <- glm(data = Q16_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q16_model)
+Q16_drop <- drop1(Q16_model, test = "LRT") %>% print()
 ```
 
 ### Q10_17
@@ -859,6 +903,7 @@ Q17_model <- glm(data = Q17_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q17_model)
+Q17_drop <- drop1(Q17_model, test = "LRT") %>% print()
 ```
 
 ### Q10_18
@@ -872,6 +917,7 @@ Q18_model <- glm(data = Q18_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q18_model)
+Q18_drop <- drop1(Q18_model, test = "LRT") %>% print()
 ```
 
 ### Q10_19
@@ -885,6 +931,7 @@ Q19_model <- glm(data = Q19_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q19_model)
+Q19_drop <- drop1(Q19_model, test = "LRT") %>% print()
 ```
 
 ### Q10_20
@@ -898,6 +945,7 @@ Q20_model <- glm(data = Q20_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q20_model)
+Q20_drop <- drop1(Q20_model, test = "LRT") %>% print()
 ```
 
 ### Q10_21
@@ -911,6 +959,7 @@ Q21_model <- glm(data = Q21_select,
                  5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
   stepAIC(direction = "backward")
 summary(Q21_model)
+Q21_drop <- drop1(Q21_model, test = "LRT") %>% print()
 ```
 
 
