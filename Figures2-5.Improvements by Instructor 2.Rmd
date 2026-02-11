@@ -23,6 +23,7 @@ if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
 if (!require("stringr")) install.packages("stringr"); library(stringr)
 if (!require("readxl")) install.packages("readxl"); library(readxl)
 if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
+if (!require("car")) install.packages("car"); library(car) #Anova function
 if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
 if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
 if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
@@ -304,6 +305,7 @@ summary(imp_model_Q10_4)
 step_imp_model_Q10_4 <- stepAIC(imp_model_Q10_4, direction = "backward")
 summary(step_imp_model_Q10_4)
 drop1(step_imp_model_Q10_4, test = "LRT")
+car::Anova(step_imp_model_Q10_4, type = "3")
 ```
 
 ### Final Figure 3A Q10_5
@@ -844,6 +846,7 @@ summary(imp_model_Q10_23)
 step_imp_model_Q10_23 <- stepAIC(imp_model_Q10_23, direction = "backward")
 summary(step_imp_model_Q10_23)
 drop1(step_imp_model_Q10_23, test = "LRT")
+car::Anova(step_imp_model_Q10_23, type = "3")
 ```
 
 ### Final Figure 3I Q10_24
@@ -915,6 +918,7 @@ The glm was improved by including pre-survey response, instructor, rookie status
 - [23] "Discuss reading materials in class"  
 
 The glm was improved by including instructor, rookie status, and the interaction, but not pre-survey response, for the following question:
+
 4
 
 -  [4] "At least one project that is assigned and structured by the instructor"  

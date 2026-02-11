@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 10 February 2026"
+date: "Last compiled on 11 February 2026"
 output:
   html_document:
     toc: true
@@ -789,6 +789,18 @@ Please rate how much learning you gained from each element you experienced in th
 ##                   Df Deviance    AIC scaled dev. Pr(>Chi)  
 ## <none>                 121.69 521.01                       
 ## Instructor:Rookie  4   128.23 524.73       11.72  0.01956 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: Q9_4_post
+##                   LR Chisq Df Pr(>Chisq)  
+## Instructor          5.2935  4    0.25849  
+## Rookie              1.6816  1    0.19471  
+## Instructor:Rookie  11.4948  4    0.02153 *
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -2743,6 +2755,19 @@ Please rate how much learning you gained from each element you experienced in th
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: Q9_23_post
+##                   LR Chisq Df Pr(>Chisq)    
+## Q10_23_pre          5.8785  1  0.0153270 *  
+## Instructor         21.5272  4  0.0002489 ***
+## Rookie              3.0322  1  0.0816294 .  
+## Instructor:Rookie   8.2524  4  0.0827576 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 ### Final Figure 3I Q10_24
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 3 Q10_24-1.png)<!-- -->
@@ -2957,6 +2982,7 @@ The glm was improved by including pre-survey response, instructor, rookie status
 - [23] "Discuss reading materials in class"  
 
 The glm was improved by including instructor, rookie status, and the interaction, but not pre-survey response, for the following question:
+
 4
 
 -  [4] "At least one project that is assigned and structured by the instructor"  
