@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 11 February 2026"
+date: "Last compiled on 12 February 2026"
 output:
   html_document:
     toc: true
@@ -3336,6 +3336,19 @@ Now to explore whether this also depended on the instructor.
 ```
 
 ```
+## Single term deletions
+## 
+## Model:
+## as.numeric(Gain) ~ Emphasis + Instructor
+##            Df Deviance   AIC scaled dev.  Pr(>Chi)    
+## <none>          5439.3 15438                          
+## Emphasis    1   7052.2 16847     1410.92 < 2.2e-16 ***
+## Instructor  4   5698.5 15683      252.95 < 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```
 ## Using data Q10_post_merged from global environment. This could cause
 ## incorrect results if Q10_post_merged has been altered since the model was
 ## fit. You can manually provide the data to the "data =" argument.
@@ -3347,6 +3360,33 @@ Now to explore whether this also depended on the instructor.
 ```
 
 ![](Figures2-5.Improvements-by-Instructor-2_files/figure-html/Fig 5B Gain Emphasis Interaction-1.png)<!-- -->
+
+```
+## 
+## Call:
+## glm(formula = Gain ~ Emphasis + Instructor, data = Q10_post_refactored)
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)           3.02666    0.03567  84.862  < 2e-16 ***
+## Emphasis1             0.79693    0.04651  17.135  < 2e-16 ***
+## Emphasis2             1.11544    0.04367  25.540  < 2e-16 ***
+## Emphasis3             1.47465    0.03643  40.479  < 2e-16 ***
+## InstructorHagrid     -0.57495    0.04227 -13.601  < 2e-16 ***
+## InstructorLupin      -0.48829    0.04800 -10.174  < 2e-16 ***
+## InstructorMcGonagall -0.16679    0.04301  -3.878 0.000107 ***
+## InstructorSinistra    0.03248    0.03586   0.906 0.365155    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for gaussian family taken to be 0.9916936)
+## 
+##     Null deviance: 7344.9  on 5432  degrees of freedom
+## Residual deviance: 5379.9  on 5425  degrees of freedom
+## AIC: 15383
+## 
+## Number of Fisher Scoring iterations: 2
+```
 
 ```
 ## Single term deletions
@@ -3363,6 +3403,8 @@ Now to explore whether this also depended on the instructor.
 
 ```
 ## Warning: Emphasis and Instructor are not included in an interaction with one another
+## in the model.
+## Emphasis and Instructor are not included in an interaction with one another
 ## in the model.
 ```
 

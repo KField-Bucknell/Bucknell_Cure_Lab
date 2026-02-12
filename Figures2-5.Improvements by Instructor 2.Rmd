@@ -1343,6 +1343,8 @@ interact_model <- glm(as.numeric(Gain) ~ Emphasis * Instructor, data = Q10_post_
 selected_model <- stepAIC(interact_model, direction = "backward", data = Q10_post_merged)
 summary(selected_model)
 
+drop1(selected_model, test = "LRT")
+
 interact_plot(model = selected_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  
               y.label = "Student Percieved Gain")
@@ -1354,11 +1356,26 @@ Q10_post_refactored <- Q10_post_merged %>%
 
 cat_model <- glm(Gain ~ Emphasis + Instructor, data = Q10_post_refactored)
 
+summary(cat_model)
+
 drop1(cat_model, test = "LRT")
 
-cat_plot(model = cat_model, pred = Emphasis, modx = Instructor, 
+new_fig5b <- cat_plot(model = cat_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  
-              y.label = "Student Percieved Gain")
+              y.label = "Student Perceived Gain")
+
+cat_plot(
+  model = cat_model, 
+  pred = Emphasis, 
+  modx = Instructor, 
+  interval = TRUE, 
+  x.label = "Instructor Emphasis", 
+  y.label = "Student Perceived Gain") + 
+  theme(
+    axis.line = element_line(color = "black"),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()) +
+  geom_vline(xintercept = c(1.5, 2.5, 3.5), color = "gray80", linetype = "solid")
 ```
 
 Just to show the interaction:
