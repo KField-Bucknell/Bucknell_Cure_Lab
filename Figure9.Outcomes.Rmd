@@ -186,6 +186,11 @@ summary(All_DFW)
 summary(Only202_DFW)
 
 All_DFW %>%
+  filter(Course == "BIOL202") |>
+  select(`Race/Ethnicity`) |>
+  summary()
+
+All_DFW %>%
   group_by(Curriculum, Grade) %>%
   summarise(n = n())
 

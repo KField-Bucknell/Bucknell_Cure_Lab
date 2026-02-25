@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2024-07-27"
+date: "Last compiled on 2026-02-25"
 output:
   html_document:
     toc: true
@@ -267,6 +267,19 @@ summary(Only202_DFW)
 
 ``` r
 All_DFW %>%
+  filter(Course == "BIOL202") |>
+  select(`Race/Ethnicity`) |>
+  summary()
+```
+
+```
+##   Race/Ethnicity
+##  White   :226   
+##  nonWhite: 84
+```
+
+``` r
+All_DFW %>%
   group_by(Curriculum, Grade) %>%
   summarise(n = n())
 ```
@@ -371,7 +384,7 @@ Only202_DFW %>%
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum * Gender * `Race/Ethnicity`, 
-##     data = All_DFW, init.theta = 1122.190149, link = log)
+##     data = All_DFW, init.theta = 1122.190141, link = log)
 ## 
 ## Coefficients:
 ##                                                   Estimate Std. Error z value
@@ -415,41 +428,63 @@ Only202_DFW %>%
 ```
 ## Start:  AIC=903.3
 ## DFW ~ Curriculum * Gender * `Race/Ethnicity`
-## 
+```
+
+```
 ##                                      Df   AIC
 ## - Curriculum:Gender:`Race/Ethnicity`  1 902.2
 ## <none>                                  903.3
+```
+
+```
 ## 
 ## Step:  AIC=902.2
 ## DFW ~ Curriculum + Gender + `Race/Ethnicity` + Curriculum:Gender + 
 ##     Curriculum:`Race/Ethnicity` + Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                               Df    AIC
 ## - Curriculum:Gender            1 900.20
 ## - Gender:`Race/Ethnicity`      1 900.23
 ## <none>                           902.20
 ## - Curriculum:`Race/Ethnicity`  1 902.34
+```
+
+```
 ## 
 ## Step:  AIC=900.2
 ## DFW ~ Curriculum + Gender + `Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                               Df    AIC
 ## - Gender:`Race/Ethnicity`      1 898.24
 ## <none>                           900.20
 ## - Curriculum:`Race/Ethnicity`  1 900.35
+```
+
+```
 ## 
 ## Step:  AIC=898.24
 ## DFW ~ Curriculum + Gender + `Race/Ethnicity` + Curriculum:`Race/Ethnicity`
-## 
+```
+
+```
 ##                               Df    AIC
 ## - Gender                       1 897.22
 ## <none>                           898.24
 ## - Curriculum:`Race/Ethnicity`  1 898.40
+```
+
+```
 ## 
 ## Step:  AIC=897.22
 ## DFW ~ Curriculum + `Race/Ethnicity` + Curriculum:`Race/Ethnicity`
-## 
+```
+
+```
 ##                               Df    AIC
 ## <none>                           897.22
 ## - Curriculum:`Race/Ethnicity`  1 897.31
@@ -459,7 +494,7 @@ Only202_DFW %>%
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum + `Race/Ethnicity` + Curriculum:`Race/Ethnicity`, 
-##     data = All_DFW, init.theta = 1155.721611, link = log)
+##     data = All_DFW, init.theta = 1155.7216, link = log)
 ## 
 ## Coefficients:
 ##                                        Estimate Std. Error z value Pr(>|z|)    
@@ -497,7 +532,7 @@ A very big effect of the new curriculum and a small effect of the interaction be
 ```
 ## 
 ## Call:  glm.nb(formula = DFW ~ Curriculum + `Race/Ethnicity` + Curriculum:`Race/Ethnicity`, 
-##     data = All_DFW, init.theta = 1155.721611, link = log)
+##     data = All_DFW, init.theta = 1155.7216, link = log)
 ## 
 ## Coefficients:
 ##                            (Intercept)                           CurriculumNew  
@@ -535,18 +570,25 @@ A very big effect of the new curriculum and a small effect of the interaction be
 ```
 
 ```
+## Warning: Looks like you are using syntactically invalid variable names, quoted in
+##   backticks: `Race/Ethnicity`. This may result in unexpected behaviour.
+##   Please rename your variables (e.g., `Race.Ethnicity` instead of
+##   `Race/Ethnicity`) and fit the model again.
+```
+
+```
 ## # Indices of model performance
 ## 
-## AIC     |    AICc |     BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
-## -------------------------------------------------------------------------------------------
-## 899.217 | 899.251 | 926.522 |           0.105 | 0.261 | 1.000 |    -0.257 |           0.023
+## AIC   |  AICc |   BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
+## -------------------------------------------------------------------------------------
+## 899.2 | 899.3 | 926.5 |           0.105 | 0.261 |     1 |    -0.257 |           0.023
 ```
 
 ```
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Curriculum + `Race/Ethnicity` + Curriculum:`Race/Ethnicity`, 
-##     data = All_DFW, init.theta = 1155.721611, link = log)
+##     data = All_DFW, init.theta = 1155.7216, link = log)
 ## 
 ## Coefficients:
 ##                                        Estimate Std. Error z value Pr(>|z|)    
@@ -633,7 +675,7 @@ likely to be offered.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ FallSpring * Course, data = Only201202_DFW_Semester, 
-##     init.theta = 431.5732873, link = log)
+##     init.theta = 431.5732829, link = log)
 ## 
 ## Coefficients:
 ##                                Estimate Std. Error z value Pr(>|z|)    
@@ -713,7 +755,7 @@ likely to be offered.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ FallSpring + Course, data = Only201202_DFW_Semester, 
-##     init.theta = 614.635335, link = log)
+##     init.theta = 614.6353515, link = log)
 ## 
 ## Coefficients:
 ##                  Estimate Std. Error z value Pr(>|z|)    
@@ -723,7 +765,7 @@ likely to be offered.
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(614.6353) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(614.6354) family taken to be 1)
 ## 
 ##     Null deviance: 197.82  on 878  degrees of freedom
 ## Residual deviance: 188.38  on 876  degrees of freedom
@@ -753,7 +795,7 @@ Adding Fall vs Spring to the full model.
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum, data = Only202_DFW, init.theta = 1072.208091, 
+## glm.nb(formula = DFW ~ Curriculum, data = Only202_DFW, init.theta = 1072.208113, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -783,7 +825,7 @@ Adding Fall vs Spring to the full model.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, 
-##     data = Only202_DFW, init.theta = 2031.355587, link = log)
+##     data = Only202_DFW, init.theta = 2031.355614, link = log)
 ## 
 ## Coefficients:
 ##                                                                       Estimate
@@ -792,17 +834,17 @@ Adding Fall vs Spring to the full model.
 ## CurriculumNew                                                       -2.005e+00
 ## GenderMale                                                           1.347e-01
 ## `Race/Ethnicity`nonWhite                                             3.059e-01
-## Fall_SpringSpring:CurriculumNew                                     -3.196e+01
+## Fall_SpringSpring:CurriculumNew                                     -3.193e+01
 ## Fall_SpringSpring:GenderMale                                        -1.827e-01
-## CurriculumNew:GenderMale                                            -3.325e+01
+## CurriculumNew:GenderMale                                            -3.323e+01
 ## Fall_SpringSpring:`Race/Ethnicity`nonWhite                           4.468e-01
 ## CurriculumNew:`Race/Ethnicity`nonWhite                               4.070e-01
 ## GenderMale:`Race/Ethnicity`nonWhite                                 -1.671e-01
-## Fall_SpringSpring:CurriculumNew:GenderMale                           3.334e+01
-## Fall_SpringSpring:CurriculumNew:`Race/Ethnicity`nonWhite             3.237e+01
+## Fall_SpringSpring:CurriculumNew:GenderMale                           3.329e+01
+## Fall_SpringSpring:CurriculumNew:`Race/Ethnicity`nonWhite             3.234e+01
 ## Fall_SpringSpring:GenderMale:`Race/Ethnicity`nonWhite                1.090e+00
-## CurriculumNew:GenderMale:`Race/Ethnicity`nonWhite                    3.411e+01
-## Fall_SpringSpring:CurriculumNew:GenderMale:`Race/Ethnicity`nonWhite -6.855e+01
+## CurriculumNew:GenderMale:`Race/Ethnicity`nonWhite                    3.409e+01
+## Fall_SpringSpring:CurriculumNew:GenderMale:`Race/Ethnicity`nonWhite -6.851e+01
 ##                                                                     Std. Error
 ## (Intercept)                                                          1.644e-01
 ## Fall_SpringSpring                                                    3.717e-01
@@ -897,10 +939,15 @@ We need to account for that.
 ```
 ## Start:  AIC=685.16
 ## DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`
-## 
+```
+
+```
 ##                                                  Df    AIC
 ## - Fall_Spring:Curriculum:Gender:`Race/Ethnicity`  1 683.16
 ## <none>                                              685.16
+```
+
+```
 ## 
 ## Step:  AIC=683.16
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
@@ -909,13 +956,18 @@ We need to account for that.
 ##     Gender:`Race/Ethnicity` + Fall_Spring:Curriculum:Gender + 
 ##     Fall_Spring:Curriculum:`Race/Ethnicity` + Fall_Spring:Gender:`Race/Ethnicity` + 
 ##     Curriculum:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                           Df    AIC
 ## - Fall_Spring:Curriculum:`Race/Ethnicity`  1 682.14
 ## - Fall_Spring:Gender:`Race/Ethnicity`      1 682.41
 ## - Curriculum:Gender:`Race/Ethnicity`       1 682.53
 ## - Fall_Spring:Curriculum:Gender            1 682.70
 ## <none>                                       683.16
+```
+
+```
 ## 
 ## Step:  AIC=682.14
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
@@ -923,12 +975,17 @@ We need to account for that.
 ##     Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity` + Fall_Spring:Curriculum:Gender + 
 ##     Fall_Spring:Gender:`Race/Ethnicity` + Curriculum:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                       Df    AIC
 ## - Curriculum:Gender:`Race/Ethnicity`   1 681.10
 ## - Fall_Spring:Gender:`Race/Ethnicity`  1 681.19
 ## - Fall_Spring:Curriculum:Gender        1 681.23
 ## <none>                                   682.14
+```
+
+```
 ## 
 ## Step:  AIC=681.1
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
@@ -936,91 +993,133 @@ We need to account for that.
 ##     Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity` + Fall_Spring:Curriculum:Gender + 
 ##     Fall_Spring:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                       Df    AIC
 ## - Fall_Spring:Curriculum:Gender        1 679.97
 ## - Fall_Spring:Gender:`Race/Ethnicity`  1 680.03
 ## <none>                                   681.10
 ## - Curriculum:`Race/Ethnicity`          1 681.33
+```
+
+```
 ## 
 ## Step:  AIC=679.97
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:Curriculum + Fall_Spring:Gender + Curriculum:Gender + 
 ##     Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity` + Fall_Spring:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                       Df    AIC
 ## - Curriculum:Gender                    1 678.19
 ## - Fall_Spring:Curriculum               1 678.51
 ## - Fall_Spring:Gender:`Race/Ethnicity`  1 678.77
 ## <none>                                   679.97
 ## - Curriculum:`Race/Ethnicity`          1 679.99
+```
+
+```
 ## 
 ## Step:  AIC=678.19
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:Curriculum + Fall_Spring:Gender + Fall_Spring:`Race/Ethnicity` + 
 ##     Curriculum:`Race/Ethnicity` + Gender:`Race/Ethnicity` + Fall_Spring:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                       Df    AIC
 ## - Fall_Spring:Curriculum               1 676.77
 ## - Fall_Spring:Gender:`Race/Ethnicity`  1 677.00
 ## <none>                                   678.19
 ## - Curriculum:`Race/Ethnicity`          1 678.23
+```
+
+```
 ## 
 ## Step:  AIC=676.77
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:Gender + Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity` + Fall_Spring:Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                       Df    AIC
 ## - Fall_Spring:Gender:`Race/Ethnicity`  1 675.59
 ## - Curriculum:`Race/Ethnicity`          1 676.56
 ## <none>                                   676.77
+```
+
+```
 ## 
 ## Step:  AIC=675.59
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:Gender + Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity` + 
 ##     Gender:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                Df    AIC
 ## - Gender:`Race/Ethnicity`       1 673.76
 ## - Fall_Spring:Gender            1 674.10
 ## - Curriculum:`Race/Ethnicity`   1 675.37
 ## <none>                            675.59
 ## - Fall_Spring:`Race/Ethnicity`  1 676.90
+```
+
+```
 ## 
 ## Step:  AIC=673.76
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:Gender + Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                Df    AIC
 ## - Fall_Spring:Gender            1 672.37
 ## - Curriculum:`Race/Ethnicity`   1 673.54
 ## <none>                            673.76
 ## - Fall_Spring:`Race/Ethnicity`  1 675.14
+```
+
+```
 ## 
 ## Step:  AIC=672.37
 ## DFW ~ Fall_Spring + Curriculum + Gender + `Race/Ethnicity` + 
 ##     Fall_Spring:`Race/Ethnicity` + Curriculum:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                Df    AIC
 ## - Gender                        1 671.00
 ## - Curriculum:`Race/Ethnicity`   1 672.19
 ## <none>                            672.37
 ## - Fall_Spring:`Race/Ethnicity`  1 673.87
+```
+
+```
 ## 
 ## Step:  AIC=671
 ## DFW ~ Fall_Spring + Curriculum + `Race/Ethnicity` + Fall_Spring:`Race/Ethnicity` + 
 ##     Curriculum:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                Df    AIC
 ## - Curriculum:`Race/Ethnicity`   1 670.77
 ## <none>                            671.00
 ## - Fall_Spring:`Race/Ethnicity`  1 672.38
+```
+
+```
 ## 
 ## Step:  AIC=670.77
 ## DFW ~ Fall_Spring + Curriculum + `Race/Ethnicity` + Fall_Spring:`Race/Ethnicity`
-## 
+```
+
+```
 ##                                Df    AIC
 ## <none>                            670.77
 ## - Fall_Spring:`Race/Ethnicity`  1 672.43
@@ -1031,7 +1130,7 @@ We need to account for that.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring + Curriculum + `Race/Ethnicity` + 
-##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704185, 
+##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704191, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -1071,7 +1170,7 @@ We need to account for that.
 ```
 ## 
 ## Call:  glm.nb(formula = DFW ~ Fall_Spring + Curriculum + `Race/Ethnicity` + 
-##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704185, 
+##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704191, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -1116,18 +1215,25 @@ We need to account for that.
 ```
 
 ```
+## Warning: Looks like you are using syntactically invalid variable names, quoted in
+##   backticks: `Race/Ethnicity`. This may result in unexpected behaviour.
+##   Please rename your variables (e.g., `Race.Ethnicity` instead of
+##   `Race/Ethnicity`) and fit the model again.
+```
+
+```
 ## # Indices of model performance
 ## 
-## AIC     |    AICc |     BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
-## -------------------------------------------------------------------------------------------
-## 672.773 | 672.845 | 703.162 |           0.163 | 0.281 | 1.000 |    -0.285 |           0.028
+## AIC   |  AICc |   BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
+## -------------------------------------------------------------------------------------
+## 672.8 | 672.8 | 703.2 |           0.163 | 0.281 |     1 |    -0.285 |           0.028
 ```
 
 ```
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring + Curriculum + `Race/Ethnicity` + 
-##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704185, 
+##     Fall_Spring:`Race/Ethnicity`, data = Only202_DFW, init.theta = 1566.704191, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -1347,7 +1453,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ```
 ## 
 ## Call:
-## glm.nb(formula = DFW ~ Curriculum, data = Only201_DFW, init.theta = 1757.638637, 
+## glm.nb(formula = DFW ~ Curriculum, data = Only201_DFW, init.theta = 1757.638984, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -1377,7 +1483,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, 
-##     data = Only201_DFW, init.theta = 1387.966567, link = log)
+##     data = Only201_DFW, init.theta = 1387.966551, link = log)
 ## 
 ## Coefficients:
 ##                                                                       Estimate
@@ -1468,7 +1574,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1387.966) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1387.967) family taken to be 1)
 ## 
 ##     Null deviance: 620.38  on 1428  degrees of freedom
 ## Residual deviance: 552.85  on 1413  degrees of freedom
@@ -1489,7 +1595,9 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ```
 ## Start:  AIC=842.95
 ## DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`
-## 
+```
+
+```
 ##                                                  Df    AIC
 ## <none>                                              842.95
 ## - Fall_Spring:Curriculum:Gender:`Race/Ethnicity`  1 846.22
@@ -1499,7 +1607,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, 
-##     data = Only201_DFW, init.theta = 1387.966567, link = log)
+##     data = Only201_DFW, init.theta = 1387.966551, link = log)
 ## 
 ## Coefficients:
 ##                                                                       Estimate
@@ -1590,7 +1698,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1387.966) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1387.967) family taken to be 1)
 ## 
 ##     Null deviance: 620.38  on 1428  degrees of freedom
 ## Residual deviance: 552.85  on 1413  degrees of freedom
@@ -1611,7 +1719,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ```
 ## 
 ## Call:  glm.nb(formula = DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, 
-##     data = Only201_DFW, init.theta = 1387.966567, link = log)
+##     data = Only201_DFW, init.theta = 1387.966551, link = log)
 ## 
 ## Coefficients:
 ##                                                         (Intercept)  
@@ -1677,18 +1785,25 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ```
 
 ```
+## Warning: Looks like you are using syntactically invalid variable names, quoted in
+##   backticks: `Race/Ethnicity`. This may result in unexpected behaviour.
+##   Please rename your variables (e.g., `Race.Ethnicity` instead of
+##   `Race/Ethnicity`) and fit the model again.
+```
+
+```
 ## # Indices of model performance
 ## 
-## AIC     |    AICc |     BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
-## -------------------------------------------------------------------------------------------
-## 844.947 | 845.380 | 934.447 |           0.131 | 0.279 | 1.000 |    -0.286 |           0.025
+## AIC   |  AICc |   BIC | Nagelkerke's R2 |  RMSE | Sigma | Score_log | Score_spherical
+## -------------------------------------------------------------------------------------
+## 844.9 | 845.4 | 934.4 |           0.131 | 0.279 |     1 |    -0.286 |           0.025
 ```
 
 ```
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, 
-##     data = Only201_DFW, init.theta = 1387.966567, link = log)
+##     data = Only201_DFW, init.theta = 1387.966551, link = log)
 ## 
 ## Coefficients:
 ##                                                                       Estimate
@@ -1779,7 +1894,7 @@ The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less l
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1387.966) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1387.967) family taken to be 1)
 ## 
 ##     Null deviance: 620.38  on 1428  degrees of freedom
 ## Residual deviance: 552.85  on 1413  degrees of freedom
@@ -1803,7 +1918,7 @@ Let's just add semester to the simple model.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring * Curriculum, data = Only201_DFW, 
-##     init.theta = 1682.547563, link = log)
+##     init.theta = 1682.547468, link = log)
 ## 
 ## Coefficients:
 ##                                 Estimate Std. Error z value Pr(>|z|)    
@@ -1814,7 +1929,7 @@ Let's just add semester to the simple model.
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(1682.548) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(1682.547) family taken to be 1)
 ## 
 ##     Null deviance: 620.40  on 1428  degrees of freedom
 ## Residual deviance: 577.67  on 1425  degrees of freedom
@@ -1833,14 +1948,21 @@ Let's just add semester to the simple model.
 ```
 ## Start:  AIC=843.75
 ## DFW ~ Fall_Spring * Curriculum
-## 
+```
+
+```
 ##                          Df    AIC
 ## - Fall_Spring:Curriculum  1 842.37
 ## <none>                      843.75
+```
+
+```
 ## 
 ## Step:  AIC=842.37
 ## DFW ~ Fall_Spring + Curriculum
-## 
+```
+
+```
 ##               Df    AIC
 ## <none>           842.37
 ## - Fall_Spring  1 857.67
@@ -1851,7 +1973,7 @@ Let's just add semester to the simple model.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ Fall_Spring + Curriculum, data = Only201_DFW, 
-##     init.theta = 1535.114374, link = log)
+##     init.theta = 1535.11438, link = log)
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error z value Pr(>|z|)    
@@ -2044,7 +2166,7 @@ We would like to see how that factor translates to our outcomes.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ `First-Generation Indicator` * Curriculum, 
-##     data = Only202_DFW_Firstgen, init.theta = 1259.411507, link = log)
+##     data = Only202_DFW_Firstgen, init.theta = 1259.411543, link = log)
 ## 
 ## Coefficients:
 ##                                               Estimate Std. Error z value
@@ -2080,7 +2202,7 @@ We would like to see how that factor translates to our outcomes.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ `First-Generation Indicator` * Fall_Spring * 
-##     Curriculum, data = Only202_DFW_Firstgen, init.theta = 946.8859954, 
+##     Curriculum, data = Only202_DFW_Firstgen, init.theta = 946.8860016, 
 ##     link = log)
 ## 
 ## Coefficients:
@@ -2144,43 +2266,65 @@ We would like to see how that factor translates to our outcomes.
 ```
 ## Start:  AIC=683.56
 ## DFW ~ `First-Generation Indicator` * Fall_Spring * Curriculum
-## 
+```
+
+```
 ##                                                       Df    AIC
 ## - `First-Generation Indicator`:Fall_Spring:Curriculum  1 681.56
 ## <none>                                                   683.56
+```
+
+```
 ## 
 ## Step:  AIC=681.56
 ## DFW ~ `First-Generation Indicator` + Fall_Spring + Curriculum + 
 ##     `First-Generation Indicator`:Fall_Spring + `First-Generation Indicator`:Curriculum + 
 ##     Fall_Spring:Curriculum
-## 
+```
+
+```
 ##                                            Df    AIC
 ## - `First-Generation Indicator`:Fall_Spring  1 679.58
 ## - Fall_Spring:Curriculum                    1 679.93
 ## - `First-Generation Indicator`:Curriculum   1 681.12
 ## <none>                                        681.56
+```
+
+```
 ## 
 ## Step:  AIC=679.58
 ## DFW ~ `First-Generation Indicator` + Fall_Spring + Curriculum + 
 ##     `First-Generation Indicator`:Curriculum + Fall_Spring:Curriculum
-## 
+```
+
+```
 ##                                           Df    AIC
 ## - Fall_Spring:Curriculum                   1 677.97
 ## - `First-Generation Indicator`:Curriculum  1 679.14
 ## <none>                                       679.58
+```
+
+```
 ## 
 ## Step:  AIC=677.97
 ## DFW ~ `First-Generation Indicator` + Fall_Spring + Curriculum + 
 ##     `First-Generation Indicator`:Curriculum
-## 
+```
+
+```
 ##                                           Df    AIC
 ## - `First-Generation Indicator`:Curriculum  1 677.55
 ## <none>                                       677.97
 ## - Fall_Spring                              1 694.48
+```
+
+```
 ## 
 ## Step:  AIC=677.55
 ## DFW ~ `First-Generation Indicator` + Fall_Spring + Curriculum
-## 
+```
+
+```
 ##                                Df    AIC
 ## <none>                            677.55
 ## - `First-Generation Indicator`  1 677.75
@@ -2192,7 +2336,7 @@ We would like to see how that factor translates to our outcomes.
 ## 
 ## Call:
 ## glm.nb(formula = DFW ~ `First-Generation Indicator` + Fall_Spring + 
-##     Curriculum, data = Only202_DFW_Firstgen, init.theta = 1082.294948, 
+##     Curriculum, data = Only202_DFW_Firstgen, init.theta = 1082.294949, 
 ##     link = log)
 ## 
 ## Coefficients:
