@@ -187,8 +187,8 @@ summary(Only202_DFW)
 
 All_DFW %>%
   filter(Course == "BIOL202") |>
-  select(`Race/Ethnicity`) |>
-  summary()
+  group_by(`Race/Ethnicity`) %>%
+  summarise(n = n())
 
 All_DFW %>%
   group_by(Curriculum, Grade) %>%
@@ -526,8 +526,13 @@ All_DFW_Firstgen %>%
 Only202_DFW_Firstgen %>%
   group_by(Curriculum, Grade) %>%
   summarise(n = n())
+
 Only202_DFW_Firstgen %>%
   group_by(Course, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW_Firstgen %>%
+  group_by(Curriculum, Grade, `First-Generation Indicator`) %>%
   summarise(n = n())
 ```
 
