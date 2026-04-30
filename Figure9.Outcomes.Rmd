@@ -15,7 +15,6 @@ This Rmd uses the deidentified results and is safe to share.
 
 ```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(dpi = 300)
 # Load Packages
 if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
 if (!require("plotly")) install.packages("plotly"); library(plotly)
@@ -469,7 +468,7 @@ cat_plot(selected_model_201, pred = Curriculum, modx = `Race/Ethnicity`, interva
 catplot_201 <- cat_plot(selected_model2_201, pred = Fall_Spring, modx = Curriculum,
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("Fall","Spring"),
-         modx.labels = c("Prior", "CURE"),
+         modx.labels = c("Prior", "201"),
          x.label = "", y.label = "DFW Likelihood")
 catplot_201
 catplot_201_fixed <- catplot_201 + theme(panel.grid.major = element_blank(), 
