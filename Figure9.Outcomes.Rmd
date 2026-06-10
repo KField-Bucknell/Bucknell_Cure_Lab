@@ -213,6 +213,12 @@ model1 <- glm.nb(DFW ~ Curriculum, data = All_DFW)
 summary(model1)
 model_full <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = All_DFW)
 summary(model_full)
+
+binomial_model <- glm(DFW ~ Curriculum, family = "binomial", data = All_DFW)
+summary(binomial_model)
+
+full_binomial_model <- glm(DFW ~ Curriculum * Gender * `Race/Ethnicity`, family = "binomial", data = All_DFW)
+summary(full_binomial_model)
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
