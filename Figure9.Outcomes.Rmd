@@ -68,7 +68,7 @@ BIOL205_206 <- read_excel("Grade Outcomes/BIOL205_206 Grade Distribution_First Y
   mutate(across(Grade, str_replace, 'Pass\\+', 'Pass')) %>%
   filter(`Ethnicity Description` != "Unknown") %>%
   mutate(isWhite = `Ethnicity Description`=="White") %>%
-  mutate(`Race/Ethnicity` = if_else(isWhite, "White", "nonWhite")) %>%
+  mutate(`Race.Ethnicity` = if_else(isWhite, "White", "nonWhite")) %>%
   select(-`Ethnicity Description`, -isWhite) %>%
   mutate(Curriculum = "Old")
 
@@ -78,7 +78,7 @@ summary(as.factor(BIOL205_206$Course))
 summary(as.factor(BIOL205_206$Grade))
 summary(as.factor(BIOL205_206$Semester))
 summary(as.factor(BIOL205_206$Gender))
-summary(as.factor(BIOL205_206$`Race/Ethnicity`))
+summary(as.factor(BIOL205_206$`Race.Ethnicity`))
 ```
 
 Importing data from 201 and 202.
@@ -138,7 +138,7 @@ names(DFW_21_22)
 DFW_21_22_long <- DFW_21_22 %>%
   pivot_longer(cols = D_Male_White:Pass_Male_nonWhite, 
                names_to = "Group", values_to = "Count") %>%
-  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
   mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
   uncount(weights = Count) 
 summary(as.factor(DFW_21_22_long$Grade))
@@ -147,7 +147,7 @@ names(DFW_22_23)
 DFW_22_23_long <- DFW_22_23 %>%
   pivot_longer(cols = D_Female_White:Pass_Male_nonWhite, 
                names_to = "Group", values_to = "Count") %>%
-  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
   mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
   uncount(weights = Count) 
 summary(as.factor(DFW_22_23_long$Grade))
@@ -156,7 +156,7 @@ names(DFW_23_24)
 DFW_23_24_long <- DFW_23_24 %>%
   pivot_longer(cols = D_Female_White:Pass_Male_nonWhite, 
                names_to = "Group", values_to = "Count") %>%
-  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race/Ethnicity")) %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
   mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
   uncount(weights = Count) 
 summary(as.factor(DFW_23_24_long$Grade))
@@ -176,7 +176,7 @@ All_DFW <- BIOL205_206 %>%
   add_row(DFW_201_202) %>%
   mutate_if(is.character, as.factor) %>%
   mutate(Curriculum = fct_relevel(Curriculum, c("Old", "New"))) %>%
-  mutate(`Race/Ethnicity` = fct_relevel(`Race/Ethnicity`, c("White", "nonWhite")))
+  mutate(`Race.Ethnicity` = fct_relevel(`Race.Ethnicity`, c("White", "nonWhite")))
 
 Only202_DFW <- All_DFW %>%
   filter(Course != "BIOL201")
@@ -186,7 +186,7 @@ summary(Only202_DFW)
 
 All_DFW %>%
   filter(Course == "BIOL202") |>
-  group_by(`Race/Ethnicity`) %>%
+  group_by(`Race.Ethnicity`) %>%
   summarise(n = n())
 
 All_DFW %>%
@@ -201,7 +201,9 @@ Only202_DFW %>%
   summarise(n = n())
 ```
 
-## Modeling results with negative binomial glm
+## Modeling results with a binomial glm
+
+Note that originally a negative binomial glm was performed, but a binomial is more appropriate now that DFW grades have been aggregated.
 
 ### Both 201 and 202
 
@@ -211,56 +213,61 @@ All_DFW <- All_DFW %>%
 
 model1 <- glm.nb(DFW ~ Curriculum, data = All_DFW)
 summary(model1)
-model_full <- glm.nb(DFW ~ Curriculum * Gender * `Race/Ethnicity`, data = All_DFW)
+model_full <- glm.nb(DFW ~ Curriculum * Gender * `Race.Ethnicity`, data = All_DFW)
 summary(model_full)
 
 binomial_model <- glm(DFW ~ Curriculum, family = "binomial", data = All_DFW)
 summary(binomial_model)
 
-full_binomial_model <- glm(DFW ~ Curriculum * Gender * `Race/Ethnicity`, family = "binomial", data = All_DFW)
+full_binomial_model <- glm(DFW ~ Curriculum * Gender * `Race.Ethnicity`, family = "binomial", data = All_DFW)
 summary(full_binomial_model)
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
-selected_model <- model_full %>%
+selected_binomial_model <- full_binomial_model %>%
   stepAIC(direction = "backward")
-summary(selected_model)
+summary(selected_binomial_model)
 ```
 
-A very big effect of the new curriculum and a small effect of the interaction between curriculum and race/ethnicity.
+A very big effect of the new curriculum and a smaller but significant effect of Race.Ethnicity.
+
+The interaction between curriculum and Race.Ethnicity is not retained in the model, suggesting that the new curriculum is not signficantly better or worse at this metric for students of color. 
 
 ```{r, echo=FALSE}
 newdata <- data.frame(Curriculum = c("Old", "New", "Old", "New")) %>%
-  mutate('Race/Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
-predict.glm(selected_model, newdata=newdata, type="response")
-selected_model
-check_zeroinflation(selected_model)
-check_overdispersion(selected_model)
-performance(selected_model)
-summary(selected_model)
+  mutate('Race.Ethnicity' = c("White", "White", "nonWhite", "nonWhite"))
+predict.glm(selected_binomial_model, newdata=newdata, type="response")
+selected_binomial_model
+check_overdispersion(selected_binomial_model)
+performance(selected_binomial_model)
+summary(selected_binomial_model)
 ```
 
 ```{r, echo=FALSE}
-exp(-2.2797)
-exp(-2.2797+0.3154)
-exp(-2.2797-0.3154)
+exp(-2.2279)
+exp(-2.2279+0.130)
+exp(-2.2279-0.130)
 ```
 
 
 ```{r, echo=FALSE}
-exp(-1.6256)
-exp(-1.6256+0.1270)
-exp(-1.6256-0.1270)
-
-1/ exp(-1.6256)
-1/ exp(-1.6256+0.1270)
-1/ exp(-1.6256-0.1270)
+1/ exp(-1.4253)
+1/ exp(-1.4253+0.2168)
+1/ exp(-1.4253-0.2168)
 ```
 
-The model indicates that students under the old curriculum were 5.1-fold (4.4 - 5.8) more likely to earn a DFW in the first two Biology courses (p = 2.54e-07).
+The model indicates that students under the old curriculum were 4.2-fold (3.5 - 5.2) more likely to earn a DFW in the first two Biology courses (p = 4.94e-11). 
+
+```{r, echo=FALSE}
+exp(0.6936)
+exp(0.6936+0.1863)
+exp(0.6936-0.1863)
+```
+
+Students of color were 2.0-fold (1.7 - 2.4) more likely to earn a DFW than white students in both curricula (p = 0.000197)
 
 ```{r, Combo 201 and 202, echo=FALSE}
-cat_plot(selected_model, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+cat_plot(selected_binomial_model, pred = Curriculum, modx = `Race.Ethnicity`, interval = TRUE)
 ```
 
 ### Only 201 and 202 by Semester
@@ -275,7 +282,7 @@ All_DFW_Semester <- All_DFW %>%
 Only201202_DFW_Semester <- All_DFW_Semester %>%
   filter(Course %in% c("BIOL201", "BIOL202"))
 
-model_semester <- glm.nb(DFW ~ FallSpring * Course, data = Only201202_DFW_Semester)
+model_semester <- glm(DFW ~ FallSpring * Course, family = "binomial", data = Only201202_DFW_Semester)
 summary(model_semester)
 selected_model_semester <- stepAIC(model_semester)
 summary(selected_model_semester)
@@ -297,9 +304,10 @@ Only202_DFW <- Only202_DFW %>%
   mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
                                  str_detect(Semester, "Spring") ~ "Spring"))
 
-model1_202 <- glm.nb(DFW ~ Curriculum, data = Only202_DFW)
+model1_202 <- glm(DFW ~ Curriculum, data = Only202_DFW, family = "binomial")
 summary(model1_202)
-model_full_202 <- glm.nb(DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, data = Only202_DFW)
+model_full_202 <- glm(DFW ~ Fall_Spring * Curriculum * Gender * `Race.Ethnicity`, 
+                      data = Only202_DFW,  family = "binomial")
 summary(model_full_202)
 ```
 
@@ -315,7 +323,6 @@ summary(selected_model_202)
 
 ```{r, echo=FALSE}
 selected_model_202
-check_zeroinflation(selected_model_202)
 check_overdispersion(selected_model_202)
 performance(selected_model_202)
 summary(selected_model_202)
@@ -324,53 +331,47 @@ summary(selected_model_202)
 Fall semester:
 
 ```{r, echo=FALSE}
-exp(-1.9040)
-exp(-1.9040+0.1409)
-exp(-1.9040-0.1409)
+exp(-1.7429)
+exp(-1.7429+0.1525)
+exp(-1.7429-0.1525)
 ```
 
 Spring semester:
 
 ```{r, echo=FALSE}
-exp(-1.9040-1.2884)
-exp(-1.9040-1.2884+0.1409)
-exp(-1.9040-1.2884-0.1409)
+exp(-1.4015-1.2884)
+exp(-1.4015-1.2884+0.3314)
+exp(-1.4015-1.2884-0.3314)
 ```
 
 Curriculum effect:
 
 ```{r, echo=FALSE}
-exp(-2.0715)
-exp(-2.0715+0.5104)
-exp(-2.0715-0.5104)
+exp(-2.2056)
+exp(-2.2056+0.5162)
+exp(-2.2056-0.5162)
 
-1/ exp(-2.0715)
-1/ exp(-2.0715+0.5104)
-1/ exp(-2.0715-0.5104)
+1/ exp(-2.2056)
+1/ exp(-2.2056+0.5162)
+1/ exp(-2.2056-0.5162)
 ```
 
-The model indicates that students in CURE Lab were 7.9-fold (4.76 - 13.2) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 4.94e-05), after controlling for the effect of semester. There was no significant interaction between curriculum and either race/ethnicity or gender identity.
+The model indicates that students in CURE Lab were 9.1-fold (5.4 - 15.2) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 1.93e-05), after controlling for the effect of semester. There was no significant interaction between curriculum and either Race.Ethnicity or gender identity.
+
 
 ```{r, echo=FALSE}
-exp(0.4801)
-exp(0.4801+0.1999)
-exp(0.4801-0.1999)
-```
-
-```{r, echo=FALSE}
-cat_plot(selected_model_202, pred = Curriculum, modx = `Race/Ethnicity`, mod2 = Fall_Spring, interval = TRUE)
+cat_plot(selected_model_202, pred = Curriculum, modx = `Race.Ethnicity`, mod2 = Fall_Spring, interval = TRUE)
 ```
 
 
 #### Figure 9
 
 ```{r Figure 9, echo=FALSE}
-catplot_202 <- cat_plot(selected_model_202, pred = `Race/Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
+catplot_202 <- cat_plot(selected_model_202, pred = `Race.Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("White Students","Students of Color"),
          modx.labels = c("Prior", "CURE"),
          x.label = "", y.label = "DFW Likelihood")
-catplot_202
 catplot_202_fixed <- catplot_202 + theme(panel.grid.major = element_blank(), 
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(), 
@@ -405,9 +406,10 @@ Only201_DFW %>%
 Only201_DFW <- Only201_DFW %>%
   mutate(DFW = Grade == "DFW")
 
-model1_201 <- glm.nb(DFW ~ Curriculum, data = Only201_DFW)
+model1_201 <- glm(DFW ~ Curriculum, data = Only201_DFW, family = "binomial")
 summary(model1_201)
-model_full_201 <- glm.nb(DFW ~ Fall_Spring * Curriculum * Gender * `Race/Ethnicity`, data = Only201_DFW)
+model_full_201 <- glm(DFW ~ Fall_Spring * Curriculum * Gender * `Race.Ethnicity`, 
+                         data = Only201_DFW, family = "binomial")
 summary(model_full_201)
 ```
 
@@ -421,7 +423,6 @@ summary(selected_model_201)
 
 ```{r, echo=FALSE}
 selected_model_201
-check_zeroinflation(selected_model_201)
 check_overdispersion(selected_model_201)
 performance(selected_model_201)
 summary(selected_model_201)
@@ -431,31 +432,19 @@ That is very messy.
 Let's just add semester to the simple model.
 
 ```{r, echo=FALSE, warning=FALSE}
-model2_201 <- glm.nb(DFW ~ Fall_Spring * Curriculum, data = Only201_DFW)
+model2_201 <- glm(DFW ~ Fall_Spring * Curriculum, data = Only201_DFW, family = "binomial")
 summary(model2_201)
 selected_model2_201 <- stepAIC(model2_201, direction = "backward")
 summary(selected_model2_201)
 ```
 
-
 ```{r, echo=FALSE}
-exp(-1.8297)
-exp(-1.8297+0.1122)
-exp(-1.8297-0.1122)
+1/ exp(-1.1271 )
+1/ exp(-1.1271 +0.2309)
+1/ exp(-1.1271 -0.2309)
 ```
 
-
-```{r, echo=FALSE}
-exp(-1.0288)
-exp(-1.0288 +0.2228)
-exp(-1.0288 -0.2228)
-
-1/ exp(-1.0288 )
-1/ exp(-1.0288 +0.2228)
-1/ exp(-1.0288 -0.2228)
-```
-
-The model indicates that students in BIOL 201 were  2.80-fold (2.24 - 3.50) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 3.87e-06), after controlling for the effect of semester.
+The model indicates that students in BIOL 201 were 3.1-fold (2.4 - 3.9) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 1.05e-06), after controlling for the effect of semester.
 
 ```{r, echo=FALSE}
 exp(0.5556)
@@ -464,7 +453,7 @@ exp(0.5556-0.1779)
 ```
 
 ```{r, echo=FALSE}
-cat_plot(selected_model_201, pred = Curriculum, modx = `Race/Ethnicity`, interval = TRUE)
+cat_plot(selected_model_201, pred = Curriculum, modx = Race.Ethnicity, interval = TRUE)
 ```
 
 
@@ -476,7 +465,6 @@ catplot_201 <- cat_plot(selected_model2_201, pred = Fall_Spring, modx = Curricul
          pred.labels = c("Fall","Spring"),
          modx.labels = c("Prior", "201"),
          x.label = "", y.label = "DFW Likelihood")
-catplot_201
 catplot_201_fixed <- catplot_201 + theme(panel.grid.major = element_blank(), 
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(), 
@@ -542,9 +530,11 @@ Only202_DFW_Firstgen %>%
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
-model1_Firstgen_202 <- glm.nb(DFW ~ `First-Generation Indicator` * Curriculum, data = Only202_DFW_Firstgen)
+model1_Firstgen_202 <- glm(DFW ~ `First-Generation Indicator` * Curriculum, 
+                           data = Only202_DFW_Firstgen, family = "binomial")
 summary(model1_Firstgen_202)
-model_full_Firstgen_202 <- glm.nb(DFW ~ `First-Generation Indicator` * Fall_Spring * Curriculum, data = Only202_DFW_Firstgen)
+model_full_Firstgen_202 <- glm(DFW ~ `First-Generation Indicator` * Fall_Spring * Curriculum, 
+                               data = Only202_DFW_Firstgen, family = "binomial")
 summary(model_full_Firstgen_202)
 ```
 
@@ -555,19 +545,20 @@ selected_model_Firstgen_202 <- model_full_Firstgen_202 %>%
 summary(selected_model_Firstgen_202)
 ```
 
+
 ```{r}
 # First gen
-exp(0.4003)
-exp(0.4003-0.2582)
-exp(0.4003+0.2582)
-# Race/ethnicity (from earlier 202 model)
-exp(0.3117)
-exp(0.3117-0.2326)
-exp(0.3117+0.2326)
+exp(0.4747)
+exp(0.4747-0.2849)
+exp(0.4747+0.2849)
+# Race.Ethnicity (from earlier 202 model)
+exp(0.3754)
+exp(0.3754-0.2567)
+exp(0.3754+0.2567)
 ```
 
 
 That analysis showed that including first-generation status marginally improved the model, but it was very minor compared to semester and curriculum. This was true for both the effect size and the significance.
 
-The effect size of first-gen status (1.49 (1.15-1.93)) and significance (p = 0.121) was similar to the effect of race/ethnicity in the earlier model, (1.36 (1.08-1.72), p = 0.1803), after accounting for the effects of semester and curriculum.
+The effect size of first-gen status (1.61 (1.21-2.13)) and significance (p = 0.0957) was similar to the effect of Race.Ethnicity in the earlier model, (1.46 (1.12-1.88), p = 0.1436), after accounting for the effects of semester and curriculum.
 
