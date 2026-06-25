@@ -304,8 +304,8 @@ Q10_demo <- Q10 %>%
   mutate(`Race/Ethnicity` = recode(Ethnicity, 
                                    "White" = "White Students", "Filipino" = "Asian Students",
                                    "Asian American" = "Asian Students",
-                                   .default = "Students of Color")) %>%
-  mutate(`Race/Ethnicity` = factor(`Race/Ethnicity`, levels = c("White Students", "Asian Students", "Students of Color"))) %>%
+                                   .default = "Other Students of Color")) %>%
+  mutate(`Race/Ethnicity` = factor(`Race/Ethnicity`, levels = c("White Students", "Asian Students", "Other Students of Color"))) %>%
   mutate(ClassYear = as.factor(recode(ClassYear, 
                                       "First" = "First", "Second" = "not First", "Third" = "not First"))) %>%
   select(-Ethnicity) %>%
@@ -359,8 +359,8 @@ table(Q10_demo$`Race/Ethnicity`)
 
 ```
 ## 
-##    White Students    Asian Students Students of Color 
-##               171                16                30
+##          White Students          Asian Students Other Students of Color 
+##                     171                      16                      30
 ```
 
 ## Bar plots
@@ -372,11 +372,11 @@ This needs to be revisited now that we have more data.
 
 
 ```
-##                    
-##                     Female Male Non-binary Prefer not to answer
-##   White Students       119   52          0                    0
-##   Asian Students        13    3          0                    0
-##   Students of Color     22    6          1                    1
+##                          
+##                           Female Male Non-binary Prefer not to answer
+##   White Students             119   52          0                    0
+##   Asian Students              13    3          0                    0
+##   Other Students of Color     22    6          1                    1
 ```
 
 We will need to remove the Non-binary and Prefer not to answer students, but we can keep 
@@ -384,11 +384,11 @@ the Male and Female students separate.
 
 
 ```
-##                    
-##                     Female Male Non-binary Prefer not to answer
-##   White Students       119   52          0                    0
-##   Asian Students        13    3          0                    0
-##   Students of Color     22    6          0                    0
+##                          
+##                           Female Male Non-binary Prefer not to answer
+##   White Students             119   52          0                    0
+##   Asian Students              13    3          0                    0
+##   Other Students of Color     22    6          0                    0
 ```
 
 The numbers of non-white students who are not first years is quite small (only 3).
@@ -396,11 +396,11 @@ We should not look at both class year and race together.
 
 
 ```
-##                    
-##                     First not First
-##   White Students      160        11
-##   Asian Students       15         1
-##   Students of Color    26         2
+##                          
+##                           First not First
+##   White Students            160        11
+##   Asian Students             15         1
+##   Other Students of Color    26         2
 ```
 
 Prepare the data to look at all of the questions at once.
@@ -1732,11 +1732,13 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ## Summary of Analysis by ClassYear and Gender
 
+**This analysis was not changed by separating Asian Students**
+
 Most of the questions depended on Gender alone, but that question is better dealt in Model 2.
 
 The following questions showed dependence on Class Year alone:
 
-- Q10_04: "Readiness for more demanding research" Estimate -0.506 for not First Year.
+- Q10_04: "Readiness for more demanding research" Estimate -0.508 for not First Year.
 - Q10_12: "Learning ethical conduct in your field" Estimate -0.446 for not First Year.
 
 The following questions showed dependence on Class Year and also an interaction with Gender:
@@ -2057,22 +2059,22 @@ Here are the cat_plots showing these interactions:
 ##     `Race/Ethnicity`, data = Q04_select)
 ## 
 ## Coefficients:
-##                                              Estimate Std. Error t value
-## (Intercept)                                   3.02949    0.11200  27.049
-## SemesterSpring                               -0.21904    0.12456  -1.759
-## GenderMale                                   -0.04530    0.15040  -0.301
-## `Race/Ethnicity`Asian Students               -0.02156    0.26323  -0.082
-## `Race/Ethnicity`Students of Color            -0.11566    0.20585  -0.562
-## GenderMale:`Race/Ethnicity`Asian Students    -1.14994    0.57857  -1.988
-## GenderMale:`Race/Ethnicity`Students of Color  0.17528    0.45528   0.385
-##                                              Pr(>|t|)    
-## (Intercept)                                    <2e-16 ***
-## SemesterSpring                                 0.0802 .  
-## GenderMale                                     0.7636    
-## `Race/Ethnicity`Asian Students                 0.9348    
-## `Race/Ethnicity`Students of Color              0.5748    
-## GenderMale:`Race/Ethnicity`Asian Students      0.0483 *  
-## GenderMale:`Race/Ethnicity`Students of Color   0.7007    
+##                                                    Estimate Std. Error t value
+## (Intercept)                                         3.02949    0.11200  27.049
+## SemesterSpring                                     -0.21904    0.12456  -1.759
+## GenderMale                                         -0.04530    0.15040  -0.301
+## `Race/Ethnicity`Asian Students                     -0.02156    0.26323  -0.082
+## `Race/Ethnicity`Other Students of Color            -0.11566    0.20585  -0.562
+## GenderMale:`Race/Ethnicity`Asian Students          -1.14994    0.57857  -1.988
+## GenderMale:`Race/Ethnicity`Other Students of Color  0.17528    0.45528   0.385
+##                                                    Pr(>|t|)    
+## (Intercept)                                          <2e-16 ***
+## SemesterSpring                                       0.0802 .  
+## GenderMale                                           0.7636    
+## `Race/Ethnicity`Asian Students                       0.9348    
+## `Race/Ethnicity`Other Students of Color              0.5748    
+## GenderMale:`Race/Ethnicity`Asian Students            0.0483 *  
+## GenderMale:`Race/Ethnicity`Other Students of Color   0.7007    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -2129,20 +2131,20 @@ Here are the cat_plots showing these interactions:
 ##     Gender:`Race/Ethnicity`, data = Q05_select)
 ## 
 ## Coefficients:
-##                                              Estimate Std. Error t value
-## (Intercept)                                   2.61261    0.07998  32.664
-## GenderMale                                    0.15334    0.14665   1.046
-## `Race/Ethnicity`Asian Students                0.38739    0.25607   1.513
-## `Race/Ethnicity`Students of Color             0.10167    0.20053   0.507
-## GenderMale:`Race/Ethnicity`Asian Students    -1.15334    0.56337  -2.047
-## GenderMale:`Race/Ethnicity`Students of Color  0.13237    0.44424   0.298
-##                                              Pr(>|t|)    
-## (Intercept)                                    <2e-16 ***
-## GenderMale                                      0.297    
-## `Race/Ethnicity`Asian Students                  0.132    
-## `Race/Ethnicity`Students of Color               0.613    
-## GenderMale:`Race/Ethnicity`Asian Students       0.042 *  
-## GenderMale:`Race/Ethnicity`Students of Color    0.766    
+##                                                    Estimate Std. Error t value
+## (Intercept)                                         2.61261    0.07998  32.664
+## GenderMale                                          0.15334    0.14665   1.046
+## `Race/Ethnicity`Asian Students                      0.38739    0.25607   1.513
+## `Race/Ethnicity`Other Students of Color             0.10167    0.20053   0.507
+## GenderMale:`Race/Ethnicity`Asian Students          -1.15334    0.56337  -2.047
+## GenderMale:`Race/Ethnicity`Other Students of Color  0.13237    0.44424   0.298
+##                                                    Pr(>|t|)    
+## (Intercept)                                          <2e-16 ***
+## GenderMale                                            0.297    
+## `Race/Ethnicity`Asian Students                        0.132    
+## `Race/Ethnicity`Other Students of Color               0.613    
+## GenderMale:`Race/Ethnicity`Asian Students             0.042 *  
+## GenderMale:`Race/Ethnicity`Other Students of Color    0.766    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -2196,20 +2198,20 @@ Here are the cat_plots showing these interactions:
 ##     Gender:`Race/Ethnicity`, data = Q06_select)
 ## 
 ## Coefficients:
-##                                              Estimate Std. Error t value
-## (Intercept)                                   2.93750    0.07448  39.442
-## GenderMale                                    0.16888    0.13698   1.233
-## `Race/Ethnicity`Asian Students                0.14583    0.23941   0.609
-## `Race/Ethnicity`Students of Color            -0.08036    0.18743  -0.429
-## GenderMale:`Race/Ethnicity`Asian Students    -1.25222    0.52689  -2.377
-## GenderMale:`Race/Ethnicity`Students of Color -0.02603    0.41544  -0.063
-##                                              Pr(>|t|)    
-## (Intercept)                                    <2e-16 ***
-## GenderMale                                     0.2191    
-## `Race/Ethnicity`Asian Students                 0.5431    
-## `Race/Ethnicity`Students of Color              0.6686    
-## GenderMale:`Race/Ethnicity`Asian Students      0.0184 *  
-## GenderMale:`Race/Ethnicity`Students of Color   0.9501    
+##                                                    Estimate Std. Error t value
+## (Intercept)                                         2.93750    0.07448  39.442
+## GenderMale                                          0.16888    0.13698   1.233
+## `Race/Ethnicity`Asian Students                      0.14583    0.23941   0.609
+## `Race/Ethnicity`Other Students of Color            -0.08036    0.18743  -0.429
+## GenderMale:`Race/Ethnicity`Asian Students          -1.25222    0.52689  -2.377
+## GenderMale:`Race/Ethnicity`Other Students of Color -0.02603    0.41544  -0.063
+##                                                    Pr(>|t|)    
+## (Intercept)                                          <2e-16 ***
+## GenderMale                                           0.2191    
+## `Race/Ethnicity`Asian Students                       0.5431    
+## `Race/Ethnicity`Other Students of Color              0.6686    
+## GenderMale:`Race/Ethnicity`Asian Students            0.0184 *  
+## GenderMale:`Race/Ethnicity`Other Students of Color   0.9501    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -3339,6 +3341,10 @@ Here are the cat_plots showing these interactions:
 
 ## Summary
 
+**UPDATED TO INDICATE THE EFFECT OF SEPARATING ASIAN STUDENTS**
+
+*Indicates stayed the same*
+
 Note that only first-year students are included in this analysis.
 
 Most of the responses showed a dependence on the semester, although the significance was sometimes marginal. 
@@ -3348,27 +3354,42 @@ This is consistent with the hypothesis that BIO Seminar provided some gain in th
 
 Questions that showed dependence on the Semester, but not Race or Gender:
 
-2   4   13    14    15    16    
+*2*   
+4 <- NOW INTERACTION AND SEMESTER   
+*13*    
+*14*    
+*15*    
+*16*    
 
 Question that showed dependence on Gender and Race, but not Semester:
 
-1
+1 <- NOW JUST GENDER
 
 Question that showed dependence on Semester and Race, but not Gender: 
 
-21
+21 <- NOW JUST SEMESTER
 
 Question that showed dependence on Semester and Gender, but not Race: 
 
-7
+*7*
 
 Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester:
 
-6   9   12
+*6*   
+9 <- NOW NONE
+12 <- NOW NONE
 
 Questions that did not depend on Semester, Race, or Gender:
 
-3   5   8   10    11    17    18    19    20
+*3*   
+5   <- NOW INTERACTION BUT NOT SEMESTER
+*8*   
+*10*    
+*11*    
+*17*    
+*18*    
+*19*    
+*20*
 
 Here is the list of questions for reference:
 
@@ -3401,19 +3422,24 @@ Preface: In this section of the survey you will be asked to consider a variety o
 
 ### New Final Figure 6
 
-2   4   13    14    15    16
+2   13    14    15    16  21
 
 ![](Figures6-8.Post-Benefits.2026_files/figure-html/Q10 By Semester big-1.png)<!-- -->
 
 ### New Final Figure 7A
 
-21
+NO QUESTION IN THIS CATEGORY
 
-![](Figures6-8.Post-Benefits.2026_files/figure-html/Q10 By Semester and race-1.png)<!-- -->
+
 
 ### New Final Figure 7C
 
-3   5   8   10    11    17    18    19    20
+3      8   10    11    17    18    19    20
+
+9 <- NOW NONE
+12 <- NOW NONE
+
+not 5
 
 ![](Figures6-8.Post-Benefits.2026_files/figure-html/Q10 By None-1.png)<!-- -->
 
@@ -3426,7 +3452,7 @@ Preface: In this section of the survey you will be asked to consider a variety o
 
 ### New Final Figure 7D
 
-1
+1 <- NOW JUST GENDER
 
 ![](Figures6-8.Post-Benefits.2026_files/figure-html/Q10 By Race and gender-1.png)<!-- -->
 
@@ -3435,12 +3461,44 @@ Preface: In this section of the survey you will be asked to consider a variety o
 
 For this I need some cat plots.
 
+5 and 6 show dependence Race, Gender, and the interaction between Race and Gender, but not Semester
+
+4 shows dependence Race, Gender, and the interaction between Race and Gender, AND Semester
+
 Question that showed dependence on Gender and Race, but not Semester: 1
 Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester: 6   9   12
 
 ![](Figures6-8.Post-Benefits.2026_files/figure-html/Q10 By All-1.png)<!-- -->
 
 
+```
+## Using data Q04_select from global environment. This could cause incorrect
+## results if Q04_select has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
+
+![](Figures6-8.Post-Benefits.2026_files/figure-html/Interaction 04-1.png)<!-- -->
+
+```
+## Using data Q04_select from global environment. This could cause incorrect
+## results if Q04_select has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
+
+
+```
+## Using data Q05_select from global environment. This could cause incorrect
+## results if Q05_select has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
+
+![](Figures6-8.Post-Benefits.2026_files/figure-html/Interaction 05-1.png)<!-- -->
+
+```
+## Using data Q05_select from global environment. This could cause incorrect
+## results if Q05_select has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
 
 
 
