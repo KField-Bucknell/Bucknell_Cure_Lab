@@ -1141,12 +1141,12 @@ ggplot(Q10_demo_all) +
 ```
 
 ```{r Interaction 01, echo=FALSE}
-cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot01 <- cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
+#cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
+#catplot01 <- cat_plot(model = Q01_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
 ```
 
 
@@ -1161,64 +1161,63 @@ catplot06 <- cat_plot(model = Q06_model, pred = 'Race/Ethnicity', modx = Gender,
 
 
 ```{r Interaction 09, echo=FALSE}
-cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot09 <- cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
+#cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
+#catplot09 <- cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
 ```
 
 
 ```{r Interaction 12, echo=FALSE}
-cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot12 <- cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
+#cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
+#catplot12 <- cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
+#              interval = TRUE, x.label = "Race/Ethnicity",  
+#              y.label = "Student Perceived\n Gain")
 ```
 
 ```{r Combined Interaction Plots, fig.height=4, echo=FALSE}
-catplot01_fixed <- catplot01 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"), 
-                  legend.position="none", 
-                  plot.title = element_text(size = 10, face = "plain")) +
+#catplot01_fixed <- catplot01 + theme(panel.grid.major = element_blank(), 
+#                  panel.grid.minor = element_blank(),
+#                  panel.background = element_blank(), 
+#                  axis.line = element_line(colour = "black"), 
+#                  legend.position="none", 
+#                  plot.title = element_text(size = 10, face = "plain")) +
 #  scale_x_discrete(labels= c("White Students", "Students of Color")) +
-  ylim(c(1.0, 3.5)) +
-  ggtitle("Clarification of a career path")
+#  ylim(c(1.0, 3.5)) +
+#  ggtitle("Clarification of a career path")
 catplot06_fixed <- catplot06 + theme(panel.grid.major = element_blank(), 
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(), 
                   axis.line = element_line(colour = "black"),
-                  legend.position = "none",
                   plot.title = element_text(size = 10, face = "plain")) +
 #  scale_x_discrete(labels= c("White Students", "Students of Color")) +
-  ylim(c(1.0, 3.5)) +
+  ylim(c(1.0, 4.0)) +
   ggtitle("Understanding of the research process")
-catplot09_fixed <- catplot09 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"),
-                  legend.position = "none",
-                  plot.title = element_text(size = 10, face = "plain")) +
+#catplot09_fixed <- catplot09 + theme(panel.grid.major = element_blank(), 
+#                  panel.grid.minor = element_blank(),
+#                  panel.background = element_blank(), 
+#                  axis.line = element_line(colour = "black"),
+#                  legend.position = "none",
+#                  plot.title = element_text(size = 10, face = "plain")) +
 #  scale_x_discrete(labels= c("White Students", "Students of Color")) +
-  ylim(c(1.0, 3.5)) +
-  ggtitle("Scientific assertions require evidence")
-catplot12_fixed <- catplot12 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"), 
-                  legend.position="none",
-                  plot.title = element_text(size = 10, face = "plain")) +
+#  ylim(c(1.0, 3.5)) +
+#  ggtitle("Scientific assertions require evidence")
+#catplot12_fixed <- catplot12 + theme(panel.grid.major = element_blank(), 
+#                  panel.grid.minor = element_blank(),
+#                  panel.background = element_blank(), 
+#                  axis.line = element_line(colour = "black"), 
+#                  legend.position="none",
+#                  plot.title = element_text(size = 10, face = "plain")) +
 #  scale_x_discrete(labels= c("White Students", "Students of Color")) +
-  ylim(c(1.0, 3.5)) +
-  labs(title = "Learning ethical conduct in your field")
+#  ylim(c(1.0, 3.5)) +
+#  labs(title = "Learning ethical conduct in your field")
 
-ggarrange(catplot01, catplot06, catplot09, catplot12, ncol = 2, nrow = 2)
-ggarrange(catplot01_fixed, catplot06_fixed, catplot09_fixed, catplot12_fixed, ncol = 2, nrow = 2)
-
+#ggarrange(catplot01, catplot06, catplot09, catplot12, ncol = 2, nrow = 2)
+#ggarrange(catplot01_fixed, catplot06_fixed, catplot09_fixed, catplot12_fixed, ncol = 2, nrow = 2)
+catplot06_fixed
 ```
 
