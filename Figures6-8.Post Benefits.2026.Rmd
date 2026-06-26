@@ -673,10 +673,11 @@ Q01_select <- Q10_demo_long %>%
   filter(Question == "Q01") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q01_model <- glm(data = Q01_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q01_model)
 Q01_drop <- drop1(Q01_model, test = "LRT") %>% print()
+
+Anova(Q01_model, type = "3")
 ```
 
 ### Q10_02
@@ -717,8 +718,9 @@ Q04_select <- Q10_demo_long %>%
   filter(Question == "Q04") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q04_model <- glm(data = Q04_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`) 
+
+Anova(Q04_model, type = "3")
 summary(Q04_model)
 Q04_drop <- drop1(Q04_model, test = "LRT") %>% print()
 ```
@@ -731,8 +733,9 @@ Q05_select <- Q10_demo_long %>%
   filter(Question == "Q05") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q05_model <- glm(data = Q05_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`) 
+Anova(Q05_model, type = "3")
+
 summary(Q05_model)
 Q05_drop <- drop1(Q05_model, test = "LRT") %>% print()
 ```
@@ -830,10 +833,11 @@ Q12_select <- Q10_demo_long %>%
   filter(Question == "Q12") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q12_model <- glm(data = Q12_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`)
 summary(Q12_model)
 Q12_drop <- drop1(Q12_model, test = "LRT") %>% print()
+
+Anova(Q12_model, type = "3")
 ```
 
 ### Q10_13
