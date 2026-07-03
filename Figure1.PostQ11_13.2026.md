@@ -1,7 +1,7 @@
 ---
 title: "Engagement and Overall Evaluation Questions"
 author: "Ken Field"
-date: "Last compiled on 27 June 2026"
+date: "Last compiled on 03 July 2026"
 output:
   html_document:
     toc: true
@@ -19,10 +19,8 @@ This Rmd uses the deidentified results and is safe to share.
 
 Prior to conducting this analysis, exploration of the data found that some of these questions showed a correlation to
 Instructor that was stronger than the correlations found to demographics, semester, or rookie status of the instructor.
-However, we decided that it was more useful to use these questions to assess the impacts on diverse student groups than 
-to look at the effect of instructor for two reasons. First, the differences between instructor approaches are already 
-extensively addressed in our analysis of Question 10 (Figures 2-5). Second, it is a major goal of this course to 
-increase student engagement of our non-modal students and these questions directly address this question.
+However, we decided that it was more useful to use these questions to assess the overall impact of this course on students.
+These other issues are more extensively addressed in our other analyses.
 
 ## Loading Results
 
