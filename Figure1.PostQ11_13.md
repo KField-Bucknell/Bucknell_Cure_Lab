@@ -1,7 +1,7 @@
 ---
 title: "Engagement and Overall Evaluation Questions"
 author: "Ken Field"
-date: "Last compiled on 10 February 2026"
+date: "Last compiled on 03 July 2026"
 output:
   html_document:
     toc: true
@@ -19,10 +19,8 @@ This Rmd uses the deidentified results and is safe to share.
 
 Prior to conducting this analysis, exploration of the data found that some of these questions showed a correlation to
 Instructor that was stronger than the correlations found to demographics, semester, or rookie status of the instructor.
-However, we decided that it was more useful to use these questions to assess the impacts on diverse student groups than 
-to look at the effect of instructor for two reasons. First, the differences between instructor approaches are already 
-extensively addressed in our analysis of Question 10 (Figures 2-5). Second, it is a major goal of this course to 
-increase student engagement of our non-modal students and these questions directly address this question.
+However, we decided that it was more useful to use these questions to assess the overall impact of this course on students.
+These other issues are more extensively addressed in our other analyses.
 
 ## Loading Results
 
@@ -489,7 +487,7 @@ First, I am going to use a PCA to determine if all 8 of these questions are simi
 
 This PCA demonstrated that all of the questions except Q11_2 are grouped together in PC1 and PC2, which, together, represent 66% of the variation in responses.
 
-## Fig 1 Question Correlation
+## Question Correlation
 
 
 ```
@@ -502,14 +500,14 @@ This PCA demonstrated that all of the questions except Q11_2 are grouped togethe
 ## (`geom_text()`).
 ```
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-1.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Question Correlation-1.png)<!-- -->
 
 ```
 ## Warning: Removed 2 rows containing missing values or values outside the scale range
 ## (`geom_segment()`).
 ```
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-2.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Question Correlation-2.png)<!-- -->
 
 ```
 ## Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
@@ -522,7 +520,7 @@ This PCA demonstrated that all of the questions except Q11_2 are grouped togethe
 ## generated.
 ```
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1B Question Correlation-3.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Question Correlation-3.png)<!-- -->
 
 Interesting. There is a strong correlation between all three Q11 questions, even though the PCA shows that question 11_2 is different. 
 I will plan on showing the correlation plot for Figure 1B, then the PCA in Supplemental Figure 1.
@@ -547,9 +545,9 @@ Given the high degree of correlation between 11_1 and 11_3, we will only look at
 
 
 
-## Figure 1A
+## Figure 1
 
-![](Figure1.PostQ11_13_files/figure-html/Fig 1A Q10 By Semester-1.png)<!-- -->
+![](Figure1.PostQ11_13_files/figure-html/Fig 1 Q10 By Semester-1.png)<!-- -->
 
 ## Summary Statistics
 

@@ -33,10 +33,8 @@ conflict_prefer_all("dplyr", quiet = TRUE)
 
 Prior to conducting this analysis, exploration of the data found that some of these questions showed a correlation to
 Instructor that was stronger than the correlations found to demographics, semester, or rookie status of the instructor.
-However, we decided that it was more useful to use these questions to assess the impacts on diverse student groups than 
-to look at the effect of instructor for two reasons. First, the differences between instructor approaches are already 
-extensively addressed in our analysis of Question 10 (Figures 2-5). Second, it is a major goal of this course to 
-increase student engagement of our non-modal students and these questions directly address this question.
+However, we decided that it was more useful to use these questions to assess the overall impact of this course on students.
+These other issues are more extensively addressed in our other analyses.
 
 ## Loading Results
 
@@ -370,9 +368,9 @@ pca_fit %>%
 
 This PCA demonstrated that all of the questions except Q11_2 are grouped together in PC1 and PC2, which, together, represent 66% of the variation in responses.
 
-## Fig 1 Question Correlation
+## Question Correlation
 
-```{r Fig 1B Question Correlation, echo=FALSE}
+```{r Question Correlation, echo=FALSE}
 SurveyCorrelation <- Q11Recoded %>%
   select(Q11_1:Q13_18)
 
@@ -448,9 +446,9 @@ Q11_long <- Q11Clean %>%
 ```
 
 
-## Figure 1A
+## Figure 1
 
-```{r Fig 1A Q10 By Semester, fig.width=5, fig.height=6, echo=FALSE}
+```{r Fig 1 Q10 By Semester, fig.width=5, fig.height=6, echo=FALSE}
 ggplot(Q11_long) +
   geom_bar(aes(x = FallSpring, fill = fct_rev(Response)), position = 'fill', width = 0.75) +
   facet_grid(as.factor(Q11_long$Question)) +
