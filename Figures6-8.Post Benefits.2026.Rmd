@@ -185,8 +185,8 @@ ggplot(Q10_demo) +
   theme_gray()
 ```
 
-Because of the small numbers, we will not look at each question by both Gender and Race. 
-This needs to be revisited now that we have more data.
+With only one year of data, we did not look at each question by both Gender and Race. 
+This was revisited when we got more data.
 
 ```{r, echo=FALSE}
 table(Q10_demo$`Race/Ethnicity`, Q10_demo$Gender)
@@ -665,6 +665,8 @@ cat_plot(model = Q21_model_1, pred = ClassYear, modx = Gender,
 
 ## Analysis by Semester and Demo {.tabset .tabset-pills}
 
+For the new and improved analysis, we have removed the interaction between gender and race/ethnicity, separated asian students from other students of color, and also changed to using an alpha value cutoff of 0.05 instead of AIC for model selection.
+
 ### Q10_01
 
 ```{r Q01 model 2, echo=FALSE}
@@ -675,10 +677,11 @@ Q01_select <- Q10_demo_long %>%
 Q01_model <- glm(data = Q01_select, 
                  5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q01_model)
-Q01_drop <- drop1(Q01_model, test = "LRT") %>% print()
 
-Anova(Q01_model, type = "3")
+Anova(Q01_model, type = "3", test.statistic = "F")
 ```
+
+None of Semester, Gender, or Race/Ethnicity meet the 0.05 alpha threshold.
 
 ### Q10_02
 
@@ -688,11 +691,12 @@ Q02_select <- Q10_demo_long %>%
   filter(Question == "Q02") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q02_model <- glm(data = Q02_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q02_model)
-Q02_drop <- drop1(Q02_model, test = "LRT") %>% print()
+Anova(Q02_model, type = "3", test.statistic = "F")
 ```
+
+Semester meets the cutoff.
 
 ### Q10_03
 
@@ -702,13 +706,12 @@ Q03_select <- Q10_demo_long %>%
   filter(Question == "Q03") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q03_model <- glm(data = Q03_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q03_model)
-Q03_drop <- drop1(Q03_model, test = "LRT") %>% print()
-
-Q03_select %>% group_by(Response) %>% tally()
+Anova(Q03_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_04
 
@@ -719,11 +722,10 @@ Q04_select <- Q10_demo_long %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q04_model <- glm(data = Q04_select, 
                  5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`) 
-
-Anova(Q04_model, type = "3")
-summary(Q04_model)
-Q04_drop <- drop1(Q04_model, test = "LRT") %>% print()
+Anova(Q04_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_05
 
@@ -734,11 +736,11 @@ Q05_select <- Q10_demo_long %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q05_model <- glm(data = Q05_select, 
                  5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`) 
-Anova(Q05_model, type = "3")
-
 summary(Q05_model)
-Q05_drop <- drop1(Q05_model, test = "LRT") %>% print()
+Anova(Q05_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_06
 
@@ -748,12 +750,12 @@ Q06_select <- Q10_demo_long %>%
   filter(Question == "Q06") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q06_model <- glm(data = Q06_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q06_model)
-Q06_drop <- drop1(Q06_model, test = "LRT") %>% print()
-Anova(Q06_model, type=3) # shows each term in interaction
+Anova(Q06_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_07
 
@@ -763,11 +765,12 @@ Q07_select <- Q10_demo_long %>%
   filter(Question == "Q07") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q07_model <- glm(data = Q07_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q07_model)
-Q07_drop <- drop1(Q07_model, test = "LRT") %>% print()
+Anova(Q07_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_08
 
@@ -777,11 +780,12 @@ Q08_select <- Q10_demo_long %>%
   filter(Question == "Q08") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q08_model <- glm(data = Q08_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q08_model)
-Q08_drop <- drop1(Q08_model, test = "LRT") %>% print()
+Anova(Q08_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_09
 
@@ -791,11 +795,12 @@ Q09_select <- Q10_demo_long %>%
   filter(Question == "Q09") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q09_model <- glm(data = Q09_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q09_model)
-Q09_drop <- drop1(Q09_model, test = "LRT") %>% print()
+Anova(Q09_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_10
 
@@ -805,11 +810,12 @@ Q10_select <- Q10_demo_long %>%
   filter(Question == "Q10") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q10_model <- glm(data = Q10_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q10_model)
-Q10_drop <- drop1(Q10_model, test = "LRT") %>% print()
+Anova(Q10_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_11
 
@@ -819,11 +825,12 @@ Q11_select <- Q10_demo_long %>%
   filter(Question == "Q11") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q11_model <- glm(data = Q11_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q11_model)
-Q11_drop <- drop1(Q11_model, test = "LRT") %>% print()
+Anova(Q11_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_12
 
@@ -833,12 +840,12 @@ Q12_select <- Q10_demo_long %>%
   filter(Question == "Q12") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q12_model <- glm(data = Q12_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`)
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q12_model)
-Q12_drop <- drop1(Q12_model, test = "LRT") %>% print()
-
-Anova(Q12_model, type = "3")
+Anova(Q12_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_13
 
@@ -848,11 +855,12 @@ Q13_select <- Q10_demo_long %>%
   filter(Question == "Q13") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q13_model <- glm(data = Q13_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q13_model)
-Q13_drop <- drop1(Q13_model, test = "LRT") %>% print()
+Anova(Q13_model, type = "3", test.statistic = "F")
 ```
+
+Semester meets the cutoff.
 
 ### Q10_14
 
@@ -862,11 +870,12 @@ Q14_select <- Q10_demo_long %>%
   filter(Question == "Q14") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q14_model <- glm(data = Q14_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q14_model)
-Q14_drop <- drop1(Q14_model, test = "LRT") %>% print()
+Anova(Q14_model, type = "3", test.statistic = "F")
 ```
+
+Semester meets the cutoff.
 
 ### Q10_15
 
@@ -876,11 +885,12 @@ Q15_select <- Q10_demo_long %>%
   filter(Question == "Q15") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q15_model <- glm(data = Q15_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q15_model)
-Q15_drop <- drop1(Q15_model, test = "LRT") %>% print()
+Anova(Q15_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_16
 
@@ -890,11 +900,12 @@ Q16_select <- Q10_demo_long %>%
   filter(Question == "Q16") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q16_model <- glm(data = Q16_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q16_model)
-Q16_drop <- drop1(Q16_model, test = "LRT") %>% print()
+Anova(Q16_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_17
 
@@ -904,11 +915,12 @@ Q17_select <- Q10_demo_long %>%
   filter(Question == "Q17") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q17_model <- glm(data = Q17_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q17_model)
-Q17_drop <- drop1(Q17_model, test = "LRT") %>% print()
+Anova(Q17_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_18
 
@@ -918,11 +930,12 @@ Q18_select <- Q10_demo_long %>%
   filter(Question == "Q18") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q18_model <- glm(data = Q18_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`) 
 summary(Q18_model)
-Q18_drop <- drop1(Q18_model, test = "LRT") %>% print()
+Anova(Q18_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_19
 
@@ -932,11 +945,12 @@ Q19_select <- Q10_demo_long %>%
   filter(Question == "Q19") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q19_model <- glm(data = Q19_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q19_model)
-Q19_drop <- drop1(Q19_model, test = "LRT") %>% print()
+Anova(Q19_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_20
 
@@ -946,11 +960,12 @@ Q20_select <- Q10_demo_long %>%
   filter(Question == "Q20") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q20_model <- glm(data = Q20_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q20_model)
-Q20_drop <- drop1(Q20_model, test = "LRT") %>% print()
+Anova(Q20_model, type = "3", test.statistic = "F")
 ```
+
+None meet the cutoff.
 
 ### Q10_21
 
@@ -960,16 +975,18 @@ Q21_select <- Q10_demo_long %>%
   filter(Question == "Q21") %>%
   filter(ClassYear == "First") %>% na.omit() 
 Q21_model <- glm(data = Q21_select, 
-                 5-as.numeric(Response) ~ Semester + Gender * `Race/Ethnicity`) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ Semester + Gender + `Race/Ethnicity`)
 summary(Q21_model)
-Q21_drop <- drop1(Q21_model, test = "LRT") %>% print()
+Anova(Q21_model, type = "3", test.statistic = "F")
 ```
 
+None meet the cutoff. 
 
 ## Summary
 
 **UPDATED TO INDICATE THE EFFECT OF SEPARATING ASIAN STUDENTS**
+
+The reanalysis shows that neither Gender or Race/Ethnicity were significant in any of the models.
 
 *Indicates stayed the same*
 
@@ -983,34 +1000,34 @@ This is consistent with the hypothesis that BIO Seminar provided some gain in th
 Questions that showed dependence on the Semester, but not Race or Gender:
 
 *2*   
-4 <- NOW INTERACTION AND SEMESTER   
+4 <- NOW NONE 
 *13*    
 *14*    
-*15*    
-*16*    
+15  <- NOW NONE   
+16   <- NOW NONE  
 
 Question that showed dependence on Gender and Race, but not Semester:
 
-1 <- NOW JUST GENDER
+1 <- NOW NONE
 
 Question that showed dependence on Semester and Race, but not Gender: 
 
-21 <- NOW JUST SEMESTER
+21 <- NOW NONE
 
 Question that showed dependence on Semester and Gender, but not Race: 
 
-*7*
+7 <- NOW NONE
 
 Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester:
 
-*6*   
+6 <- NOW NONE
 9 <- NOW NONE
 12 <- NOW NONE
 
 Questions that did not depend on Semester, Race, or Gender:
 
 *3*   
-5   <- NOW INTERACTION BUT NOT SEMESTER
+*5* 
 *8*   
 *10*    
 *11*    
@@ -1048,7 +1065,7 @@ Preface: In this section of the survey you will be asked to consider a variety o
 ## Final Figures
 
 
-### New Final Figure 6
+### 2026 Final Figure 6
 
 2   13    14    15    16  21
 
