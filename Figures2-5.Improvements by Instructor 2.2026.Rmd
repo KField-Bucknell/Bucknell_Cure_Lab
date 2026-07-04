@@ -956,7 +956,7 @@ And the responses to these survey questions were independent of pre-survey respo
 - [20] "Read a textbook" *Removed                                                                                    
 
 It is interesting to note that for every question that was significantly impacted by rookie status, the veteran status had a negative estimate. 
-This means that students in an instructor's first semester perceived large gains than in subsequent semesters. 
+This means that students in an instructor's first semester perceived larger gains than in subsequent semesters. 
 This does not support our hypothesis that experience would make the instructors more proficient at assisting student improvement in the learning elements.
 
 ## Figures
@@ -964,59 +964,37 @@ This does not support our hypothesis that experience would make the instructors 
 For questions 4 and 23 we want to show the interaction between instructor and rookie.
 Although for 4, the presurvey response wasn't important, so we will use a cat plot.
 
-```{r Interaction 4, echo=FALSE}
-#cat_plot(model = step_imp_model_Q10_4, pred = Instructor, modx = Rookie,
-#              interval = TRUE, x.label = "Instructor",  
-#              y.label = "Student Perceived\nImprovement")
-#catplot4 <- cat_plot(model = step_imp_model_Q10_4, pred = Instructor, modx = Rookie,
-#              interval = TRUE, x.label = "Instructor",  
-#              y.label = "Student Perceived\nImprovement")
+### Figure 4A 4B and 4C
+
+Questions 8, 10, and 13 need a cat plot showing Instructor and Rookie
+
+```{r Catplot 8, echo=FALSE}
+cat_plot(model = imp_model_Q10_8, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
+catplot8 <- cat_plot(model = imp_model_Q10_8, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
 ```
 
-```{r Interaction 23, echo=FALSE}
-#interact_plot(model = step_imp_model_Q10_23, pred = Q10_23_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-#interactplot23 <- interact_plot(model = step_imp_model_Q10_23, pred = Q10_23_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
+```{r Catplot 10, echo=FALSE}
+cat_plot(model = imp_model_Q10_10, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
+catplot10 <- cat_plot(model = imp_model_Q10_10, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
 ```
 
-```{r Interaction 1, echo=FALSE}
-#interact_plot(model = step_imp_model_Q10_1, pred = Q10_1_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-#interactplot1 <- interact_plot(model = step_imp_model_Q10_1, pred = Q10_1_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
+```{r Catplot 13, echo=FALSE}
+cat_plot(model = imp_model_Q10_13, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
+catplot13 <- cat_plot(model = imp_model_Q10_13, pred = Instructor, modx = Rookie,
+              interval = TRUE, x.label = "Instructor",  
+              y.label = "Student Perceived\nImprovement")
 ```
 
-```{r Interaction 8, echo=FALSE}
-#interact_plot(model = step_imp_model_Q10_8, pred = Q10_8_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-#interactplot8 <- interact_plot(model = step_imp_model_Q10_8, pred = Q10_8_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-```
-
-```{r Interaction 10, echo=FALSE}
-#interact_plot(model = step_imp_model_Q10_10, pred = Q10_10_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-#interactplot10 <- interact_plot(model = step_imp_model_Q10_10, pred = Q10_10_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-```
-
-```{r Interaction 13, echo=FALSE}
-#interact_plot(model = step_imp_model_Q10_13, pred = Q10_13_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-#interactplot13 <- interact_plot(model = step_imp_model_Q10_13, pred = Q10_13_pre, modx = Instructor, mod2 = Rookie,
-#              interval = TRUE, x.label = "Presurvey Perceived Ability",  
-#              y.label = "Student Perceived\nImprovement", mod2.labels = c("Rookie", "Veteran"))
-```
 
 ### Removed Figure Q10_2
 
@@ -1085,141 +1063,49 @@ print(Q10TextClean$Question[c(3, 4, 6, 9, 11, 12, 15, 17, 23 )])
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
 I am instead going to convert Figure 3B (with 9 parts!) into Figure 4.
 
-### Final Figure 4
+### Final Figure 4 v 2026
 
-Figure 4 is the combined Cat and Interact plots.
-
-```{r Combined Interaction Plots, fig.height=7, echo = FALSE}
-# print(Q10TextClean$Question[c(1, 8, 10, 13, 23, 4)])
-# 
-# interactplot1b <- interactplot1 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-# #  ylim(c(1.0, 3.5)) +
-#   ggtitle("Scripted lab students know outcome")
-# 
-# interactplot8b <- interactplot8 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-# #  ylim(c(1.0, 3.5)) +
-#   ggtitle("Work as a whole class")
-# 
-# interactplot10b <- interactplot10 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-# #  ylim(c(1.0, 3.5)) +
-#   ggtitle("Become responsible for a part of the project")
-# 
-# interactplot13b <- interactplot13 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-# #  ylim(c(1.0, 3.5)) +
-#   ggtitle("Collect data")
-# 
-# interactplot23b <- interactplot23 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-# #  ylim(c(1.0, 3.5)) +
-#   ggtitle("Discuss reading materials in class")
-# 
-# catplot4b <- catplot4 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   plot.title = element_text(size = 10, face = "plain")) +
-#   ggtitle("Project that is assigned and structured")
-# 
-# ggarrange(interactplot1b, interactplot8b, 
-#           interactplot10b, interactplot13b, 
-#           interactplot23b, catplot4b, ncol = 2, nrow = 3)
-```
-
-### Figure 4A
+Figure 4 is the combined Cat plots.
 
 -  [8] "Work as a whole class"   
 -  [10] "Become responsible for a part of the project"  
 -  [13] "Collect data" 
 
-```{r Only Interact Plots, fig.height=7, fig.width=3, echo = FALSE}
-print(Q10TextClean$Question[c(8, 10, 13)])
- 
-# interactplot1c <- interactplot1 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   strip.text.x = element_blank(),
-#                   axis.title = element_text(face="plain"),
-#                   plot.title = element_text(size = 10, face = "plain")) 
-# #  ylim(c(1.0, 3.5)) +
-# #  ggtitle("Scripted lab students know outcome")
-# 
-# interactplot8c <- interactplot8 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   strip.text.x = element_blank(),
-#                   axis.title = element_text(face="plain"),
-#                   plot.title = element_text(size = 10, face = "plain")) 
-# #  ylim(c(1.0, 3.5)) +
-# #  ggtitle("Work as a whole class")
-# 
-# interactplot10c <- interactplot10 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   strip.text.x = element_blank(),
-#                   axis.title = element_text(face="plain"),
-#                   plot.title = element_text(size = 10, face = "plain")) 
-# #  ylim(c(1.0, 3.5)) +
-# #  ggtitle("Become responsible for a part of the project")
-# 
-# interactplot13c<- interactplot13 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   strip.text.x = element_blank(),
-#                   axis.title = element_text(face="plain"),
-#                   plot.title = element_text(size = 10, face = "plain")) 
-# #  ylim(c(1.0, 3.5)) +
-# #  ggtitle("Collect data")
-# 
-# interactplot23c <- interactplot23 + theme(panel.grid.major = element_blank(), 
-#                   panel.grid.minor = element_blank(),
-#                   panel.background = element_blank(), 
-#                   axis.line = element_line(colour = "black"), 
-#                   legend.position="none", 
-#                   strip.text.x = element_blank(), 
-#                   axis.title = element_text(face="plain"),
-#                   plot.title = element_text(size = 10, face = "plain"))
-#   
-# #  ylim(c(1.0, 3.5)) +
-# #  ggtitle("Discuss reading materials in class")
-# 
-# 
-# ggarrange(interactplot1c, interactplot8c, 
-#           interactplot10c, interactplot13c, 
-#           interactplot23c, ncol = 1, nrow = 5)
+```{r Figure 4, fig.height= 6, fig.width=3, echo = FALSE}
+catplot8b <- catplot8 + theme(panel.grid.major = element_blank(),
+                              axis.title.x = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+                  axis.line = element_line(colour = "black"),
+                  legend.position="none", 
+                  plot.title = element_text(size = 10, face = "plain")) +
+  coord_flip() +
+  ggtitle("Work as a whole class")
+
+catplot10b <- catplot10 + theme(panel.grid.major = element_blank(),
+                                axis.title.x = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+                  axis.line = element_line(colour = "black"),
+                  legend.position="none", 
+                  plot.title = element_text(size = 10, face = "plain")) +
+  coord_flip() +
+  ggtitle("Responsible for a part \nof the project")
+
+catplot13b <- catplot13 + theme(panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+                  axis.line = element_line(colour = "black"),
+                  legend.position="none", 
+                  plot.title = element_text(size = 10, face = "plain")) +
+  coord_flip() +
+  ggtitle("Collect data")
+
+ggarrange(catplot8b, catplot10b,
+          catplot13b, ncol = 1, nrow = 3,
+          heights = c(0.8, 0.9, 1))
 ```
+
 
 
 ## Instructor Survey Results
@@ -1326,6 +1212,7 @@ summary(Q10_post_merged)
 emphasis_model <- glm(as.numeric(Gain) ~ Emphasis ,data = Q10_post_merged)
 summary(emphasis_model)
 drop1(emphasis_model, test = "LRT")
+car::Anova(emphasis_model, type = "3", test.statistic = "F")
 ```
 
 Self-reported gain in these skills is highly dependent on the emphasis placed by the instructor (p < 2e-16).
@@ -1336,12 +1223,14 @@ Now to explore whether this also depended on the instructor.
 
 ```{r Fig 5B Gain Emphasis Interaction, echo=FALSE}
 interact_model <- glm(as.numeric(Gain) ~ Emphasis * Instructor, data = Q10_post_merged)
-selected_model <- stepAIC(interact_model, direction = "backward", data = Q10_post_merged)
-summary(selected_model)
 
-drop1(selected_model, test = "LRT")
+car::Anova(interact_model, type = "3", test.statistic = "F")
 
-interact_plot(model = selected_model, pred = Emphasis, modx = Instructor, 
+no_interact_model <- glm(as.numeric(Gain) ~ Emphasis + Instructor, data = Q10_post_merged)
+
+car::Anova(no_interact_model, type = "3", test.statistic = "F")
+
+interact_plot(model = no_interact_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  
               y.label = "Student Percieved Gain")
 
@@ -1354,7 +1243,7 @@ cat_model <- glm(Gain ~ Emphasis + Instructor, data = Q10_post_refactored)
 
 summary(cat_model)
 
-drop1(cat_model, test = "LRT")
+car::Anova(cat_model, type = "3", test.statistic = "F")
 
 new_fig5b <- cat_plot(model = cat_model, pred = Emphasis, modx = Instructor, 
               interval = TRUE, x.label = "Instructor Emphasis",  

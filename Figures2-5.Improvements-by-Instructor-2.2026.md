@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 03 July 2026"
+date: "Last compiled on 04 July 2026"
 output:
   html_document:
     toc: true
@@ -1778,7 +1778,7 @@ And the responses to these survey questions were independent of pre-survey respo
 - [20] "Read a textbook" *Removed                                                                                    
 
 It is interesting to note that for every question that was significantly impacted by rookie status, the veteran status had a negative estimate. 
-This means that students in an instructor's first semester perceived large gains than in subsequent semesters. 
+This means that students in an instructor's first semester perceived larger gains than in subsequent semesters. 
 This does not support our hypothesis that experience would make the instructors more proficient at assisting student improvement in the learning elements.
 
 ## Figures
@@ -1786,16 +1786,60 @@ This does not support our hypothesis that experience would make the instructors 
 For questions 4 and 23 we want to show the interaction between instructor and rookie.
 Although for 4, the presurvey response wasn't important, so we will use a cat plot.
 
+### Figure 4A 4B and 4C
+
+Questions 8, 10, and 13 need a cat plot showing Instructor and Rookie
 
 
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
+
+![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Catplot 8-1.png)<!-- -->
+
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
 
 
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
+
+![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Catplot 10-1.png)<!-- -->
+
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
 
 
+```
+## Using data Q_13Clean from global environment. This could cause incorrect
+## results if Q_13Clean has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
 
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
 
+![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Catplot 13-1.png)<!-- -->
 
+```
+## Using data Q_13Clean from global environment. This could cause incorrect
+## results if Q_13Clean has been altered since the model was fit. You can
+## manually provide the data to the "data =" argument.
+```
 
+```
+## Warning: Instructor and Rookie are not included in an interaction with one another
+## in the model.
+```
 
 
 ### Removed Figure Q10_2
@@ -1836,24 +1880,16 @@ Depend on Instructor only:
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
 I am instead going to convert Figure 3B (with 9 parts!) into Figure 4.
 
-### Final Figure 4
+### Final Figure 4 v 2026
 
-Figure 4 is the combined Cat and Interact plots.
-
-
-
-### Figure 4A
+Figure 4 is the combined Cat plots.
 
 -  [8] "Work as a whole class"   
 -  [10] "Become responsible for a part of the project"  
 -  [13] "Collect data" 
 
+![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Figure 4-1.png)<!-- -->
 
-```
-## [1] "Work as a whole class"                       
-## [2] "Become responsible for a part of the project"
-## [3] "Collect data"
-```
 
 
 ## Instructor Survey Results
@@ -1961,6 +1997,19 @@ Looking at all the questions together, including those in the previous list wher
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: as.numeric(Gain)
+## Error estimate based on Pearson residuals 
+## 
+##           Sum Sq   Df F values    Pr(>F)    
+## Emphasis  1646.4    1   1569.1 < 2.2e-16 ***
+## Residuals 5698.5 5431                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
 Self-reported gain in these skills is highly dependent on the emphasis placed by the instructor (p < 2e-16).
 
 Now to explore whether this also depended on the instructor.
@@ -1969,56 +2018,30 @@ Now to explore whether this also depended on the instructor.
 
 
 ```
-## Start:  AIC=15438.6
-## as.numeric(Gain) ~ Emphasis * Instructor
+## Analysis of Deviance Table (Type III tests)
 ## 
-##                       Df Deviance   AIC
-## - Emphasis:Instructor  4   5439.3 15438
-## <none>                     5431.4 15439
+## Response: as.numeric(Gain)
+## Error estimate based on Pearson residuals 
 ## 
-## Step:  AIC=15438.46
-## as.numeric(Gain) ~ Emphasis + Instructor
-## 
-##              Df Deviance   AIC
-## <none>            5439.3 15438
-## - Instructor  4   5698.5 15683
-## - Emphasis    1   7052.2 16847
-```
-
-```
-## 
-## Call:
-## glm(formula = as.numeric(Gain) ~ Emphasis + Instructor, data = Q10_post_merged)
-## 
-## Coefficients:
-##                       Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)           3.153854   0.031792  99.204  < 2e-16 ***
-## Emphasis              0.463762   0.011561  40.116  < 2e-16 ***
-## InstructorHagrid     -0.537189   0.042100 -12.760  < 2e-16 ***
-## InstructorLupin      -0.461789   0.047890  -9.643  < 2e-16 ***
-## InstructorMcGonagall -0.183935   0.043178  -4.260 2.08e-05 ***
-## InstructorSinistra    0.006216   0.035478   0.175    0.861    
+##                     Sum Sq   Df F values    Pr(>F)    
+## Emphasis             612.3    1 611.3496 < 2.2e-16 ***
+## Instructor            61.9    4  15.4565 1.412e-12 ***
+## Emphasis:Instructor    7.9    4   1.9623   0.09743 .  
+## Residuals           5431.4 5423                       
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## (Dispersion parameter for gaussian family taken to be 1.002262)
-## 
-##     Null deviance: 7344.9  on 5432  degrees of freedom
-## Residual deviance: 5439.3  on 5427  degrees of freedom
-## AIC: 15438
-## 
-## Number of Fisher Scoring iterations: 2
 ```
 
 ```
-## Single term deletions
+## Analysis of Deviance Table (Type III tests)
 ## 
-## Model:
-## as.numeric(Gain) ~ Emphasis + Instructor
-##            Df Deviance   AIC scaled dev.  Pr(>Chi)    
-## <none>          5439.3 15438                          
-## Emphasis    1   7052.2 16847     1410.92 < 2.2e-16 ***
-## Instructor  4   5698.5 15683      252.95 < 2.2e-16 ***
+## Response: as.numeric(Gain)
+## Error estimate based on Pearson residuals 
+## 
+##            Sum Sq   Df F values    Pr(>F)    
+## Emphasis   1612.9    1 1609.288 < 2.2e-16 ***
+## Instructor  259.2    4   64.662 < 2.2e-16 ***
+## Residuals  5439.3 5427                       
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -2064,14 +2087,15 @@ Now to explore whether this also depended on the instructor.
 ```
 
 ```
-## Single term deletions
+## Analysis of Deviance Table (Type III tests)
 ## 
-## Model:
-## Gain ~ Emphasis + Instructor
-##            Df Deviance   AIC scaled dev.  Pr(>Chi)    
-## <none>          5379.9 15383                          
-## Emphasis    3   7052.2 16847     1470.51 < 2.2e-16 ***
-## Instructor  4   5676.9 15667      291.93 < 2.2e-16 ***
+## Response: Gain
+## Error estimate based on Pearson residuals 
+## 
+##            Sum Sq   Df F values    Pr(>F)    
+## Emphasis   1672.3    3  562.090 < 2.2e-16 ***
+## Instructor  297.0    4   74.867 < 2.2e-16 ***
+## Residuals  5379.9 5425                       
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
