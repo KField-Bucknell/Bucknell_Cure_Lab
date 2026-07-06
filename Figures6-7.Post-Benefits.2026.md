@@ -459,46 +459,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=633.22
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   238.06 632.25
-## <none>                  236.89 633.22
-## 
-## Step:  AIC=632.25
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   239.36 631.40
-## - Gender     1   240.21 632.15
-## <none>           238.06 632.25
-## 
-## Step:  AIC=631.4
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## <none>        239.36 631.40
-## - Gender  1   241.83 631.57
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ Gender, data = Q01_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q01_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.03974    0.08709  23.421   <2e-16 ***
-## GenderMale  -0.23974    0.16332  -1.468    0.144    
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.06993    0.08946  23.138   <2e-16 ***
+## ClassYearnot First            -0.56993    0.38866  -1.466    0.144    
+## GenderMale                    -0.27363    0.17087  -1.601    0.111    
+## ClassYearnot First:GenderMale  0.60697    0.60248   1.007    0.315    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 1.145271)
+## (Dispersion parameter for gaussian family taken to be 1.144412)
 ## 
 ##     Null deviance: 241.83  on 210  degrees of freedom
-## Residual deviance: 239.36  on 209  degrees of freedom
-## AIC: 631.4
+## Residual deviance: 236.89  on 207  degrees of freedom
+## AIC: 633.22
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -507,10 +486,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ Gender
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      239.36 631.40                     
-## Gender  1   241.83 631.57      2.1643   0.1413
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                236.89 633.22                     
+## ClassYear:Gender  1   238.06 632.25       1.032   0.3097
 ```
 
 ### Q10_02
@@ -521,46 +500,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=516.77
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   132.93 514.77
-## <none>                  132.93 516.77
-## 
-## Step:  AIC=514.77
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   133.28 513.34
-## <none>           132.93 514.77
-## - Gender     1   134.38 515.10
-## 
-## Step:  AIC=513.34
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## <none>        133.28 513.34
-## - Gender  1   134.62 513.49
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ Gender, data = Q02_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q02_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.79221    0.06374  43.803   <2e-16 ***
-## GenderMale   0.17501    0.11967   1.462    0.145    
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.80137    0.06569  42.646   <2e-16 ***
+## ClassYearnot First            -0.17637    0.28821  -0.612    0.541    
+## GenderMale                     0.18045    0.12558   1.437    0.152    
+## ClassYearnot First:GenderMale  0.02789    0.44668   0.062    0.950    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.6257515)
+## (Dispersion parameter for gaussian family taken to be 0.6299994)
 ## 
 ##     Null deviance: 134.62  on 214  degrees of freedom
-## Residual deviance: 133.29  on 213  degrees of freedom
-## AIC: 513.34
+## Residual deviance: 132.93  on 211  degrees of freedom
+## AIC: 516.77
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -569,10 +527,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ Gender
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      133.28 513.34                     
-## Gender  1   134.62 513.49      2.1478   0.1428
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                132.93 516.77                     
+## ClassYear:Gender  1   132.93 514.77   0.0039711   0.9498
 ```
 
 ### Q10_03
@@ -580,15 +538,6 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ```
 ## [1] "Tolerance for obstacles faced in the research process"
-```
-
-```
-## Start:  AIC=527.11
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## <none>                  139.48 527.11
-## - ClassYear:Gender  1   144.17 532.22
 ```
 
 ```
@@ -646,46 +595,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=559.56
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   162.52 557.97
-## <none>                  162.20 559.56
-## 
-## Step:  AIC=557.97
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   162.59 556.07
-## <none>           162.52 557.97
-## - ClassYear  1   165.79 560.27
-## 
-## Step:  AIC=556.07
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## <none>           162.59 556.07
-## - ClassYear  1   165.97 558.50
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ ClassYear, data = Q04_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q04_select)
 ## 
 ## Coefficients:
-##                    Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)         2.86567    0.06162  46.502   <2e-16 ***
-## ClassYearnot First -0.50853    0.24150  -2.106   0.0364 *  
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.88356    0.07256  39.739   <2e-16 ***
+## ClassYearnot First            -0.63356    0.31837  -1.990   0.0479 *  
+## GenderMale                    -0.06538    0.13872  -0.471   0.6379    
+## ClassYearnot First:GenderMale  0.31538    0.49341   0.639   0.5234    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.7633212)
+## (Dispersion parameter for gaussian family taken to be 0.7687316)
 ## 
 ##     Null deviance: 165.97  on 214  degrees of freedom
-## Residual deviance: 162.59  on 213  degrees of freedom
-## AIC: 556.07
+## Residual deviance: 162.20  on 211  degrees of freedom
+## AIC: 559.56
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -694,12 +622,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ ClassYear
-##           Df Deviance    AIC scaled dev. Pr(>Chi)  
-## <none>         162.59 556.07                       
-## ClassYear  1   165.97 558.50      4.4298  0.03532 *
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                162.20 559.56                     
+## ClassYear:Gender  1   162.52 557.97      0.4159    0.519
 ```
 
 ### Q10_05
@@ -710,48 +636,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=544.13
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   153.88 543.21
-## <none>                  153.10 544.13
-## 
-## Step:  AIC=543.21
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   154.41 541.95
-## - Gender     1   154.56 542.15
-## <none>           153.88 543.21
-## 
-## Step:  AIC=541.95
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## - Gender  1   155.00 540.76
-## <none>        154.41 541.95
-## 
-## Step:  AIC=540.76
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q05_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q05_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.67136    0.05859    45.6   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.65972    0.07132  37.291   <2e-16 ***
+## ClassYearnot First            -0.40972    0.31089  -1.318    0.189    
+## GenderMale                     0.08573    0.13567   0.632    0.528    
+## ClassYearnot First:GenderMale  0.49760    0.48172   1.033    0.303    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.7311099)
+## (Dispersion parameter for gaussian family taken to be 0.7325172)
 ## 
-##     Null deviance: 155  on 212  degrees of freedom
-## Residual deviance: 155  on 212  degrees of freedom
-## AIC: 540.76
+##     Null deviance: 155.0  on 212  degrees of freedom
+## Residual deviance: 153.1  on 209  degrees of freedom
+## AIC: 544.13
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -760,9 +663,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>         155 540.76
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                153.10 544.13                     
+## ClassYear:Gender  1   153.88 543.21      1.0847   0.2977
 ```
 
 ### Q10_06
@@ -773,48 +677,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=521.98
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   137.12 520.04
-## <none>                  137.08 521.98
-## 
-## Step:  AIC=520.04
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   137.61 518.82
-## - ClassYear  1   138.04 519.48
-## <none>           137.12 520.04
-## 
-## Step:  AIC=518.82
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   138.44 518.09
-## <none>           137.61 518.82
-## 
-## Step:  AIC=518.09
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q06_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q06_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.94860    0.05511    53.5   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.93793    0.06709  43.788   <2e-16 ***
+## ClassYearnot First            -0.31293    0.29342  -1.066    0.287    
+## GenderMale                     0.09843    0.12794   0.769    0.443    
+## ClassYearnot First:GenderMale  0.10990    0.45470   0.242    0.809    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.6499276)
+## (Dispersion parameter for gaussian family taken to be 0.6527475)
 ## 
 ##     Null deviance: 138.43  on 213  degrees of freedom
-## Residual deviance: 138.43  on 213  degrees of freedom
-## AIC: 518.09
+## Residual deviance: 137.08  on 210  degrees of freedom
+## AIC: 521.98
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -823,9 +704,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      138.44 518.09
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                137.08 521.98                     
+## ClassYear:Gender  1   137.12 520.04    0.059522   0.8073
 ```
 
 ### Q10_07
@@ -836,46 +718,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=566.68
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   170.22 564.72
-## <none>                  170.20 566.68
-## 
-## Step:  AIC=564.72
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   171.12 563.83
-## <none>           170.22 564.72
-## - Gender     1   172.19 565.17
-## 
-## Step:  AIC=563.83
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## <none>        171.12 563.83
-## - Gender  1   172.88 564.02
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ Gender, data = Q07_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q07_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.58553    0.07304  35.397   <2e-16 ***
-## GenderMale   0.20136    0.13649   1.475    0.142    
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.59722    0.07520  34.537   <2e-16 ***
+## ClassYearnot First            -0.22222    0.32779  -0.678    0.499    
+## GenderMale                     0.22096    0.14304   1.545    0.124    
+## ClassYearnot First:GenderMale -0.09596    0.50791  -0.189    0.850    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.8109842)
+## (Dispersion parameter for gaussian family taken to be 0.8143335)
 ## 
 ##     Null deviance: 172.88  on 212  degrees of freedom
-## Residual deviance: 171.12  on 211  degrees of freedom
-## AIC: 563.83
+## Residual deviance: 170.20  on 209  degrees of freedom
+## AIC: 566.68
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -884,10 +745,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ Gender
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      171.12 563.83                     
-## Gender  1   172.88 564.02      2.1857   0.1393
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                170.20 566.68                     
+## ClassYear:Gender  1   170.22 564.72    0.036374   0.8487
 ```
 
 ### Q10_08
@@ -895,15 +756,6 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ```
 ## [1] "Understanding of how scientists work on real problems"
-```
-
-```
-## Start:  AIC=534.81
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## <none>                  144.57 534.81
-## - ClassYear:Gender  1   146.10 535.08
 ```
 
 ```
@@ -948,48 +800,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=560.45
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   163.56 559.36
-## <none>                  162.88 560.45
-## 
-## Step:  AIC=559.36
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   163.58 557.38
-## - Gender     1   164.40 558.45
-## <none>           163.56 559.36
-## 
-## Step:  AIC=557.38
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## - Gender  1   164.44 556.50
-## <none>        163.58 557.38
-## 
-## Step:  AIC=556.5
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q09_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q09_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  3.05116    0.05978   51.04   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    3.10274    0.07271  42.671   <2e-16 ***
+## ClassYearnot First            -0.22774    0.31903  -0.714    0.476    
+## GenderMale                    -0.17547    0.13900  -1.262    0.208    
+## ClassYearnot First:GenderMale  0.46713    0.49444   0.945    0.346    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.7683982)
+## (Dispersion parameter for gaussian family taken to be 0.7719257)
 ## 
 ##     Null deviance: 164.44  on 214  degrees of freedom
-## Residual deviance: 164.44  on 214  degrees of freedom
-## AIC: 556.5
+## Residual deviance: 162.88  on 211  degrees of freedom
+## AIC: 560.45
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -998,9 +827,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance   AIC scaled dev. Pr(>Chi)
-## <none>      164.44 556.5
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                162.88 560.45                     
+## ClassYear:Gender  1   163.56 559.36     0.90761   0.3407
 ```
 
 ### Q10_10
@@ -1011,48 +841,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=531.57
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   143.06 530.55
-## <none>                  142.41 531.57
-## 
-## Step:  AIC=530.55
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   143.72 529.55
-## - ClassYear  1   143.94 529.88
-## <none>           143.06 530.55
-## 
-## Step:  AIC=529.55
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   144.49 528.70
-## <none>           143.72 529.55
-## 
-## Step:  AIC=528.7
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q10_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q10_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  3.08372    0.05604   55.03   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    3.07534    0.06799  45.232   <2e-16 ***
+## ClassYearnot First            -0.45034    0.29831  -1.510    0.133    
+## GenderMale                     0.08829    0.12998   0.679    0.498    
+## ClassYearnot First:GenderMale  0.45337    0.46232   0.981    0.328    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.675201)
+## (Dispersion parameter for gaussian family taken to be 0.6749139)
 ## 
 ##     Null deviance: 144.49  on 214  degrees of freedom
-## Residual deviance: 144.49  on 214  degrees of freedom
-## AIC: 528.7
+## Residual deviance: 142.41  on 211  degrees of freedom
+## AIC: 531.57
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1061,18 +868,20 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance   AIC scaled dev. Pr(>Chi)
-## <none>      144.49 528.7
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                142.41 531.57                     
+## ClassYear:Gender  1   143.06 530.55     0.97766   0.3228
 ```
 
 ```
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance   AIC scaled dev. Pr(>Chi)
-## <none>      144.49 528.7
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                142.41 531.57                     
+## ClassYear:Gender  1   143.06 530.55     0.97766   0.3228
 ```
 
 ### Q10_11
@@ -1080,15 +889,6 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ```
 ## [1] "Understanding science"
-```
-
-```
-## Start:  AIC=563.44
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## <none>                  165.16 563.44
-## - ClassYear:Gender  1   167.23 564.12
 ```
 
 ```
@@ -1133,46 +933,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=650.67
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   251.18 649.59
-## <none>                  250.11 650.67
-## 
-## Step:  AIC=649.59
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   251.24 647.64
-## <none>           251.18 649.59
-## - ClassYear  1   253.69 649.72
-## 
-## Step:  AIC=647.64
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## <none>           251.24 647.64
-## - ClassYear  1   253.84 647.84
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ ClassYear, data = Q12_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q12_select)
 ## 
 ## Coefficients:
-##                    Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)         2.66000    0.07698  34.556   <2e-16 ***
-## ClassYearnot First -0.44571    0.30096  -1.481     0.14    
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.68276    0.09063  29.601   <2e-16 ***
+## ClassYearnot First            -0.68276    0.39634  -1.723   0.0864 .  
+## GenderMale                    -0.08276    0.17282  -0.479   0.6325    
+## ClassYearnot First:GenderMale  0.58276    0.61420   0.949   0.3438    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 1.185081)
+## (Dispersion parameter for gaussian family taken to be 1.190985)
 ## 
 ##     Null deviance: 253.84  on 213  degrees of freedom
-## Residual deviance: 251.24  on 212  degrees of freedom
-## AIC: 647.64
+## Residual deviance: 250.11  on 210  degrees of freedom
+## AIC: 650.67
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1181,10 +960,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ ClassYear
-##           Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>         251.24 647.64                     
-## ClassYear  1   253.84 647.84      2.2027   0.1378
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                250.11 650.67                     
+## ClassYear:Gender  1   251.18 649.59     0.91543   0.3387
 ```
 
 ### Q10_13
@@ -1195,48 +974,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=522.77
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   137.59 522.18
-## <none>                  136.69 522.77
-## 
-## Step:  AIC=522.18
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   137.62 520.22
-## - Gender     1   137.70 520.35
-## <none>           137.59 522.18
-## 
-## Step:  AIC=520.22
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## - Gender  1   137.74 518.41
-## <none>        137.62 520.22
-## 
-## Step:  AIC=518.41
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q13_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q13_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  3.30698    0.05471   60.44   <2e-16 ***
+##                                Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    3.301370   0.066613  49.561   <2e-16 ***
+## ClassYearnot First            -0.176370   0.292262  -0.603    0.547    
+## GenderMale                     0.007721   0.127342   0.061    0.952    
+## ClassYearnot First:GenderMale  0.533946   0.452955   1.179    0.240    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.6436427)
+## (Dispersion parameter for gaussian family taken to be 0.6478366)
 ## 
 ##     Null deviance: 137.74  on 214  degrees of freedom
-## Residual deviance: 137.74  on 214  degrees of freedom
-## AIC: 518.41
+## Residual deviance: 136.69  on 211  degrees of freedom
+## AIC: 522.77
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1245,9 +1001,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      137.74 518.41
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                136.69 522.77                     
+## ClassYear:Gender  1   137.59 522.18      1.4113   0.2348
 ```
 
 ### Q10_14
@@ -1258,48 +1015,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=567.52
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   169.59 565.53
-## <none>                  169.58 567.52
-## 
-## Step:  AIC=565.53
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   169.97 564.01
-## - ClassYear  1   171.06 565.38
-## <none>           169.59 565.53
-## 
-## Step:  AIC=564.01
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   171.33 563.71
-## <none>           169.97 564.01
-## 
-## Step:  AIC=563.71
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q14_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q14_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.94393    0.06131   48.02   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.93836    0.07437  39.510   <2e-16 ***
+## ClassYearnot First            -0.31336    0.32630  -0.960    0.338    
+## GenderMale                     0.09868    0.14313   0.689    0.491    
+## ClassYearnot First:GenderMale -0.05701    0.50598  -0.113    0.910    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.8043526)
+## (Dispersion parameter for gaussian family taken to be 0.8075213)
 ## 
 ##     Null deviance: 171.33  on 213  degrees of freedom
-## Residual deviance: 171.33  on 213  degrees of freedom
-## AIC: 563.71
+## Residual deviance: 169.58  on 210  degrees of freedom
+## AIC: 567.52
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1308,9 +1042,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      171.33 563.71
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                169.58 567.52                     
+## ClassYear:Gender  1   169.59 565.53    0.012939   0.9094
 ```
 
 ### Q10_15
@@ -1321,48 +1056,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=598.9
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   201.17 598.52
-## <none>                  199.64 598.90
-## 
-## Step:  AIC=598.52
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   201.20 596.55
-## - ClassYear  1   202.71 598.13
-## <none>           201.17 598.52
-## 
-## Step:  AIC=596.55
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   202.72 596.14
-## <none>           201.20 596.55
-## 
-## Step:  AIC=596.14
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q15_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q15_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.60377    0.06732   38.68   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.63448    0.08136  32.381   <2e-16 ***
+## ClassYearnot First            -0.63448    0.35580  -1.783    0.076 .  
+## GenderMale                    -0.03071    0.15725  -0.195    0.845    
+## ClassYearnot First:GenderMale  0.69738    0.55197   1.263    0.208    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.960744)
+## (Dispersion parameter for gaussian family taken to be 0.9598085)
 ## 
 ##     Null deviance: 202.72  on 211  degrees of freedom
-## Residual deviance: 202.72  on 211  degrees of freedom
-## AIC: 596.14
+## Residual deviance: 199.64  on 208  degrees of freedom
+## AIC: 598.9
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1371,9 +1083,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      202.72 596.14
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                199.64 598.90                     
+## ClassYear:Gender  1   201.17 598.52      1.6207    0.203
 ```
 
 ### Q10_16
@@ -1384,48 +1097,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=557.17
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   160.85 555.75
-## <none>                  160.41 557.17
-## 
-## Step:  AIC=555.75
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   160.85 553.76
-## - Gender     1   160.96 553.90
-## <none>           160.85 555.75
-## 
-## Step:  AIC=553.76
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## - Gender  1   160.96 551.90
-## <none>        160.85 553.76
-## 
-## Step:  AIC=551.9
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q16_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q16_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  3.01395    0.05915   50.96   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.99315    0.07216  41.479   <2e-16 ***
+## ClassYearnot First             0.13185    0.31660   0.416    0.678    
+## GenderMale                     0.07958    0.13795   0.577    0.565    
+## ClassYearnot First:GenderMale -0.37124    0.49068  -0.757    0.450    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.7521408)
+## (Dispersion parameter for gaussian family taken to be 0.7602397)
 ## 
 ##     Null deviance: 160.96  on 214  degrees of freedom
-## Residual deviance: 160.96  on 214  degrees of freedom
-## AIC: 551.9
+## Residual deviance: 160.41  on 211  degrees of freedom
+## AIC: 557.17
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1434,9 +1124,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance   AIC scaled dev. Pr(>Chi)
-## <none>      160.96 551.9
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                160.41 557.17                     
+## ClassYear:Gender  1   160.85 555.75     0.58249   0.4453
 ```
 
 ### Q10_17
@@ -1447,48 +1138,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=642.23
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   238.31 640.28
-## <none>                  238.26 642.23
-## 
-## Step:  AIC=640.28
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   238.42 638.38
-## - ClassYear  1   238.44 638.39
-## <none>           238.31 640.28
-## 
-## Step:  AIC=638.38
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   238.53 636.47
-## <none>           238.42 638.38
-## 
-## Step:  AIC=636.47
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q17_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q17_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)    2.656      0.072   36.88   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.65068    0.08795  30.140   <2e-16 ***
+## ClassYearnot First            -0.15068    0.38586  -0.391    0.697    
+## GenderMale                     0.04022    0.16812   0.239    0.811    
+## ClassYearnot First:GenderMale  0.12644    0.59801   0.211    0.833    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 1.114627)
+## (Dispersion parameter for gaussian family taken to be 1.129212)
 ## 
 ##     Null deviance: 238.53  on 214  degrees of freedom
-## Residual deviance: 238.53  on 214  degrees of freedom
-## AIC: 636.47
+## Residual deviance: 238.26  on 211  degrees of freedom
+## AIC: 642.23
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1497,9 +1165,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      238.53 636.47
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                238.26 642.23                     
+## ClassYear:Gender  1   238.31 640.28    0.045549    0.831
 ```
 
 ### Q10_18
@@ -1507,15 +1176,6 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ```
 ## [1] "Understanding of how scientists think"
-```
-
-```
-## Start:  AIC=562.6
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## <none>                  164.51 562.60
-## - ClassYear:Gender  1   166.43 563.08
 ```
 
 ```
@@ -1560,48 +1220,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=646.04
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   242.60 644.11
-## <none>                  242.51 646.04
-## 
-## Step:  AIC=644.11
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   242.60 642.11
-## - Gender     1   243.65 643.04
-## <none>           242.60 644.11
-## 
-## Step:  AIC=642.11
-## 5 - as.numeric(Response) ~ Gender
-## 
-##          Df Deviance    AIC
-## - Gender  1   243.66 641.04
-## <none>        242.60 642.11
-## 
-## Step:  AIC=641.04
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q19_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q19_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.52093    0.07277   34.64   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.56849    0.08873  28.949   <2e-16 ***
+## ClassYearnot First            -0.06849    0.38928  -0.176    0.861    
+## GenderMale                    -0.16849    0.16962  -0.993    0.322    
+## ClassYearnot First:GenderMale  0.16849    0.60332   0.279    0.780    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 1.138579)
+## (Dispersion parameter for gaussian family taken to be 1.149361)
 ## 
 ##     Null deviance: 243.66  on 214  degrees of freedom
-## Residual deviance: 243.66  on 214  degrees of freedom
-## AIC: 641.04
+## Residual deviance: 242.52  on 211  degrees of freedom
+## AIC: 646.04
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1610,9 +1247,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      243.66 641.04
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                242.51 646.04                     
+## ClassYear:Gender  1   242.60 644.11    0.079458    0.778
 ```
 
 ### Q10_20
@@ -1623,48 +1261,25 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ```
 
 ```
-## Start:  AIC=569.69
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## - ClassYear:Gender  1   170.50 568.28
-## <none>                  170.03 569.69
-## 
-## Step:  AIC=568.28
-## 5 - as.numeric(Response) ~ ClassYear + Gender
-## 
-##             Df Deviance    AIC
-## - Gender     1   170.52 566.31
-## - ClassYear  1   170.80 566.67
-## <none>           170.50 568.28
-## 
-## Step:  AIC=566.31
-## 5 - as.numeric(Response) ~ ClassYear
-## 
-##             Df Deviance    AIC
-## - ClassYear  1   170.81 564.67
-## <none>           170.52 566.31
-## 
-## Step:  AIC=564.67
-## 5 - as.numeric(Response) ~ 1
-```
-
-```
 ## 
 ## Call:
-## glm(formula = 5 - as.numeric(Response) ~ 1, data = Q20_select)
+## glm(formula = 5 - as.numeric(Response) ~ ClassYear * Gender, 
+##     data = Q20_select)
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)  2.92558    0.06093   48.02   <2e-16 ***
+##                               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)                    2.93836    0.07429  39.551   <2e-16 ***
+## ClassYearnot First            -0.31336    0.32596  -0.961    0.337    
+## GenderMale                    -0.01108    0.14202  -0.078    0.938    
+## ClassYearnot First:GenderMale  0.38608    0.50518   0.764    0.446    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for gaussian family taken to be 0.7981743)
+## (Dispersion parameter for gaussian family taken to be 0.805826)
 ## 
 ##     Null deviance: 170.81  on 214  degrees of freedom
-## Residual deviance: 170.81  on 214  degrees of freedom
-## AIC: 564.67
+## Residual deviance: 170.03  on 211  degrees of freedom
+## AIC: 569.69
 ## 
 ## Number of Fisher Scoring iterations: 2
 ```
@@ -1673,9 +1288,10 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 ## Single term deletions
 ## 
 ## Model:
-## 5 - as.numeric(Response) ~ 1
-##        Df Deviance    AIC scaled dev. Pr(>Chi)
-## <none>      170.81 564.67
+## 5 - as.numeric(Response) ~ ClassYear * Gender
+##                  Df Deviance    AIC scaled dev. Pr(>Chi)
+## <none>                170.03 569.69                     
+## ClassYear:Gender  1   170.50 568.28     0.59434   0.4407
 ```
 
 ### Q10_21
@@ -1683,15 +1299,6 @@ This converts the response variable into a numeric value from 0 to 4 with a posi
 
 ```
 ## [1] "Confidence in my potential to be a teacher of science"
-```
-
-```
-## Start:  AIC=660.7
-## 5 - as.numeric(Response) ~ ClassYear * Gender
-## 
-##                    Df Deviance    AIC
-## <none>                  267.21 660.70
-## - ClassYear:Gender  1   274.02 664.03
 ```
 
 ```
@@ -2998,3 +2605,76 @@ Everything except
 *14*  
 
 ![](Figures6-7.Post-Benefits.2026_files/figure-html/Figure 7-1.png)<!-- -->
+
+## Stats Summary Table
+
+
+``` r
+# 1. Automatically gather all 21 models into a single named list
+# This looks for Q01_model, Q02_model, ... Q21_model in your environment
+model_names <- sprintf("Q%02d_model", 1:21)
+model_list <- mget(model_names, envir = .GlobalEnv)
+
+# 2. Loop through the models, run ANOVA, and bind the results
+anova_table <- map_dfr(model_list, function(model) {
+  
+  # Run the Type III ANOVA
+  res <- car::Anova(model, type = "3", test.statistic = "F")
+  
+  # Convert the ANOVA matrix to a data frame and grab the row names
+  as.data.frame(res) %>% 
+    rownames_to_column(var = "Variable")
+  
+}, .id = "Question") %>% 
+  
+  # 3. Filter down to the specific variables you care about
+  filter(Variable %in% c("Semester", "Gender", "`Race/Ethnicity`")) %>% 
+  
+  # 4. Keep only the columns you need and rename them for convenience
+  select(Question, Variable, F_value = `F values`, p_value = `Pr(>F)`) %>% 
+  
+  # 5. Pivot the table wider so each variable gets its own F and p columns
+  pivot_wider(
+    names_from = Variable,
+    values_from = c(F_value, p_value),
+    names_glue = "{Variable}_{.value}"
+  ) |>
+  select(
+    Question,
+    Semester_F_value, Semester_p_value,
+    Gender_F_value, Gender_p_value,
+    `\`Race/Ethnicity\`_F_value`, `\`Race/Ethnicity\`_p_value`
+  )
+
+# View your final consolidated table
+
+write_tsv(anova_table, file = "Post_Benefits_ANOVA.tsv")
+kable(anova_table)
+```
+
+
+
+|Question  | Semester_F_value| Semester_p_value| Gender_F_value| Gender_p_value| `Race/Ethnicity`_F_value| `Race/Ethnicity`_p_value|
+|:---------|----------------:|----------------:|--------------:|--------------:|------------------------:|------------------------:|
+|Q01_model |        0.0003201|        0.9857436|      2.1506681|      0.1441438|                1.2769571|                0.2812422|
+|Q02_model |        5.0879411|        0.0251976|      1.3113549|      0.2535459|                0.7772933|                0.4610601|
+|Q03_model |        0.7873877|        0.3759788|      0.2190534|      0.6402821|                0.5105429|                0.6009656|
+|Q04_model |        3.7565011|        0.0540391|      0.5156932|      0.4735398|                0.6731045|                0.5112976|
+|Q05_model |        0.2830412|        0.5953235|      0.5821790|      0.4463863|                0.4523577|                0.6367958|
+|Q06_model |        0.0023071|        0.9617398|      0.4957148|      0.4822290|                0.2585671|                0.7724215|
+|Q07_model |        2.6937803|        0.1023607|      2.6790975|      0.1032945|                0.1023563|                0.9027566|
+|Q08_model |        0.1005177|        0.7515467|      0.9624443|      0.3277812|                0.1731622|                0.8411297|
+|Q09_model |        0.1988485|        0.6561441|      1.9936572|      0.1595447|                0.7483461|                0.4744954|
+|Q10_model |        0.0075906|        0.9306620|      0.4795491|      0.4894463|                0.1487440|                0.8618869|
+|Q11_model |        0.4488833|        0.5036543|      0.6106927|      0.4354701|                0.3999345|                0.6709098|
+|Q12_model |        0.1297587|        0.7190722|      0.2121924|      0.6455677|                0.2743617|                0.7603500|
+|Q13_model |        9.7517947|        0.0020628|      0.0412775|      0.8392141|                0.8012015|                0.4502537|
+|Q14_model |        6.4574832|        0.0118269|      0.1341562|      0.7145582|                1.0499072|                0.3519400|
+|Q15_model |        3.7296169|        0.0549206|      0.0021565|      0.9630091|                1.4588520|                0.2350552|
+|Q16_model |        1.7652225|        0.1855192|      0.2529579|      0.6155647|                0.0664799|                0.9357028|
+|Q17_model |        1.9253883|        0.1668394|      0.0129750|      0.9094273|                0.0180088|                0.9821541|
+|Q18_model |        0.7510732|        0.3871964|      0.3839829|      0.5361990|                0.0095865|                0.9904598|
+|Q19_model |        0.3554143|        0.5517520|      0.9696124|      0.3259908|                0.3518867|                0.7038033|
+|Q20_model |        0.3164103|        0.5744157|      0.0102498|      0.9194625|                0.0527659|                0.9486156|
+|Q21_model |        2.3620263|        0.1259584|      0.0062754|      0.9369419|                1.0839571|                0.3403045|
+

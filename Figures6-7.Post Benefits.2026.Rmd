@@ -17,12 +17,12 @@ This Rmd uses the deidentified results and is safe to share.
 knitr::opts_chunk$set(echo = TRUE)
 # Load Packages
 if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("kableExtra")) install.packages("kableExtra"); library(kableExtra)
 if (!require("plotly")) install.packages("plotly"); library(plotly)
 if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
 if (!require("stringr")) install.packages("stringr"); library(stringr)
 if (!require("readxl")) install.packages("readxl"); library(readxl)
 if (!require("car")) install.packages("car"); library(car) #Anova
-if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
 if (!require("conflicted")) install.packages("conflicted"); library(conflicted) #dplyr to rule them all
 if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
 if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
@@ -316,8 +316,7 @@ Q01_select <- Q10_demo_long %>%
   filter(Question == "Q01") %>%
   na.omit() 
 Q01_model_1 <- glm(data = Q01_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q01_model_1)
 Q01_drop1 <- drop1(Q01_model_1, test = "LRT") %>% print()
 ```
@@ -330,8 +329,7 @@ Q02_select <- Q10_demo_long %>%
   filter(Question == "Q02") %>%
   na.omit() 
 Q02_model_1 <- glm(data = Q02_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q02_model_1)
 Q02_drop1 <- drop1(Q02_model_1, test = "LRT") %>% print()
 ```
@@ -344,8 +342,7 @@ Q03_select <- Q10_demo_long %>%
   filter(Question == "Q03") %>%
   na.omit() 
 Q03_model_1 <- glm(data = Q03_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q03_model_1)
 Q03_drop1 <- drop1(Q03_model_1, test = "LRT") %>% print()
 
@@ -360,8 +357,7 @@ Q04_select <- Q10_demo_long %>%
   filter(Question == "Q04") %>%
   na.omit() 
 Q04_model_1 <- glm(data = Q04_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q04_model_1)
 Q04_drop1 <- drop1(Q04_model_1, test = "LRT") %>% print()
 ```
@@ -374,8 +370,7 @@ Q05_select <- Q10_demo_long %>%
   filter(Question == "Q05") %>%
   na.omit() 
 Q05_model_1 <- glm(data = Q05_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q05_model_1)
 Q05_drop1 <- drop1(Q05_model_1, test = "LRT") %>% print()
 ```
@@ -388,8 +383,7 @@ Q06_select <- Q10_demo_long %>%
   filter(Question == "Q06") %>%
   na.omit() 
 Q06_model_1 <- glm(data = Q06_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q06_model_1)
 Q06_drop1 <- drop1(Q06_model_1, test = "LRT") %>% print()
 ```
@@ -402,8 +396,7 @@ Q07_select <- Q10_demo_long %>%
   filter(Question == "Q07") %>%
   na.omit() 
 Q07_model_1 <- glm(data = Q07_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q07_model_1)
 Q07_drop1 <- drop1(Q07_model_1, test = "LRT") %>% print()
 ```
@@ -416,8 +409,7 @@ Q08_select <- Q10_demo_long %>%
   filter(Question == "Q08") %>%
   na.omit() 
 Q08_model_1 <- glm(data = Q08_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q08_model_1)
 Q08_drop1 <- drop1(Q08_model_1, test = "LRT") %>% print()
 ```
@@ -430,8 +422,7 @@ Q09_select <- Q10_demo_long %>%
   filter(Question == "Q09") %>%
   na.omit() 
 Q09_model_1 <- glm(data = Q09_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q09_model_1)
 Q09_drop1 <- drop1(Q09_model_1, test = "LRT") %>% print()
 ```
@@ -444,8 +435,7 @@ Q10_select <- Q10_demo_long %>%
   filter(Question == "Q10") %>%
   na.omit() 
 Q10_model_1 <- glm(data = Q10_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q10_model_1)
 drop1(Q10_model_1, test = "LRT")
 Q10_drop1 <- drop1(Q10_model_1, test = "LRT") %>% print()
@@ -459,8 +449,7 @@ Q11_select <- Q10_demo_long %>%
   filter(Question == "Q11") %>%
   na.omit() 
 Q11_model_1 <- glm(data = Q11_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q11_model_1)
 Q11_drop1 <- drop1(Q11_model_1, test = "LRT") %>% print()
 ```
@@ -473,8 +462,7 @@ Q12_select <- Q10_demo_long %>%
   filter(Question == "Q12") %>%
   na.omit() 
 Q12_model_1 <- glm(data = Q12_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q12_model_1)
 Q12_drop1 <- drop1(Q12_model_1, test = "LRT") %>% print()
 ```
@@ -487,8 +475,7 @@ Q13_select <- Q10_demo_long %>%
   filter(Question == "Q13") %>%
   na.omit() 
 Q13_model_1 <- glm(data = Q13_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q13_model_1)
 Q13_drop1 <- drop1(Q13_model_1, test = "LRT") %>% print()
 ```
@@ -501,8 +488,7 @@ Q14_select <- Q10_demo_long %>%
   filter(Question == "Q14") %>%
   na.omit() 
 Q14_model_1 <- glm(data = Q14_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q14_model_1)
 Q14_drop1 <- drop1(Q14_model_1, test = "LRT") %>% print()
 ```
@@ -515,8 +501,7 @@ Q15_select <- Q10_demo_long %>%
   filter(Question == "Q15") %>%
   na.omit() 
 Q15_model_1 <- glm(data = Q15_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q15_model_1)
 Q15_drop1 <- drop1(Q15_model_1, test = "LRT") %>% print()
 ```
@@ -529,8 +514,7 @@ Q16_select <- Q10_demo_long %>%
   filter(Question == "Q16") %>%
   na.omit() 
 Q16_model_1 <- glm(data = Q16_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q16_model_1)
 Q16_drop1 <- drop1(Q16_model_1, test = "LRT") %>% print()
 ```
@@ -543,8 +527,7 @@ Q17_select <- Q10_demo_long %>%
   filter(Question == "Q17") %>%
   na.omit() 
 Q17_model_1 <- glm(data = Q17_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q17_model_1)
 Q17_drop1 <- drop1(Q17_model_1, test = "LRT") %>% print()
 ```
@@ -557,8 +540,7 @@ Q18_select <- Q10_demo_long %>%
   filter(Question == "Q18") %>%
   na.omit() 
 Q18_model_1 <- glm(data = Q18_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q18_model_1)
 Q18_drop1 <- drop1(Q18_model_1, test = "LRT") %>% print()
 ```
@@ -571,8 +553,7 @@ Q19_select <- Q10_demo_long %>%
   filter(Question == "Q19") %>%
   na.omit() 
 Q19_model_1 <- glm(data = Q19_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q19_model_1)
 Q19_drop1 <- drop1(Q19_model_1, test = "LRT") %>% print()
 ```
@@ -585,8 +566,7 @@ Q20_select <- Q10_demo_long %>%
   filter(Question == "Q20") %>%
   na.omit() 
 Q20_model_1 <- glm(data = Q20_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender)
 summary(Q20_model_1)
 Q20_drop1 <- drop1(Q20_model_1, test = "LRT") %>% print()
 ```
@@ -599,8 +579,7 @@ Q21_select <- Q10_demo_long %>%
   filter(Question == "Q21") %>%
   na.omit() 
 Q21_model_1 <- glm(data = Q21_select, 
-                 5-as.numeric(Response) ~ ClassYear * Gender) %>%
-  stepAIC(direction = "backward")
+                 5-as.numeric(Response) ~ ClassYear * Gender) 
 summary(Q21_model_1)
 Q21_drop1 <- drop1(Q21_model_1, test = "LRT") %>% print()
 ```
@@ -1104,3 +1083,49 @@ ggplot(Q10_demo_none) +
   scale_x_discrete(na.translate = FALSE) +
   theme_gray()
 ```
+
+## Stats Summary Table
+
+```{r}
+# 1. Automatically gather all 21 models into a single named list
+# This looks for Q01_model, Q02_model, ... Q21_model in your environment
+model_names <- sprintf("Q%02d_model", 1:21)
+model_list <- mget(model_names, envir = .GlobalEnv)
+
+# 2. Loop through the models, run ANOVA, and bind the results
+anova_table <- map_dfr(model_list, function(model) {
+  
+  # Run the Type III ANOVA
+  res <- car::Anova(model, type = "3", test.statistic = "F")
+  
+  # Convert the ANOVA matrix to a data frame and grab the row names
+  as.data.frame(res) %>% 
+    rownames_to_column(var = "Variable")
+  
+}, .id = "Question") %>% 
+  
+  # 3. Filter down to the specific variables you care about
+  filter(Variable %in% c("Semester", "Gender", "`Race/Ethnicity`")) %>% 
+  
+  # 4. Keep only the columns you need and rename them for convenience
+  select(Question, Variable, F_value = `F values`, p_value = `Pr(>F)`) %>% 
+  
+  # 5. Pivot the table wider so each variable gets its own F and p columns
+  pivot_wider(
+    names_from = Variable,
+    values_from = c(F_value, p_value),
+    names_glue = "{Variable}_{.value}"
+  ) |>
+  select(
+    Question,
+    Semester_F_value, Semester_p_value,
+    Gender_F_value, Gender_p_value,
+    `\`Race/Ethnicity\`_F_value`, `\`Race/Ethnicity\`_p_value`
+  )
+
+# View your final consolidated table
+
+write_tsv(anova_table, file = "Post_Benefits_ANOVA.tsv")
+kable(anova_table)
+```
+
