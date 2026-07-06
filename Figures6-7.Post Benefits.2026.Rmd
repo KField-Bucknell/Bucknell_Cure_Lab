@@ -1067,11 +1067,13 @@ Preface: In this section of the survey you will be asked to consider a variety o
 
 ### 2026 Final Figure 6
 
-2   13    14    15    16  21
+*2*   
+*13*    
+*14*  
 
-```{r Q10 By Semester big, fig.height=4, echo=FALSE}
+```{r Figure 6, fig.height=3, echo=FALSE}
 Q10_demo_semester <- Q10_demo_long %>%
-  filter(Question %in% c('Q02', 'Q13','Q14', 'Q15', 'Q16', 'Q21'))
+  filter(Question %in% c('Q02', 'Q13','Q14'))
 ggplot(Q10_demo_semester) +
   geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
   facet_grid(as.factor(Q10_demo_semester$Question)) +
@@ -1083,212 +1085,22 @@ ggplot(Q10_demo_semester) +
   theme_gray()
 ```
 
-### New Final Figure 7A
+### 2026 Final Figure 7 (Was 8)
 
-NO QUESTION IN THIS CATEGORY
+Everything except 
+*2*   
+*13*    
+*14*  
 
-```{r Q10 By Semester and race, fig.height=1.5, echo=FALSE}
-#Q10_demo_semester_race <- Q10_demo_long %>%
-#  filter(Question == 'Q21')
-#ggplot(Q10_demo_semester_race) +
-#  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
-#  facet_wrap(~ as.factor(Q10_demo_semester_race$Question) + Q10_demo_semester_race$`Race/Ethnicity`) +
-#  coord_flip() +
-#  ylab('Proportion') +
-#  xlab('Semester') +
-#  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
-#  scale_x_discrete(na.translate = FALSE) +
-#  theme_gray() +
-#  theme(legend.position = "none")
-```
-
-### New Final Figure 7C
-
-3      8   10    11    17    18    19    20
-
-9 <- NOW NONE
-12 <- NOW NONE
-
-not 5
-
-```{r Q10 By None, fig.height=2.75, echo=FALSE}
+```{r Figure 7, fig.height=4, echo=FALSE}
 Q10_demo_none <- Q10_demo_long %>%
-  filter(Question %in% c('Q03', 'Q08', 'Q09', 'Q10','Q11','Q12', 'Q17','Q18','Q19','Q20'))
+  filter(Question %notin% c('Q02', 'Q13','Q14'))
 ggplot(Q10_demo_none) +
-  geom_bar(aes(x = Question, fill = Response), position = 'fill', width = 0.75) +
+  geom_bar(aes(x = fct_rev(Question), fill = Response), width = 0.75) +
   coord_flip() +
   ylab('Proportion') +
-  xlab('Question') +
-  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
-  scale_x_discrete(na.translate = FALSE) +
-  theme_gray() +
-  theme(legend.position = "none")
-```
-
-### New Final Figure 7B
-
-7
-
-```{r Q10 By Semester and gender, fig.height=1.5, echo=FALSE}
-Q10_demo_semester_gender <- Q10_demo_long %>%
-  filter(Question == 'Q07')
-ggplot(Q10_demo_semester_gender) +
-  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
-  facet_wrap(~ as.factor(Q10_demo_semester_gender$Question) + Q10_demo_semester_gender$Gender) +
-  coord_flip() +
-  ylab('Proportion') +
-  xlab('Semester') +
-  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
-  scale_x_discrete(na.translate = FALSE) +
-  theme_gray() +
-  theme(legend.position = "none")
-```
-
-
-### New Final Figure 7D
-
-1 <- NOW JUST GENDER
-
-```{r Q10 By Race and gender, fig.height=1.5, echo=FALSE}
-Q10_demo_gender <- Q10_demo_long %>%
-  filter(Question == 'Q01')
-
-ggplot(Q10_demo_gender) +
-  geom_bar(aes(x = Gender, fill = Response), position = 'fill', width = 0.75) +
-  facet_grid(as.factor(Q10_demo_gender$Question)) +
-  coord_flip() +
-  ylab('Proportion') +
-  xlab('Gender') +
-  fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
-  scale_x_discrete(na.translate = FALSE) +
-  theme_gray() +
-  theme(legend.position = "none")
-```
-
-
-### New Figure 7E
-
-For this I need some cat plots.
-
-5 and 6 show dependence Race, Gender, and the interaction between Race and Gender, but not Semester
-
-4 shows dependence Race, Gender, and the interaction between Race and Gender, AND Semester
-
-Question that showed dependence on Gender and Race, but not Semester: 1
-Questions that showed dependence on Race, Gender, and the interaction between Race and Gender, but not Semester: 6   9   12
-
-```{r Q10 By All, fig.height=2.5, echo=FALSE}
-Q10_demo_all <- Q10_demo_long %>%
-  filter(Question %in% c('Q04','Q05','Q06'))
-ggplot(Q10_demo_all) +
-  geom_bar(aes(x = Semester, fill = Response), position = 'fill', width = 0.75) +
-  facet_wrap(~ Q10_demo_all$`Race/Ethnicity` + Q10_demo_all$Gender) +
-  coord_flip() +
-  ylab('Proportion') +
-  xlab('Semester') +
+  xlab(NULL) +
   fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
   scale_x_discrete(na.translate = FALSE) +
   theme_gray()
 ```
-
-```{r Interaction 04, echo=FALSE}
-cat_plot(model = Q04_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot04 <- cat_plot(model = Q04_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-```
-
-```{r Interaction 05, echo=FALSE}
-cat_plot(model = Q05_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot05 <- cat_plot(model = Q05_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-```
-
-
-```{r Interaction 06, echo=FALSE}
-cat_plot(model = Q06_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-catplot06 <- cat_plot(model = Q06_model, pred = 'Race/Ethnicity', modx = Gender,
-              interval = TRUE, x.label = "Race/Ethnicity",  
-              y.label = "Student Perceived\n Gain")
-```
-
-
-```{r Interaction 09, echo=FALSE}
-#cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
-#              interval = TRUE, x.label = "Race/Ethnicity",  
-#              y.label = "Student Perceived\n Gain")
-#catplot09 <- cat_plot(model = Q09_model, pred = 'Race/Ethnicity', modx = Gender,
-#              interval = TRUE, x.label = "Race/Ethnicity",  
-#              y.label = "Student Perceived\n Gain")
-```
-
-
-```{r Interaction 12, echo=FALSE}
-#cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
-#              interval = TRUE, x.label = "Race/Ethnicity",  
-#              y.label = "Student Perceived\n Gain")
-#catplot12 <- cat_plot(model = Q12_model, pred = 'Race/Ethnicity', modx = Gender,
-#              interval = TRUE, x.label = "Race/Ethnicity",  
-#              y.label = "Student Perceived\n Gain")
-```
-
-```{r Combined Interaction Plots, fig.height=4, echo=FALSE}
-catplot04_fixed <- catplot04 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"),
-                  plot.title = element_text(size = 10, face = "plain")) +
-#  scale_x_discrete(labels= c("White Students", "Other Students of Color")) +
-  ylim(c(0.5, 4.0)) +
-  ggtitle("Readiness for more demanding research")
-
-catplot05_fixed <- catplot05 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"),
-                  plot.title = element_text(size = 10, face = "plain")) +
-#  scale_x_discrete(labels= c("White Students", "Other Students of Color")) +
-  ylim(c(0.5, 4.0)) +
-  ggtitle("Understanding how knowledge is constructed")
-
-
-
-catplot06_fixed <- catplot06 + theme(panel.grid.major = element_blank(), 
-                  panel.grid.minor = element_blank(),
-                  panel.background = element_blank(), 
-                  axis.line = element_line(colour = "black"),
-                  plot.title = element_text(size = 10, face = "plain")) +
-#  scale_x_discrete(labels= c("White Students", "Other Students of Color")) +
-  ylim(c(0.5, 4.0)) +
-  ggtitle("Understanding of the research process")
-#catplot09_fixed <- catplot09 + theme(panel.grid.major = element_blank(), 
-#                  panel.grid.minor = element_blank(),
-#                  panel.background = element_blank(), 
-#                  axis.line = element_line(colour = "black"),
-#                  legend.position = "none",
-#                  plot.title = element_text(size = 10, face = "plain")) +
-#  scale_x_discrete(labels= c("White Students", "Other Students of Color")) +
-#  ylim(c(1.0, 3.5)) +
-#  ggtitle("Scientific assertions require evidence")
-#catplot12_fixed <- catplot12 + theme(panel.grid.major = element_blank(), 
-#                  panel.grid.minor = element_blank(),
-#                  panel.background = element_blank(), 
-#                  axis.line = element_line(colour = "black"), 
-#                  legend.position="none",
-#                  plot.title = element_text(size = 10, face = "plain")) +
-#  scale_x_discrete(labels= c("White Students", "Other Students of Color")) +
-#  ylim(c(1.0, 3.5)) +
-#  labs(title = "Learning ethical conduct in your field")
-
-
-ggarrange(catplot04_fixed, catplot05_fixed, catplot06_fixed, ncol = 2, nrow = 2)
-
-```
-

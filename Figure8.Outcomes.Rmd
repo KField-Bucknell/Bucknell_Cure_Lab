@@ -364,9 +364,9 @@ cat_plot(selected_model_202, pred = Curriculum, modx = `Race.Ethnicity`, mod2 = 
 ```
 
 
-#### Figure 9
+#### Figure 8
 
-```{r Figure 9, echo=FALSE}
+```{r Figure 8, echo=FALSE}
 catplot_202 <- cat_plot(selected_model_202, pred = `Race.Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
          interval = TRUE, errorbar.width = 0.5, 
          pred.labels = c("White Students","Students of Color"),
@@ -457,7 +457,7 @@ cat_plot(selected_model_201, pred = Curriculum, modx = Race.Ethnicity, interval 
 ```
 
 
-#### Figure 9 201 version
+#### Figure 8 201 version
 
 ```{r Figure 9 201, echo=FALSE}
 catplot_201 <- cat_plot(selected_model2_201, pred = Fall_Spring, modx = Curriculum,
