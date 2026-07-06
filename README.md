@@ -17,22 +17,20 @@ separately for each of the three academic years analyzed.
 
 ## Question 11 and 13 Exploration (Figure 1)
 
-`Figure1.PostQ11_13.Rmd` -> [Figure1.PostQ11_13.md](Figure1.PostQ11_13.md)
+`Figure1.PostQ11_13.2026.Rmd` -> [Figure1.PostQ11_13.2026.md](Figure1.PostQ11_13.2026.md)
 
 ## Improvements by Instructor (Figures 2 - 5)
 
-`Figures2-5.Improvements by Instructor 2.Rmd` -> [Figures2-5.Improvements-by-Instructor-2.md](Figures2-5.Improvements-by-Instructor-2.md)
+`Figures2-5.Improvements by Instructor 2.2026.Rmd` -> [Figures2-5.Improvements-by-Instructor-2.2026.md](Figures2-5.Improvements-by-Instructor-2.2026.md)
 
-## Post Benefits (Figures 6 - 8)
+## Post Benefits (Figures 6 - 7)
 
-`Figures6-8.Post Benefits.Rmd` -> [Figures6-8.Post-Benefits.md](Figures6-8.Post-Benefits.md)
+`Figures6-7.Post Benefits.2026.Rmd` -> [Figures6-8.Post-Benefits.2026.md](Figures6-8.Post-Benefits.2026.md)
 
-## Outcomes (Figure 9)
+## Outcomes (Figure 8)
 
-`Figure9.Outcomes.Rmd` -> [Figure9.Outcomes.md](Figure9.Outcomes.md)
+`Figure8.Outcomes.Rmd` -> [Figure8.Outcomes.md](Figure8.Outcomes.md)
 
 ## Supplemental Information
-
-Figure S1 is part of [Figure1.PostQ11_13.md](Figure1.PostQ11_13.md)
 
 `BenchmarkComparison.Rmd` -> [BenchmarkComparison.md](BenchmarkComparison.md)
