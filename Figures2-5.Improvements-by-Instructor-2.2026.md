@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 06 July 2026"
+date: "Last compiled on 07 July 2026"
 output:
   html_document:
     toc: true
@@ -1191,17 +1191,19 @@ Instructor and Rookie meets cutoff
 ```
 ## Analysis of Deviance Table (Type III tests)
 ## 
-## Response: as.numeric(Q9_2_post)
+## Response: as.numeric(Q9_14_post)
 ## Error estimate based on Pearson residuals 
 ## 
-##                        Sum Sq  Df F values Pr(>F)
-## as.numeric(Q10_2_pre)   0.600   1   0.6072 0.4367
-## Instructor              6.107   4   1.5464 0.1900
-## Rookie                  1.449   1   1.4681 0.2270
-## Residuals             205.351 208
+##                        Sum Sq  Df F values    Pr(>F)    
+## as.numeric(Q10_14_pre)  5.121   1  12.0871 0.0006142 ***
+## Instructor             19.508   4  11.5105 1.742e-08 ***
+## Rookie                  0.150   1   0.3542 0.5523672    
+## Residuals              91.096 215                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Nothing meets cutoff
+*Instructor meets cutoff*
 
 ### Q10_15
 
@@ -1285,17 +1287,19 @@ Instructor meets cutoff
 ```
 ## Analysis of Deviance Table (Type III tests)
 ## 
-## Response: as.numeric(Q9_2_post)
+## Response: as.numeric(Q9_16_post)
 ## Error estimate based on Pearson residuals 
 ## 
-##                        Sum Sq  Df F values Pr(>F)
-## as.numeric(Q10_2_pre)   0.600   1   0.6072 0.4367
-## Instructor              6.107   4   1.5464 0.1900
-## Rookie                  1.449   1   1.4681 0.2270
-## Residuals             205.351 208
+##                         Sum Sq  Df F values    Pr(>F)    
+## as.numeric(Q10_16_pre)   3.292   1   5.5732 0.0191271 *  
+## Instructor              13.217   4   5.5941 0.0002651 ***
+## Rookie                   0.119   1   0.2012 0.6542240    
+## Residuals              127.580 216                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Nothing meets cutoff
+*Instructor meets cutoff*
 
 ### Q10_17
 
@@ -1379,17 +1383,19 @@ Instructor meets cutoff.
 ```
 ## Analysis of Deviance Table (Type III tests)
 ## 
-## Response: as.numeric(Q9_2_post)
+## Response: as.numeric(Q9_18_post)
 ## Error estimate based on Pearson residuals 
 ## 
-##                        Sum Sq  Df F values Pr(>F)
-## as.numeric(Q10_2_pre)   0.600   1   0.6072 0.4367
-## Instructor              6.107   4   1.5464 0.1900
-## Rookie                  1.449   1   1.4681 0.2270
-## Residuals             205.351 208
+##                         Sum Sq  Df F values    Pr(>F)    
+## as.numeric(Q10_18_pre)   4.413   1   6.4139   0.01204 *  
+## Instructor              29.076   4  10.5647 7.874e-08 ***
+## Rookie                   0.023   1   0.0337   0.85445    
+## Residuals              147.240 214                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Nothing meets cutoff.
+*Instructor meets cutoff.*
 
 ### Q10_19
 
@@ -1750,7 +1756,7 @@ The following questions showed dependence on *pre-survey response* and *instruct
 
 The following questions showed dependence on *instructor*, but not pre-survey response or rookie status:
 
-3, 4, 6, 9, 11, 12, 15, 17, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
 
 - [3] "A lab or project where no one knows the outcome"   
 - [4] "At least one project that is assigned and structured by the instructor" 
@@ -1758,8 +1764,11 @@ The following questions showed dependence on *instructor*, but not pre-survey re
 - [9] "Work in small groups"  
 - [11] "Read primary scientific literature" 
 - [12] "Write a research proposal" 
+- [14] "Analyze data" 
 - [15] "Present results orally"
-- [17] "Present posters"                                                                                   
+- [16] "Present results in written papers or reports"
+- [17] "Present posters" 
+- [18] "Critique the work of other students"
 - [19] "Listen to lectures" *Removed                                                                                 
 - [21] "Work on problem sets" *Removed                                                                               
 - [22] "Take tests in class" *Removed 
@@ -1772,9 +1781,7 @@ And the responses to these survey questions were independent of pre-survey respo
 - [1] "A scripted lab or project in which the students know the expected outcome" 
 - [2] "A lab or project in which only the instructor knows the outcome" *Removed                               
 - [7] "Work individually" 
-- [14] "Analyze data" 
-- [16] "Present results in written papers or reports"
-- [18] "Critique the work of other students" 
+ 
 - [20] "Read a textbook" *Removed                                                                                    
 
 It is interesting to note that for every question that was significantly impacted by rookie status, the veteran status had a negative estimate. 
@@ -1861,20 +1868,23 @@ For questions where the instructor was included in the final model, but not Rook
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 11, 12, 15, 17, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
 
 ![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Figure 2 Instructor Questions-1.png)<!-- -->
 
 ```
-## [1] "A lab or project where no one knows the outcome"                       
-## [2] "At least one project that is assigned and structured by the instructor"
-## [3] "A project entirely of student design"                                  
-## [4] "Work in small groups"                                                  
-## [5] "Read primary scientific literature"                                    
-## [6] "Write a research proposal"                                             
-## [7] "Present results orally"                                                
-## [8] "Present posters"                                                       
-## [9] "Discuss reading materials in class"
+##  [1] "A lab or project where no one knows the outcome"                       
+##  [2] "At least one project that is assigned and structured by the instructor"
+##  [3] "A project entirely of student design"                                  
+##  [4] "Work in small groups"                                                  
+##  [5] "Read primary scientific literature"                                    
+##  [6] "Write a research proposal"                                             
+##  [7] "Analyze data"                                                          
+##  [8] "Present results orally"                                                
+##  [9] "Present results in written papers or reports"                          
+## [10] "Present posters"                                                       
+## [11] "Critique the work of other students"                                   
+## [12] "Discuss reading materials in class"
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 

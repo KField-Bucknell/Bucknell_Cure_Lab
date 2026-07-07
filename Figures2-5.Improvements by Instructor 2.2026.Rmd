@@ -600,10 +600,10 @@ Q10Clean_withNA %>%
 imp_model_Q10_14 <- glm(as.numeric(Q9_14_post) ~ 
                       as.numeric(Q10_14_pre) + Instructor + Rookie, data = Q_14Clean)
 summary(imp_model_Q10_14)
-car::Anova(imp_model_Q10_2, type = "3", test.statistic = "F")
+car::Anova(imp_model_Q10_14, type = "3", test.statistic = "F")
 ```
 
-Nothing meets cutoff
+*Instructor meets cutoff*
 
 ### Q10_15
 
@@ -654,10 +654,10 @@ Q10Clean_withNA %>%
 imp_model_Q10_16 <- glm(as.numeric(Q9_16_post) ~ 
                       as.numeric(Q10_16_pre) + Instructor + Rookie, data = Q_16Clean)
 summary(imp_model_Q10_16)
-car::Anova(imp_model_Q10_2, type = "3", test.statistic = "F")
+car::Anova(imp_model_Q10_16, type = "3", test.statistic = "F")
 ```
 
-Nothing meets cutoff
+*Instructor meets cutoff*
 
 ### Q10_17
 
@@ -708,10 +708,10 @@ Q10Clean_withNA %>%
 imp_model_Q10_18 <- glm(as.numeric(Q9_18_post) ~ 
                       as.numeric(Q10_18_pre) + Instructor + Rookie, data = Q_18Clean)
 summary(imp_model_Q10_18)
-car::Anova(imp_model_Q10_2, type = "3", test.statistic = "F")
+car::Anova(imp_model_Q10_18, type = "3", test.statistic = "F")
 ```
 
-Nothing meets cutoff.
+*Instructor meets cutoff.*
 
 ### Q10_19
 
@@ -928,7 +928,7 @@ The following questions showed dependence on *pre-survey response* and *instruct
 
 The following questions showed dependence on *instructor*, but not pre-survey response or rookie status:
 
-3, 4, 6, 9, 11, 12, 15, 17, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
 
 - [3] "A lab or project where no one knows the outcome"   
 - [4] "At least one project that is assigned and structured by the instructor" 
@@ -936,8 +936,11 @@ The following questions showed dependence on *instructor*, but not pre-survey re
 - [9] "Work in small groups"  
 - [11] "Read primary scientific literature" 
 - [12] "Write a research proposal" 
+- [14] "Analyze data" 
 - [15] "Present results orally"
-- [17] "Present posters"                                                                                   
+- [16] "Present results in written papers or reports"
+- [17] "Present posters" 
+- [18] "Critique the work of other students"
 - [19] "Listen to lectures" *Removed                                                                                 
 - [21] "Work on problem sets" *Removed                                                                               
 - [22] "Take tests in class" *Removed 
@@ -950,9 +953,7 @@ And the responses to these survey questions were independent of pre-survey respo
 - [1] "A scripted lab or project in which the students know the expected outcome" 
 - [2] "A lab or project in which only the instructor knows the outcome" *Removed                               
 - [7] "Work individually" 
-- [14] "Analyze data" 
-- [16] "Present results in written papers or reports"
-- [18] "Critique the work of other students" 
+ 
 - [20] "Read a textbook" *Removed                                                                                    
 
 It is interesting to note that for every question that was significantly impacted by rookie status, the veteran status had a negative estimate. 
@@ -1035,13 +1036,13 @@ For questions where the instructor was included in the final model, but not Rook
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 11, 12, 15, 17, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
 
 ```{r Figure 2 Instructor Questions, echo=FALSE}
 instructor_q <- Q10Clean_withNA %>%
   select(Instructor, Q03=Q9_3_post, Q04=Q9_4_post, Q06=Q9_6_post, 
-         Q09=Q9_9_post, Q11=Q9_11_post, Q12=Q9_12_post, Q15=Q9_15_post, 
-         Q17=Q9_17_post, Q23=Q9_23_post)
+         Q09=Q9_9_post, Q11=Q9_11_post, Q12=Q9_12_post, Q14=Q9_14_post, 
+         Q15=Q9_15_post, Q16=Q9_16_post, Q17=Q9_17_post, Q18=Q9_18_post, Q23=Q9_23_post)
 instructor_q_long <- instructor_q %>% 
   pivot_longer(cols = `Q03`:`Q23`, 
                names_to = c("Question"), 
@@ -1057,7 +1058,7 @@ instructor_q_long %>%
   fill_palette(c("#FFFEFE","#b0cafb","#6598f8","#3c54cd","#21327b")) +
   scale_x_discrete(guide = guide_axis(angle=70))
 
-print(Q10TextClean$Question[c(3, 4, 6, 9, 11, 12, 15, 17, 23 )])
+print(Q10TextClean$Question[c(3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, 23 )])
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
