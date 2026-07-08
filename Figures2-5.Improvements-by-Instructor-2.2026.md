@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 07 July 2026"
+date: "Last compiled on 08 July 2026"
 output:
   html_document:
     toc: true
@@ -1868,23 +1868,17 @@ For questions where the instructor was included in the final model, but not Rook
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 12, 17
 
 ![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Figure 2 Instructor Questions-1.png)<!-- -->
 
 ```
-##  [1] "A lab or project where no one knows the outcome"                       
-##  [2] "At least one project that is assigned and structured by the instructor"
-##  [3] "A project entirely of student design"                                  
-##  [4] "Work in small groups"                                                  
-##  [5] "Read primary scientific literature"                                    
-##  [6] "Write a research proposal"                                             
-##  [7] "Analyze data"                                                          
-##  [8] "Present results orally"                                                
-##  [9] "Present results in written papers or reports"                          
-## [10] "Present posters"                                                       
-## [11] "Critique the work of other students"                                   
-## [12] "Discuss reading materials in class"
+## [1] "A lab or project where no one knows the outcome"                       
+## [2] "At least one project that is assigned and structured by the instructor"
+## [3] "A project entirely of student design"                                  
+## [4] "Work in small groups"                                                  
+## [5] "Write a research proposal"                                             
+## [6] "Present posters"
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
@@ -1900,6 +1894,12 @@ Figure 4 is the combined Cat plots.
 
 ![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Figure 4-1.png)<!-- -->
 
+
+``` r
+catplot8c
+```
+
+![](Figures2-5.Improvements-by-Instructor-2.2026_files/figure-html/Figure 4 Part B-1.png)<!-- -->
 
 
 ## Instructor Survey Results

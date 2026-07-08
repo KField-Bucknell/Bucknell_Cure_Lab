@@ -1036,15 +1036,14 @@ For questions where the instructor was included in the final model, but not Rook
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
+3, 4, 6, 9, 12, 17
 
 ```{r Figure 2 Instructor Questions, echo=FALSE}
 instructor_q <- Q10Clean_withNA %>%
   select(Instructor, Q03=Q9_3_post, Q04=Q9_4_post, Q06=Q9_6_post, 
-         Q09=Q9_9_post, Q11=Q9_11_post, Q12=Q9_12_post, Q14=Q9_14_post, 
-         Q15=Q9_15_post, Q16=Q9_16_post, Q17=Q9_17_post, Q18=Q9_18_post, Q23=Q9_23_post)
+         Q09=Q9_9_post, Q12=Q9_12_post, Q17=Q9_17_post)
 instructor_q_long <- instructor_q %>% 
-  pivot_longer(cols = `Q03`:`Q23`, 
+  pivot_longer(cols = `Q03`:`Q17`, 
                names_to = c("Question"), 
                values_to = "Post")
 
@@ -1058,7 +1057,7 @@ instructor_q_long %>%
   fill_palette(c("#FFFEFE","#b0cafb","#6598f8","#3c54cd","#21327b")) +
   scale_x_discrete(guide = guide_axis(angle=70))
 
-print(Q10TextClean$Question[c(3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, 23 )])
+print(Q10TextClean$Question[c(3, 4, 6, 9, 12, 17 )])
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
@@ -1081,6 +1080,15 @@ catplot8b <- catplot8 + theme(panel.grid.major = element_blank(),
                   legend.position="none", 
                   plot.title = element_text(size = 10, face = "plain")) +
   coord_flip() +
+  ggtitle("Work as a whole class")
+
+catplot8c <- catplot8 + theme(panel.grid.major = element_blank(),
+                              axis.title.x = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+                  axis.line = element_line(colour = "black"),
+                  legend.position="none", 
+                  plot.title = element_text(size = 10, face = "plain")) +
   ggtitle("Work as a whole class")
 
 catplot10b <- catplot10 + theme(panel.grid.major = element_blank(),
@@ -1107,6 +1115,9 @@ ggarrange(catplot8b, catplot10b,
           heights = c(0.8, 0.9, 1))
 ```
 
+```{r Figure 4 Part B}
+catplot8c
+```
 
 
 ## Instructor Survey Results
