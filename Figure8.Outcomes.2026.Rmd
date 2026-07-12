@@ -1,0 +1,559 @@
+---
+title: "Outcomes"
+author: "Ken Field"
+date: "Last compiled on `r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    keep_md: yes
+  pdf_document: default
+---
+
+IMPORTANT NOTE
+
+This Rmd uses the deidentified results and is safe to share.
+
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# Load Packages
+if (!require("ggpubr")) install.packages("ggpubr"); library(ggpubr)
+if (!require("plotly")) install.packages("plotly"); library(plotly)
+if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
+if (!require("stringr")) install.packages("stringr"); library(stringr)
+if (!require("readxl")) install.packages("readxl"); library(readxl)
+if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
+if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
+if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
+if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
+if (!require('pdftools')) install.packages('pdftools'); library(pdftools) #reading tables from pdfs
+if (!require('performance')) install.packages('performance'); library(performance) # visualizing glm
+if (!require('pscl')) install.packages('pscl'); library(pscl) # zero-inflated glm
+if (!require('DHARMa')) install.packages('DHARMa'); library(DHARMa) # for testing glms
+if (!require('car')) install.packages('car'); library(car) # for Anova
+if (!require("magrittr")) install.packages("magrittr"); library(magrittr)
+if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
+if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
+conflict_prefer_all("dplyr", quiet = TRUE)
+```
+
+We wish to determine if the new core classes (CURE Lab and BIO Seminar) are helping students to succeed academically.
+
+## Loading Results
+
+I asked the registrar to help me answer the following questions:
+1. What was the DFW rate for first-year students in BIOL 205 and 206 from SP 2017 to FA 2019?
+2. What was the DFW rate for all students in BIOL 201 and 202 from FA 2021 to SP 2024?
+
+They sent us the files located in the "Grade Outcomes" folder.
+I have removed any identifying information for the students and instructors.
+
+Note that the analysis 205 and 206 only includes first-year students in these Biology classes, even though there are other students in these classes.
+This is to make it more comparable to 201 and 202 which are not taken by nearly as broad a spectrum of students.
+
+Importing data for 205 and 206.
+
+Note that for this analysis, we have separated non-white students into Asian students and Other non-white students.
+
+Prior to transformation, the Ethnicity data looked like:
+                 Asian Black/African American        Hispanic/Latino         Multiple Races       U.S. Nonresident                  White 
+                    67                     38                     71                     51                     27                    606
+                    
+To be consistent, we will remove the U.S. Nonresident students and combine the Black/African American, Hispanic/Latino, and Multiple Races students into the non-white category.                    
+
+```{r Entering Results 1, echo=FALSE}
+BIOL205_206 <- read_excel("Grade Outcomes/BIOL205_206 Grade Distribution_First Years by Gender & Ethnicity.xlsx", 
+                          sheet = "Detail by Student") %>%
+  select("Academic Period Description", "Course Identification", "Student Classification", 
+         "Gender Description", "Ethnicity Description", "First-Generation Indicator", "Final Grade") %>%
+  filter(`Student Classification` == "FR") %>%
+  select(-`Student Classification`) %>%
+  rename(Semester = `Academic Period Description`, Course = `Course Identification`,
+         Gender = `Gender Description`, 
+         Grade = `Final Grade`) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  mutate(across(Grade, str_replace, 'A|B|C', 'Pass')) %>%
+  mutate(across(Grade, str_replace, 'Pass-', 'Pass')) %>%
+  mutate(across(Grade, str_replace, 'Pass\\+', 'Pass')) %>%
+  filter(`Ethnicity Description` != "Unknown") %>%
+  filter(`Ethnicity Description` != "U.S. Nonresident") %>%
+  mutate(`Race.Ethnicity` = case_when(
+    `Ethnicity Description` == "Asian" ~ "Asian",
+    `Ethnicity Description` == "Hispanic/Latino" ~ "Other non-white",
+    `Ethnicity Description` == "Black/African American" ~ "Other non-white",
+    `Ethnicity Description` == "Multiple Races" ~ "Other non-white",
+    TRUE ~ "White"
+  )) %>%
+  select(-`Ethnicity Description`) %>%
+  mutate(Curriculum = "Old")
+
+
+names(BIOL205_206)
+summary(as.factor(BIOL205_206$Course))
+summary(as.factor(BIOL205_206$Grade))
+summary(as.factor(BIOL205_206$Semester))
+summary(as.factor(BIOL205_206$Gender))
+summary(as.factor(BIOL205_206$`Race.Ethnicity`))
+```
+
+Importing data from 201 and 202.
+The spreadsheets have a very awkward format and were checked carefully. 
+Before I imported the data, I consolidated it within excel to make the three years have a consistent format.
+
+```{r, echo=FALSE}
+D_F_W_Report_BIOL201_202_AY21_22 <- read_excel("Grade Outcomes/D, F, W Report_BIOL201 & 202 AY21-22.v2.xlsx", 
+                                               sheet = "forImport")
+D_F_W_Report_BIOL201_202_AY22_23 <- read_excel("Grade Outcomes/D, F, W Report_BIOL201 & 202 AY22-23.v2.xlsx", 
+                                               sheet = "forImport")
+Grade_Distribution_BIOL_201_202_AY23_24 <- read_excel("Grade Outcomes/Grade Distribution_BIOL 201 & 202 AY23-24.v2.xlsx", 
+                                                      sheet = "forImport")
+```
+
+Converting Totals into Passes by subtracting each D, F, or W.
+
+```{r, echo=FALSE}
+names(D_F_W_Report_BIOL201_202_AY21_22)
+DFW_21_22 <- D_F_W_Report_BIOL201_202_AY21_22 %>%
+  mutate(Pass_Female_White = Female_Total_White - (F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (D_Male_White + W_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (D_Male_nonWhite + W_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite) %>%
+  mutate(Pass_Female_Asian = Female_Total_Asian - (F_Female_Asian + W_Female_Asian)) %>%
+  select(-Female_Total_Asian) %>%
+  mutate(Pass_Male_Asian = Male_Total_Asian - (D_Male_Asian + W_Male_Asian)) %>%
+  select(-Male_Total_Asian)
+
+names(D_F_W_Report_BIOL201_202_AY22_23)
+DFW_22_23 <- D_F_W_Report_BIOL201_202_AY22_23 %>%
+  mutate(Pass_Female_White = Female_Total_White - (D_Female_White + F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (W_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (D_Female_nonWhite + F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (W_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite) %>%
+  mutate(Pass_Female_Asian = Female_Total_Asian - (D_Female_Asian + F_Female_Asian + W_Female_Asian)) %>%
+  select(-Female_Total_Asian) %>%
+  mutate(Pass_Male_Asian = Male_Total_Asian - (W_Male_Asian)) %>%
+  select(-Male_Total_Asian)
+
+names(Grade_Distribution_BIOL_201_202_AY23_24)
+DFW_23_24 <- Grade_Distribution_BIOL_201_202_AY23_24 %>%
+  mutate(Pass_Female_White = Female_Total_White - (D_Female_White + F_Female_White + W_Female_White)) %>%
+  select(-Female_Total_White) %>%
+  mutate(Pass_Male_White = Male_Total_White - (D_Male_White + F_Male_White)) %>%
+  select(-Male_Total_White) %>%
+  mutate(Pass_Female_nonWhite = Female_Total_nonWhite - (D_Female_nonWhite + F_Female_nonWhite + W_Female_nonWhite)) %>%
+  select(-Female_Total_nonWhite) %>%
+  mutate(Pass_Male_nonWhite = Male_Total_nonWhite - (D_Male_nonWhite + F_Male_nonWhite)) %>%
+  select(-Male_Total_nonWhite) %>%
+  mutate(Pass_Female_Asian = Female_Total_Asian - (D_Female_Asian + F_Female_Asian + W_Female_Asian)) %>%
+  select(-Female_Total_Asian) %>%
+  mutate(Pass_Male_Asian = Male_Total_Asian - (D_Male_Asian + F_Male_Asian)) %>%
+  select(-Male_Total_Asian)
+```
+
+Now pivoting the table and splitting the categories
+
+```{r}
+names(DFW_21_22)
+DFW_21_22_long <- DFW_21_22 %>%
+  pivot_longer(cols = D_Male_White:Pass_Male_Asian, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_21_22_long$Grade))
+
+names(DFW_22_23)
+DFW_22_23_long <- DFW_22_23 %>%
+  pivot_longer(cols = D_Female_White:Pass_Male_Asian, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_22_23_long$Grade))
+
+names(DFW_23_24)
+DFW_23_24_long <- DFW_23_24 %>%
+  pivot_longer(cols = D_Female_White:Pass_Male_Asian, 
+               names_to = "Group", values_to = "Count") %>%
+  separate_wider_delim(Group, delim = "_", names = c("Grade", "Gender", "Race.Ethnicity")) %>%
+  mutate(across(Grade, str_replace, 'D|F|W', 'DFW')) %>%
+  uncount(weights = Count) 
+summary(as.factor(DFW_23_24_long$Grade))
+
+DFW_201_202 <- DFW_21_22_long %>%
+  add_row(DFW_22_23_long) %>%
+  add_row(DFW_23_24_long) %>%
+  mutate(Race.Ethnicity = case_when(
+    Race.Ethnicity == "nonWhite" ~ "Other non-white",
+    TRUE ~ Race.Ethnicity
+  )) %>%
+  mutate(Curriculum = "New")
+
+```
+
+Combining the two datasets
+
+```{r}
+All_DFW <- BIOL205_206 %>%
+  select(names(DFW_201_202)) %>%
+  add_row(DFW_201_202) %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate(Curriculum = fct_relevel(Curriculum, c("Old", "New"))) %>%
+  mutate(`Race.Ethnicity` = fct_relevel(`Race.Ethnicity`, c("White", "Asian", "Other non-white")))
+
+Only202_DFW <- All_DFW %>%
+  filter(Course != "BIOL201")
+
+summary(All_DFW)
+summary(Only202_DFW)
+
+All_DFW %>%
+  filter(Course == "BIOL202") |>
+  group_by(`Race.Ethnicity`) %>%
+  summarise(n = n())
+
+All_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+Only202_DFW %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+```
+
+## Modeling results with a binomial glm
+
+Note that originally a negative binomial glm was performed, but a binomial is more appropriate now that DFW grades have been aggregated.
+
+### Both 201 and 202
+
+```{r, echo=FALSE, warning=FALSE}
+All_DFW <- All_DFW %>%
+  mutate(DFW = Grade == "DFW")
+
+model1 <- glm.nb(DFW ~ Curriculum, data = All_DFW)
+summary(model1)
+model_full <- glm.nb(DFW ~ Curriculum + Gender + `Race.Ethnicity`, data = All_DFW)
+summary(model_full)
+
+binomial_model <- glm(DFW ~ Curriculum, family = "binomial", data = All_DFW)
+summary(binomial_model)
+
+full_binomial_model <- glm(DFW ~ Curriculum + Gender + `Race.Ethnicity`, family = "binomial", data = All_DFW)
+summary(full_binomial_model)
+
+Anova(full_binomial_model, type = "3", test.statistic = "F")
+```
+
+
+
+A very big effect of the new curriculum and a smaller but significant effect of Race.Ethnicity.
+
+Removing gender from the model as it does not appear to be significant.
+
+
+
+```{r, echo=FALSE}
+selected_binomial_model <-  glm(DFW ~ Curriculum + `Race.Ethnicity`, family = "binomial", data = All_DFW)
+summary(selected_binomial_model)
+
+Anova(selected_binomial_model, type = "3", test.statistic = "F")
+newdata <- data.frame(Curriculum = c("Old", "New", "Old", "New", "Old", "New")) %>%
+  mutate('Race.Ethnicity' = c("White", "White", "Asian", "Asian", "Other non-white", "Other non-white"))
+predict.glm(selected_binomial_model, newdata=newdata, type="response")
+selected_binomial_model
+check_overdispersion(selected_binomial_model)
+performance(selected_binomial_model)
+summary(selected_binomial_model)
+```
+
+```{r, echo=FALSE}
+exp(-2.2279)
+exp(-2.2279+0.130)
+exp(-2.2279-0.130)
+```
+
+
+```{r, echo=FALSE}
+1/ exp(-1.22)
+1/ exp(-1.22+0.21)
+1/ exp(-1.22-0.21)
+```
+
+The model indicates that students under the old curriculum were 3.4-fold (2.7 - 4.2) more likely to earn a DFW in the first two Biology courses (p = 6.11e-9). 
+
+```{r, echo=FALSE}
+exp(1.08)
+exp(1.08+0.20)
+exp(1.08-0.20)
+```
+
+Students of color (excluding Asian students) were 2.9-fold (2.4 - 3.6) more likely to earn a DFW than white students in both curricula (p = 4.70e-08)
+
+```{r, Combo 201 and 202, echo=FALSE}
+cat_plot(selected_binomial_model, pred = Curriculum, modx = `Race.Ethnicity`, interval = TRUE)
+```
+
+### Only 201 and 202 by Semester
+
+We want to see how much of the difference between 201 and 202 can be explained by the semester that they are more 
+likely to be offered. 
+
+```{r, echo=FALSE}
+All_DFW_Semester <- All_DFW %>%
+  mutate(FallSpring = case_when(str_detect(Semester, "Fall") ~ "Fall",
+                                str_detect(Semester, "Spring") ~ "Spring"))
+Only201202_DFW_Semester <- All_DFW_Semester %>%
+  filter(Course %in% c("BIOL201", "BIOL202"))
+
+model_semester <- glm(DFW ~ FallSpring * Course, family = "binomial", data = Only201202_DFW_Semester)
+summary(model_semester)
+selected_model_semester <- stepAIC(model_semester)
+summary(selected_model_semester)
+```
+
+This demonstrates that the DFW rates are signficantly lower in BIOL202 than BIOL201, 
+after accounting for the effect of Fall versus Spring.
+
+That is not surprising given the different objectives of these courses.
+
+
+### Only 202
+
+Adding Fall vs Spring to the full model.
+
+```{r, echo=FALSE, warning=FALSE}
+Only202_DFW <- Only202_DFW %>%
+  mutate(DFW = Grade == "DFW") %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring"))
+
+model1_202 <- glm(DFW ~ Curriculum, data = Only202_DFW, family = "binomial")
+summary(model1_202)
+model_full_202 <- glm(DFW ~ Fall_Spring + Curriculum + Gender + `Race.Ethnicity`, 
+                      data = Only202_DFW,  family = "binomial")
+summary(model_full_202)
+```
+
+Fall_Spring is playing a smaller, but significant, role compared to Curriculum. 
+We need to account for that.
+
+```{r, echo=FALSE, warning=FALSE}
+selected_model_202 <- model_full_202 %>%
+  stepAIC(direction = "backward")
+summary(selected_model_202)
+```
+
+
+```{r, echo=FALSE}
+selected_model_202
+check_overdispersion(model_full_202)
+performance(model_full_202)
+summary(model_full_202)
+Anova(model_full_202,  type = "3", test.statistic = "F")
+```
+
+
+Curriculum effect:
+
+```{r, echo=FALSE}
+1/ exp(-2.17)
+1/ exp(-2.17+0.517)
+1/ exp(-2.17-0.517)
+```
+
+The model indicates that students in CURE Lab were 8.8-fold (5.2 - 14.7) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 2.76e-05), after controlling for the effect of semester. 
+
+
+```{r, echo=FALSE}
+cat_plot(model_full_202, pred = Curriculum, modx = `Race.Ethnicity`, mod2 = Fall_Spring, interval = TRUE)
+```
+
+
+#### Figure 8
+
+**Now modified to separate Asian students**
+
+```{r Figure 8, echo=FALSE}
+catplot_202 <- cat_plot(model_full_202, pred = `Race.Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Asian Students", "Other Students\nof Color"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+catplot_202_fixed <- catplot_202 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none",
+                  plot.title = element_text(size = 10, face = "plain")) 
+
+catplot_202_fixed
+```
+
+### Only 201
+
+```{r, echo=FALSE, warning=FALSE}
+Only201_DFW <- All_DFW %>%
+  filter(Course != "BIOL202") %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring"))
+
+summary(All_DFW)
+summary(Only201_DFW)
+
+All_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only201_DFW %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+Only201_DFW %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+Only201_DFW <- Only201_DFW %>%
+  mutate(DFW = Grade == "DFW")
+
+model1_201 <- glm(DFW ~ Curriculum, data = Only201_DFW, family = "binomial")
+summary(model1_201)
+model_full_201 <- glm(DFW ~ Fall_Spring + Curriculum + Gender + `Race.Ethnicity`, 
+                         data = Only201_DFW, family = "binomial")
+summary(model_full_201)
+```
+
+
+```{r, echo=FALSE}
+1/ exp(-0.9367)
+1/ exp(-0.9367 +0.2122)
+1/ exp(-0.9367 -0.2122)
+```
+
+The model indicates that students in BIOL 201 were 2.6-fold (2.1 - 3.1) less likely to earn a DFW than in first two Biology courses of the prior curriculum (p = 2.01e-05), after controlling for the effect of semester.
+
+```{r, echo=FALSE}
+exp(0.5556)
+exp(0.5556+0.1779)
+exp(0.5556-0.1779)
+```
+
+```{r, echo=FALSE}
+cat_plot(model_full_201, pred = Curriculum, modx = Race.Ethnicity, interval = TRUE)
+```
+
+
+#### Figure 8 201 version
+
+```{r Figure 9 201, echo=FALSE}
+catplot_201 <- cat_plot(model_full_201, pred = `Race.Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,
+         interval = TRUE, errorbar.width = 0.5, 
+         pred.labels = c("White Students","Asian Students", "Other Students\nof Color"),
+         modx.labels = c("Prior", "CURE"),
+         x.label = "", y.label = "DFW Likelihood")
+catplot_201_fixed <- catplot_201 + theme(panel.grid.major = element_blank(), 
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(), 
+                  axis.line = element_line(colour = "black"), 
+                  legend.position="none",
+                  plot.title = element_text(size = 10, face = "plain")) 
+
+catplot_201_fixed
+```
+
+## First-gen status
+
+One of the studies of COVID impacts demonstrated that first-gen students were more highly impacted than other students.
+We would like to see how that factor translates to our outcomes.
+
+```{r, echo=FALSE}
+Firstgen_201_202 <- read_excel("Grade Outcomes/Grade Distribution_BIOL 201 & 202_2021 to 2024.Firstgen.xlsx", 
+                               sheet = "Grade Detail", col_types = c("skip", "text", "text", 
+                                                                     "text", "text", "skip", "text", "text"))
+Firstgen_201_202 <- Firstgen_201_202 %>%
+  select(Course = `Course Identification`, Semester = `Academic Period Description`, `Final Grade`,
+         Gender = `Gender Description`, `First-Generation Indicator`) %>%
+  filter(`Final Grade` != "NC")
+Firstgen_201_202_clean <- Firstgen_201_202 %>%
+  mutate(Grade = case_when(`Final Grade` %in% c("D", "F", "W") ~ "DFW",
+                           .default = "Pass")) %>%
+  mutate(Curriculum = "New") %>%
+  select(-`Final Grade`)
+
+All_DFW_Firstgen <- BIOL205_206 %>%
+  select(names(Firstgen_201_202_clean)) %>%
+  add_row(Firstgen_201_202_clean) %>%
+  mutate_if(is.character, as.factor) %>%
+  mutate(Curriculum = fct_relevel(Curriculum, c("Old", "New"))) %>%
+  mutate(Fall_Spring = case_when(str_detect(Semester, "Fall") ~ "Fall", 
+                                 str_detect(Semester, "Spring") ~ "Spring")) %>%
+  mutate(Fall_Spring = as.factor(Fall_Spring)) %>%
+  mutate(DFW = (Grade == "DFW"))
+
+Only202_DFW_Firstgen <- All_DFW_Firstgen %>%
+  filter(Course != "BIOL201")
+Only201_DFW_Firstgen <- All_DFW_Firstgen %>%
+  filter(Course != "BIOL202")
+
+summary(All_DFW_Firstgen)
+summary(Only202_DFW_Firstgen)
+
+All_DFW_Firstgen %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW_Firstgen %>%
+  group_by(Curriculum, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW_Firstgen %>%
+  group_by(Course, Grade) %>%
+  summarise(n = n())
+
+Only202_DFW_Firstgen %>%
+  group_by(Curriculum, Grade, `First-Generation Indicator`) %>%
+  summarise(n = n())
+```
+
+```{r, echo=FALSE, warning=FALSE}
+model1_Firstgen_202 <- glm(DFW ~ `First-Generation Indicator` * Curriculum, 
+                           data = Only202_DFW_Firstgen, family = "binomial")
+summary(model1_Firstgen_202)
+model_full_Firstgen_202 <- glm(DFW ~ `First-Generation Indicator` * Fall_Spring * Curriculum, 
+                               data = Only202_DFW_Firstgen, family = "binomial")
+summary(model_full_Firstgen_202)
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+selected_model_Firstgen_202 <- model_full_Firstgen_202 %>%
+  stepAIC(direction = "backward")
+summary(selected_model_Firstgen_202)
+```
+
+
+```{r}
+# First gen
+exp(0.4747)
+exp(0.4747-0.2849)
+exp(0.4747+0.2849)
+# Race.Ethnicity (from earlier 202 model)
+exp(0.3754)
+exp(0.3754-0.2567)
+exp(0.3754+0.2567)
+```
+
+
+That analysis showed that including first-generation status marginally improved the model, but it was very minor compared to semester and curriculum. This was true for both the effect size and the significance.
+
+The effect size of first-gen status (1.61 (1.21-2.13)) and significance (p = 0.0957) was similar to the effect of Race.Ethnicity in the earlier model, (1.46 (1.12-1.88), p = 0.1436), after accounting for the effects of semester and curriculum.
+
