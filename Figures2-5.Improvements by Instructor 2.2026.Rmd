@@ -28,6 +28,7 @@ if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robus
 if (!require('pheatmap')) install.packages('pheatmap'); library(pheatmap) #heatmap
 if (!require('knitr')) install.packages('knitr'); library(knitr) #kable
 if (!require("performance")) install.packages("performance"); library(performance)
+if (!require('nlme')) install.packages('nlme'); library(nlme) #to all ML estimates in glm
 if (!require('lme4')) install.packages('lme4'); library(lme4) #mixed effects models
 if (!require("conflicted")) install.packages("conflicted"); library(conflicted)
 if (!require("tidyverse")) install.packages("tidyverse"); library(tidyverse)
@@ -229,6 +230,15 @@ summary(lmer_model_Q10_1)
 compare_performance(imp_model_Q10_1, lmer_model_Q10_1)
 
 Anova(imp_model_Q10_1, type = "3", test.statistic = "F")
+
+# Fit both models with ML
+imp_model_Q10_1_ml <- gls(Q9_1_post ~ Q10_1_pre + Instructor + Rookie, data = Q_1Clean, 
+                          method = "ML")
+lme_model_Q10_1_ml <- lme(fixed = Q9_1_post ~ Q10_1_pre + Instructor + Rookie, 
+                          random = ~ 1 | Semester, 
+                          data = Q_1Clean, method = "ML")
+compare_performance(imp_model_Q10_1_ml, lme_model_Q10_1_ml)
+anova(imp_model_Q10_1_ml, lme_model_Q10_1_ml)
 
 # Verified that the p values are being calculated properly
 type3 = list(Instructor = contr.sum, Rookie = contr.sum)

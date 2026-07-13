@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 08 July 2026"
+date: "Last compiled on 13 July 2026"
 output:
   html_document:
     toc: true
@@ -499,6 +499,33 @@ Further reading also suggested to use an F-test for testing Gaussian GLMs, rathe
 ## Residuals  227.033 208                   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```
+## Random effect variances not available. Returned R2 does not account for random effects.
+```
+
+```
+## # Comparison of Model Performance Indices
+## 
+## Name               | Model | AIC (weights) | BIC (weights) |  RMSE | Sigma
+## --------------------------------------------------------------------------
+## imp_model_Q10_1_ml |   gls | 637.9 (0.731) | 664.8 (0.936) | 1.028 | 1.028
+## lme_model_Q10_1_ml |   lme | 639.9 (0.269) | 670.2 (0.064) | 1.028 | 1.028
+## 
+## Name               |    R2 | AICc (weights) | R2 (cond.) | R2 (marg.)
+## ---------------------------------------------------------------------
+## imp_model_Q10_1_ml | 0.048 |        (>.999) |            |           
+## lme_model_Q10_1_ml |       |  640.7 (>.999) |            |      0.048
+```
+
+```
+##                    Model df     AIC      BIC   logLik   Test      L.Ratio
+## imp_model_Q10_1_ml     1  8 637.852 664.8171 -310.926                    
+## lme_model_Q10_1_ml     2  9 639.852 670.1877 -310.926 1 vs 2 1.132398e-07
+##                    p-value
+## imp_model_Q10_1_ml        
+## lme_model_Q10_1_ml  0.9997
 ```
 
 ```

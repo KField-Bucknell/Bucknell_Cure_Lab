@@ -351,7 +351,7 @@ display: none;
 
 <h1 class="title toc-ignore">Improvements by Instructor</h1>
 <h4 class="author">Ken Field</h4>
-<h4 class="date">Last compiled on 08 July 2026</h4>
+<h4 class="date">Last compiled on 13 July 2026</h4>
 
 </div>
 
@@ -801,6 +801,24 @@ Gaussian GLMs, rather than an LRT or Chi-squared test</p>
 ## Residuals  227.033 208                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## Random effect variances not available. Returned R2 does not account for random effects.</code></pre>
+<pre><code>## # Comparison of Model Performance Indices
+## 
+## Name               | Model | AIC (weights) | BIC (weights) |  RMSE | Sigma
+## --------------------------------------------------------------------------
+## imp_model_Q10_1_ml |   gls | 637.9 (0.731) | 664.8 (0.936) | 1.028 | 1.028
+## lme_model_Q10_1_ml |   lme | 639.9 (0.269) | 670.2 (0.064) | 1.028 | 1.028
+## 
+## Name               |    R2 | AICc (weights) | R2 (cond.) | R2 (marg.)
+## ---------------------------------------------------------------------
+## imp_model_Q10_1_ml | 0.048 |        (&gt;.999) |            |           
+## lme_model_Q10_1_ml |       |  640.7 (&gt;.999) |            |      0.048</code></pre>
+<pre><code>##                    Model df     AIC      BIC   logLik   Test      L.Ratio
+## imp_model_Q10_1_ml     1  8 637.852 664.8171 -310.926                    
+## lme_model_Q10_1_ml     2  9 639.852 670.1877 -310.926 1 vs 2 1.132398e-07
+##                    p-value
+## imp_model_Q10_1_ml        
+## lme_model_Q10_1_ml  0.9997</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = Q9_1_post ~ Q10_1_pre + Instructor + Rookie, data = Q_1Clean, 
