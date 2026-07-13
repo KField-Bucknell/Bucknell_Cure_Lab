@@ -21,7 +21,7 @@ if (!require("plotly")) install.packages("plotly"); library(plotly)
 if (!require("cowplot")) install.packages("cowplot"); library(cowplot)
 if (!require("stringr")) install.packages("stringr"); library(stringr)
 if (!require("readxl")) install.packages("readxl"); library(readxl)
-if (!require("ltm")) install.packages("ltm"); library(ltm) #Cronbach’s Alpha
+if (!require("pwr")) install.packages("pwr"); library(pwr) #Power analysis
 if (!require("MASS")) install.packages("MASS"); library(MASS) #stepAIC() function
 if (!require('interactions')) install.packages('interactions'); library(interactions) #Interaction plots
 if (!require('sandwich')) install.packages('sandwich'); library(sandwich) #robust errors
@@ -380,10 +380,43 @@ The model indicates that students in CURE Lab were 8.8-fold (5.2 - 14.7) less li
 cat_plot(model_full_202, pred = Curriculum, modx = `Race.Ethnicity`, mod2 = Fall_Spring, interval = TRUE)
 ```
 
+Power analysis to justify including the interaction.
+
+$$\text{Adjusted } \alpha = \frac{0.05}{21} \approx 0.00238$$
+
+Total of 12 dummy variables ($u = 12$)
+
+Harmonic mean of groups:
+
+$$n_h = \frac{6}{\frac{1}{878} + \frac{1}{76} + \frac{1}{225} + \frac{1}{324} + \frac{1}{42} + \frac{1}{104}} \approx 108.6$$
+
+Effective sample size: 
+
+$$75.62 \times 6 = \mathbf{454}$$
+
+454 - 12 - 1 = 441
+
+
+```{r}
+table(Only202_DFW$Gender, Only202_DFW$Race.Ethnicity)
+pwr.f2.test(u = 12, v = 441, f2 = 0.15, sig.level = 0.05/21)
+```
+
+
+```{r}
+model_interact_202 <- glm(DFW ~ Fall_Spring + Curriculum * Gender * `Race.Ethnicity`, 
+                          data = Only202_DFW,  family = "binomial")
+summary(model_interact_202)
+Anova(model_interact_202, type = "3", test.statistic = "F")
+```
+
+So the interactions do not meet our thresholds after all. 
+Going to stick with the model without interactions for the manuscript.
 
 #### Figure 8
 
 **Now modified to separate Asian students**
+
 
 ```{r Figure 8, echo=FALSE}
 catplot_202 <- cat_plot(model_full_202, pred = `Race.Ethnicity`, modx = Curriculum, mod2 = Fall_Spring,

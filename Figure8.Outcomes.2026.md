@@ -1,7 +1,7 @@
 ---
 title: "Outcomes"
 author: "Ken Field"
-date: "Last compiled on 2026-07-12"
+date: "Last compiled on 2026-07-13"
 output:
   html_document:
     toc: true
@@ -971,10 +971,136 @@ The model indicates that students in CURE Lab were 8.8-fold (5.2 - 14.7) less li
 
 ![](Figure8.Outcomes.2026_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
+Power analysis to justify including the interaction.
+
+$$\text{Adjusted } \alpha = \frac{0.05}{21} \approx 0.00238$$
+
+Total of 12 dummy variables ($u = 12$)
+
+Harmonic mean of groups:
+
+$$n_h = \frac{6}{\frac{1}{878} + \frac{1}{76} + \frac{1}{225} + \frac{1}{324} + \frac{1}{42} + \frac{1}{104}} \approx 108.6$$
+
+Effective sample size: 
+
+$$75.62 \times 6 = \mathbf{454}$$
+
+454 - 12 - 1 = 441
+
+
+
+``` r
+table(Only202_DFW$Gender, Only202_DFW$Race.Ethnicity)
+```
+
+```
+##         
+##          White Asian Other non-white
+##   Female   614    54             155
+##   Male     218    33              56
+```
+
+``` r
+pwr.f2.test(u = 12, v = 441, f2 = 0.15, sig.level = 0.05/21)
+```
+
+```
+## 
+##      Multiple regression power calculation 
+## 
+##               u = 12
+##               v = 441
+##              f2 = 0.15
+##       sig.level = 0.002380952
+##           power = 0.9996791
+```
+
+
+
+``` r
+model_interact_202 <- glm(DFW ~ Fall_Spring + Curriculum * Gender * `Race.Ethnicity`, 
+                          data = Only202_DFW,  family = "binomial")
+summary(model_interact_202)
+```
+
+```
+## 
+## Call:
+## glm(formula = DFW ~ Fall_Spring + Curriculum * Gender * Race.Ethnicity, 
+##     family = "binomial", data = Only202_DFW)
+## 
+## Coefficients:
+##                                                          Estimate Std. Error
+## (Intercept)                                              -1.84272    0.16876
+## Fall_SpringSpring                                        -0.99115    0.23729
+## CurriculumNew                                            -2.65282    1.01708
+## GenderMale                                                0.10353    0.31005
+## Race.EthnicityAsian                                      -1.42902    1.02727
+## Race.EthnicityOther non-white                             0.82538    0.28439
+## CurriculumNew:GenderMale                                -13.71314  771.31546
+## CurriculumNew:Race.EthnicityAsian                         3.72951    1.77885
+## CurriculumNew:Race.EthnicityOther non-white               0.55516    1.45672
+## GenderMale:Race.EthnicityAsian                            1.80207    1.19589
+## GenderMale:Race.EthnicityOther non-white                  0.05214    0.53536
+## CurriculumNew:GenderMale:Race.EthnicityAsian             12.55228  771.31781
+## CurriculumNew:GenderMale:Race.EthnicityOther non-white   -1.40059 2003.74909
+##                                                        z value Pr(>|z|)    
+## (Intercept)                                            -10.919  < 2e-16 ***
+## Fall_SpringSpring                                       -4.177 2.95e-05 ***
+## CurriculumNew                                           -2.608   0.0091 ** 
+## GenderMale                                               0.334   0.7385    
+## Race.EthnicityAsian                                     -1.391   0.1642    
+## Race.EthnicityOther non-white                            2.902   0.0037 ** 
+## CurriculumNew:GenderMale                                -0.018   0.9858    
+## CurriculumNew:Race.EthnicityAsian                        2.097   0.0360 *  
+## CurriculumNew:Race.EthnicityOther non-white              0.381   0.7031    
+## GenderMale:Race.EthnicityAsian                           1.507   0.1318    
+## GenderMale:Race.EthnicityOther non-white                 0.097   0.9224    
+## CurriculumNew:GenderMale:Race.EthnicityAsian             0.016   0.9870    
+## CurriculumNew:GenderMale:Race.EthnicityOther non-white  -0.001   0.9994    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 694.32  on 1129  degrees of freedom
+## Residual deviance: 609.36  on 1117  degrees of freedom
+## AIC: 635.36
+## 
+## Number of Fisher Scoring iterations: 17
+```
+
+``` r
+Anova(model_interact_202, type = "3", test.statistic = "F")
+```
+
+```
+## Analysis of Deviance Table (Type III tests)
+## 
+## Response: DFW
+## Error estimate based on Pearson residuals 
+## 
+##                                  Sum Sq   Df F values    Pr(>F)    
+## Fall_Spring                       19.33    1  21.9243 3.184e-06 ***
+## Curriculum                        16.74    1  18.9945 1.432e-05 ***
+## Gender                             0.11    1   0.1249  0.723876    
+## Race.Ethnicity                    12.21    2   6.9234  0.001027 ** 
+## Curriculum:Gender                  0.87    1   0.9888  0.320259    
+## Curriculum:Race.Ethnicity          3.97    2   2.2530  0.105556    
+## Gender:Race.Ethnicity              2.84    2   1.6088  0.200590    
+## Curriculum:Gender:Race.Ethnicity   0.41    2   0.2321  0.792884    
+## Residuals                        984.65 1117                       
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+So the interactions do not meet our thresholds after all. 
+Going to stick with the model without interactions for the manuscript.
 
 #### Figure 8
 
 **Now modified to separate Asian students**
+
 
 
 ```
@@ -1169,7 +1295,7 @@ The model indicates that students in BIOL 201 were 2.6-fold (2.1 - 3.1) less lik
 ## another in the model.
 ```
 
-![](Figure8.Outcomes.2026_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](Figure8.Outcomes.2026_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 
 #### Figure 8 201 version
