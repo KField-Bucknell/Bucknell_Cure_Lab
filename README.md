@@ -1,4 +1,4 @@
-# Bucknell Cure Lab Public Repository
+# Anonymous Cure Lab Public Repository
 
 Public repository for data analysis of survey results and outcomes.
 
