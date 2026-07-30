@@ -1010,11 +1010,11 @@ Nothing meets alpha cutoff.
 ## lme_model_Q10_4_ml   0.792
 ```
 
-*Instructor* meets alpha cutoff.
+Nothing meets alpha cutoff.
 
-### Final Figure 3A Q10_5
+### Q10_5
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_5-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Q10_5-1.png)<!-- -->
 
 ```
 ## 
@@ -1899,9 +1899,9 @@ Nothing meets cutoff.
 
 *Instructor* meets cutoff.
 
-### Q10_11
+### Figure 3A Q10_11
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_11-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3A Q10_11-1.png)<!-- -->
 
 ```
 ## 
@@ -2231,9 +2231,9 @@ Nothing meets cutoff.
 
 Nothing meets cutoff.
 
-### Q10_13
+### Figure 3B Q10_13
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Q10_13-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3B Q10_13-1.png)<!-- -->
 
 ```
 ## 
@@ -2381,9 +2381,9 @@ Nothing meets cutoff.
 
 *Presurvey* and *Instructor* meet cutoff
 
-### Q10_14
+### Figure 3C Q10_14
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_14-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3C Q10_14-1.png)<!-- -->
 
 ```
 ## 
@@ -2531,9 +2531,9 @@ Nothing meets cutoff.
 
 *Presurvey* and *Instructor* meet cutoff
 
-### Q10_15
+### Figure 3D Q10_15
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_15-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3D Q10_15-1.png)<!-- -->
 
 ```
 ## 
@@ -2681,9 +2681,9 @@ Nothing meets cutoff.
 
 *Presurvey* and *Instructor* meets cutoff
 
-### Q10_16
+### Figure 3E Q10_16
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_16-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3E Q10_16-1.png)<!-- -->
 
 ```
 ## 
@@ -2976,9 +2976,9 @@ Nothing meets cutoff.
 
 *Instructor* meets cutoff.
 
-### Q10_18
+### Figure 3F Q10_18
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_18-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3F Q10_18-1.png)<!-- -->
 
 ```
 ## 
@@ -3724,9 +3724,9 @@ Nothing meets cutoff.
 
 Nothing meets cutoff.
 
-### Q10_23
+### Figure 3G Q10_23
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Q10_23-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3G Q10_23-1.png)<!-- -->
 
 ```
 ## 
@@ -3865,9 +3865,9 @@ Nothing meets cutoff.
 
 *Presurvey* and *Instructor* meet cutoff.
 
-### Final Figure 3B Q10_24
+### Figure 3H Q10_24
 
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3 Q10_24-1.png)<!-- -->
+![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Fig 3H Q10_24-1.png)<!-- -->
 
 ```
 ## 
@@ -4180,9 +4180,9 @@ The following questions showed dependence on *pre-survey response* and *instruct
 
 The following questions showed dependence on *instructor*, but not pre-survey response:
 
-4, 5, 6, 10, 17
+5, 6, 10, 17
 
-- [4] "At least one project that is assigned and structured by the instructor" 
+
 - [5] "A project in which students have some input into the research process and/or what is being studied"
 - [6] "A project entirely of student design"  
 - [10] "Become responsible for a part of the project"  
@@ -4191,11 +4191,12 @@ The following questions showed dependence on *instructor*, but not pre-survey re
 
 And the responses to these survey questions were independent of pre-survey responses and the instructor:
 
-1, -2-, 3, 7, 8, 9, 12, -19-, -20-, 21
+1, -2-, 3, 4, 7, 8, 9, 12, -19-, -20-, -21-, -22-
 
 - [1] "A scripted lab or project in which the students know the expected outcome" 
 - [2] "A lab or project in which only the instructor knows the outcome" *Removed   
-- [3] "A lab or project where no one knows the outcome"   
+- [3] "A lab or project where no one knows the outcome"  
+- [4] "At least one project that is assigned and structured by the instructor" 
 - [7] "Work individually" 
 - [8] "Work as a whole class" 
 - [9] "Work in small groups"  
@@ -4212,7 +4213,9 @@ And the responses to these survey questions were independent of pre-survey respo
 For questions 4 and 23 we want to show the interaction between instructor and rookie.
 Although for 4, the presurvey response wasn't important, so we will use a cat plot.
 
-### Figure 4A 4B and 4C
+### Rookie interactions
+
+This is no longer relevant with the lmer model
 
 Questions 8, 10, and 13 need a cat plot showing Instructor and Rookie
 
@@ -4303,27 +4306,26 @@ NOW: 5,6,10,17
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
 I am instead going to convert Figure 3B (with 9 parts!) into Figure 4.
 
-### Final Figure 4 v 2026
+### Figure 4
 
-Figure 4 is the combined Cat plots.
+Figure 4 is for the questions without a significant impace of either Instructor or Presurvey:
 
--  [8] "Work as a whole class"   
--  [10] "Become responsible for a part of the project"  
--  [13] "Collect data" 
+1, 3, 4, 7, 8, 9, 12
+
+- [1] "A scripted lab or project in which the students know the expected outcome" 
+- [3] "A lab or project where no one knows the outcome"  
+- [4] "At least one project that is assigned and structured by the instructor" 
+- [7] "Work individually" 
+- [8] "Work as a whole class" 
+- [9] "Work in small groups"  
+- [12] "Write a research proposal" 
 
 ![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Figure 4-1.png)<!-- -->
 
 
-``` r
-catplot8c
-```
-
-![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Figure 4 Part B-1.png)<!-- -->
-
-
 ## Instructor Survey Results
 
-We will now examine how the responses to the CURE Instructor Survey might correlate with the student perceptions of gain corresponding to each course element. 
+We examined how the responses to the CURE Instructor Survey might correlate with the student perceptions of gain corresponding to each course element. 
 We predict that instructors who placed a greater emphasis on a course element will demonstrate greater perceived gains due to that element.
 
 The five instructors filled out the forms in the summer of 2022. 
