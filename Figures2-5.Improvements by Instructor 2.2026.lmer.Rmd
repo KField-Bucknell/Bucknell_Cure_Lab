@@ -1483,18 +1483,19 @@ Q10Clean_withNA %>%
 For questions where the instructor was included in the final model, but not Rookie status or the pre-survey response (3, 6, and 17) and ALSO the question where it did not depend on any of the variables (7):
 
 
-### Final Figure 2 v 2026
+### Final Figure 2 v 2026.lmer
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 12, 17
+WAS: 3, 4, 6, 9, 12, 17
+
+NOW: 5,6,10,17
 
 ```{r Figure 2 Instructor Questions, echo=FALSE}
 instructor_q <- Q10Clean_withNA %>%
-  select(Instructor, Q03=Q9_3_post, Q04=Q9_4_post, Q06=Q9_6_post, 
-         Q09=Q9_9_post, Q12=Q9_12_post, Q17=Q9_17_post)
+  select(Instructor, Q05=Q9_5_post, Q06=Q9_6_post, Q10=Q9_10_post, Q17=Q9_17_post)
 instructor_q_long <- instructor_q %>% 
-  pivot_longer(cols = `Q03`:`Q17`, 
+  pivot_longer(cols = `Q05`:`Q17`, 
                names_to = c("Question"), 
                values_to = "Post")
 
@@ -1508,7 +1509,7 @@ instructor_q_long %>%
   fill_palette(c("#FFFEFE","#b0cafb","#6598f8","#3c54cd","#21327b")) +
   scale_x_discrete(guide = guide_axis(angle=70))
 
-print(Q10TextClean$Question[c(3, 4, 6, 9, 12, 17 )])
+print(Q10TextClean$Question[c(5,6,10,17)])
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 

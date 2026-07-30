@@ -1,7 +1,7 @@
 ---
 title: "Improvements by Instructor"
 author: "Ken Field"
-date: "Last compiled on 28 July 2026"
+date: "Last compiled on 30 July 2026"
 output:
   html_document:
     toc: true
@@ -4163,55 +4163,49 @@ An alpha value of 0.05 using Type III Wald F tests with Kenward-Roger df was use
 
 Removing "Q10_02", "Q10_19", "Q10_20", "Q10_21", "Q10_22", "Q10_25" *See below (not emphasized by any instructors)
 
-The glm showed dependence on *instructor* and *rookie* status, but not pre-survey response, for the following question:
 
-8, 10, 13
+The following questions showed dependence on *pre-survey response* and *instructor*:
 
--  [8] "Work as a whole class"   
--  [10] "Become responsible for a part of the project"  
--  [13] "Collect data" 
+11, 13, 14, 15, 16, 18, 23, 24, -25-
 
-The following questions showed dependence on *pre-survey response* and *instructor*, but not rookie status:
-
-5, 24, -25-
-
--  [5] "A project in which students have some input into the research process and/or what is being studied"
--  [24] "Maintain a lab notebook"   
--  [25] "Computer modeling" *Removed 
-
-The following questions showed dependence on *instructor*, but not pre-survey response or rookie status:
-
-3, 4, 6, 9, 11, 12, 14, 15, 16, 17, 18, -19-, -21-, -22-, 23 
-
-- [3] "A lab or project where no one knows the outcome"   
-- [4] "At least one project that is assigned and structured by the instructor" 
-- [6] "A project entirely of student design"  
-- [9] "Work in small groups"  
 - [11] "Read primary scientific literature" 
-- [12] "Write a research proposal" 
+- [13] "Collect data" 
 - [14] "Analyze data" 
 - [15] "Present results orally"
 - [16] "Present results in written papers or reports"
-- [17] "Present posters" 
 - [18] "Critique the work of other students"
-- [19] "Listen to lectures" *Removed                                                                                 
-- [21] "Work on problem sets" *Removed                                                                               
-- [22] "Take tests in class" *Removed 
 - [23] "Discuss reading materials in class"  
+-  [24] "Maintain a lab notebook"   
+-  [25] "Computer modeling" *Removed 
 
-And the responses to these survey questions were independent of pre-survey responses, the instructor, and the rookie status:
+The following questions showed dependence on *instructor*, but not pre-survey response:
 
-1, -2-, 7, 14, 16, 18, -20-
+4, 5, 6, 10, 17
+
+- [4] "At least one project that is assigned and structured by the instructor" 
+- [5] "A project in which students have some input into the research process and/or what is being studied"
+- [6] "A project entirely of student design"  
+- [10] "Become responsible for a part of the project"  
+- [17] "Present posters"
+
+
+And the responses to these survey questions were independent of pre-survey responses and the instructor:
+
+1, -2-, 3, 7, 8, 9, 12, -19-, -20-, 21
 
 - [1] "A scripted lab or project in which the students know the expected outcome" 
-- [2] "A lab or project in which only the instructor knows the outcome" *Removed                               
+- [2] "A lab or project in which only the instructor knows the outcome" *Removed   
+- [3] "A lab or project where no one knows the outcome"   
 - [7] "Work individually" 
- 
-- [20] "Read a textbook" *Removed                                                                                    
+- [8] "Work as a whole class" 
+- [9] "Work in small groups"  
+- [12] "Write a research proposal" 
+- [19] "Listen to lectures" *Removed     
+- [20] "Read a textbook" *Removed 
+- [21] "Work on problem sets" *Removed  
+- [22] "Take tests in class" *Removed 
 
-It is interesting to note that for every question that was significantly impacted by rookie status, the veteran status had a negative estimate. 
-This means that students in an instructor's first semester perceived larger gains than in subsequent semesters. 
-This does not support our hypothesis that experience would make the instructors more proficient at assisting student improvement in the learning elements.
+
 
 ## Figures
 
@@ -4289,21 +4283,21 @@ This was not emphasized.
 For questions where the instructor was included in the final model, but not Rookie status or the pre-survey response (3, 6, and 17) and ALSO the question where it did not depend on any of the variables (7):
 
 
-### Final Figure 2 v 2026
+### Final Figure 2 v 2026.lmer
 
 Depend on Instructor only:
 
-3, 4, 6, 9, 12, 17
+WAS: 3, 4, 6, 9, 12, 17
+
+NOW: 5,6,10,17
 
 ![](Figures2-5.Improvements-by-Instructor-2.2026.lmer_files/figure-html/Figure 2 Instructor Questions-1.png)<!-- -->
 
 ```
-## [1] "A lab or project where no one knows the outcome"                       
-## [2] "At least one project that is assigned and structured by the instructor"
-## [3] "A project entirely of student design"                                  
-## [4] "Work in small groups"                                                  
-## [5] "Write a research proposal"                                             
-## [6] "Present posters"
+## [1] "A project in which students have some input into the research process and/or what is being studied"
+## [2] "A project entirely of student design"                                                              
+## [3] "Become responsible for a part of the project"                                                      
+## [4] "Present posters"
 ```
 
 Note that we lost "Figure 4" because it is now incorporated into Figure 2. 
