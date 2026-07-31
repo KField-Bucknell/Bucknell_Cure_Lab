@@ -1500,15 +1500,15 @@ instructor_q <- Q10Clean_withNA %>%
 instructor_q_long <- instructor_q %>% 
   pivot_longer(cols = `Q05`:`Q17`, 
                names_to = c("Question"), 
-               values_to = "Post")
+               values_to = "Response")
 
 instructor_q_long %>%
   table() %>%
   as.data.frame() %>%
-  ggballoonplot(x = "Instructor", y = "Post", size = "Freq", 
+  ggballoonplot(x = "Instructor", y = "Response", size = "Freq", 
                 ggtheme = theme_gray(), facet.by = "Question",
-                fill = "Post", 
-                size.range = c(0, 6)) + 
+                fill = "Response", 
+                size.range = c(0, 10)) + 
   fill_palette(c("#FFFEFE","#b0cafb","#6598f8","#3c54cd","#21327b")) +
   scale_x_discrete(guide = guide_axis(angle=70))
 
@@ -1542,12 +1542,14 @@ none_q_long <- none_q %>%
                values_to = "Response")
 
 ggplot(none_q_long) +
-  geom_bar(aes(x = fct_rev(Question), fill = Response), width = 0.75) +
+  geom_bar(aes(x = fct_rev(Question), fill = fct_rev(Response)), 
+           position = "fill", width = 0.75) +
   coord_flip() +
   ylab('Proportion') +
   xlab(NULL) +
   fill_palette(c("#21327b","#3c54cd","#6598f8","#b0cafb","#FFFEFE")) +
   scale_x_discrete(na.translate = FALSE) +
+  labs(fill = "Response") +
   theme_gray()
 ```
 
